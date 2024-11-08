@@ -1,20 +1,26 @@
-package model
+package constants
 
 type values string
-type score int
 type chipType string
 
 type squareType string
 
 const (
-	ZeroPoint score = iota
-	OnePoint
-	TwoPoint
-	ThreePoint
-	FourPoint
-	FivePoint
-	SixPoint
-	SevenPoint
+	A values = "A"
+	B values = "B"
+	C values = "C"
+	D values = "D"
+	E values = "E"
+	F values = "F"
+	G values = "G"
+	H values = "H"
+	I values = "I"
+	J values = "J"
+	K values = "K"
+	L values = "L"
+	M values = "M"
+	N values = "N"
+	O values = "O"
 
 	Zero         values = "0"
 	One          values = "1"

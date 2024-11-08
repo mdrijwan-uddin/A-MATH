@@ -1,7 +1,8 @@
 package game
 
 import (
-	. "A-MATH/model" //might be change to another folder later and remove the dot
+	. "A-MATH/constants"
+	"A-MATH/err"
 	"slices"
 	"strconv"
 )
@@ -12,13 +13,17 @@ type Chip struct {
 	ChipType string
 }
 
-func NewChip(value string) Chip {
-	score := setChipScore(value)
+func NewChip(value string) (Chip, error) {
+	score, e := setChipScore(value)
+	if e != nil {
+		return Chip{}, e
+	}
+
 	chipType := setChipType(value)
-	return Chip{value, score, chipType}
+	return Chip{value, score, chipType}, nil
 }
 
-func setChipScore(values string) int {
+func setChipScore(values string) (int, error) {
 	onePointSet := []string{string(Zero), string(One), string(Two), string(Three), string(Add_sub),
 		string(Multi_divide), string(Equal)}
 	twoPointSet := []string{string(Four), string(Five), string(Six), string(Seven), string(Eight),
@@ -29,23 +34,26 @@ func setChipScore(values string) int {
 	fivePointSet := []string{string(Twenty)}
 	SixPointSet := []string{string(Thirteen), string(Seventeen)}
 	sevenPointSet := []string{string(Nineteen)}
+	zeroPointSet := []string{string(Blank)}
 
 	if slices.Contains(onePointSet, values) {
-		return int(OnePoint)
+		return 1, nil
 	} else if slices.Contains(twoPointSet, values) {
-		return int(TwoPoint)
+		return 2, nil
 	} else if slices.Contains(threePointSet, values) {
-		return int(ThreePoint)
+		return 3, nil
 	} else if slices.Contains(fourPointSet, values) {
-		return int(FourPoint)
+		return 4, nil
 	} else if slices.Contains(fivePointSet, values) {
-		return int(FivePoint)
+		return 5, nil
 	} else if slices.Contains(SixPointSet, values) {
-		return int(SixPoint)
+		return 6, nil
 	} else if slices.Contains(sevenPointSet, values) {
-		return int(SevenPoint)
+		return 7, nil
+	} else if slices.Contains(zeroPointSet, values) {
+		return 0, nil
 	} else {
-		return int(ZeroPoint)
+		return -1, err.New(int(BadRequest), string(InvalidInputForChip))
 	}
 }
 
@@ -72,8 +80,8 @@ func setChipType(values string) string {
 	}
 }
 
-func (chip Chip) String() string {
-	return "Value: " + chip.Value +
-		"\tScore: " + strconv.Itoa(chip.Score) +
-		"\tType: " + chip.ChipType
+func (c Chip) String() string {
+	return "Value: " + c.Value +
+		"\tScore: " + strconv.Itoa(c.Score) +
+		"\tType: " + c.ChipType
 }
