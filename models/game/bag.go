@@ -34,7 +34,7 @@ func NewBag() Bag {
 		4, 4, 11, 4}
 
 	for i := range len(Chips) {
-		fmt.Println(Chips)
+
 		c, e := NewChip(Chips[i])
 		if e != nil {
 			fmt.Println(e)

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"A-MATH/constants"
+	"fmt"
 	"slices"
 
 	"A-MATH/err"
@@ -37,7 +38,9 @@ func ValidateSquarePosition(pos string) ([2]int, error) {
 }
 
 func ValidateChip(values string) error {
-	if slices.Contains(ChipSet, values) {
+
+	if !slices.Contains(ChipSet, values) {
+		fmt.Println(ChipSet)
 		return err.New(int(constants.BadRequest), string(constants.InvalidInputForChip))
 	} else {
 		return nil

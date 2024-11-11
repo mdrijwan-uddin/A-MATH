@@ -3,6 +3,7 @@ package game
 import (
 	"A-MATH/constants"
 	"A-MATH/utils"
+
 	"strconv"
 )
 
@@ -14,6 +15,7 @@ type Chip struct {
 
 func NewChip(value string) (Chip, error) {
 	e := utils.ValidateChip(value)
+
 	if e != nil {
 		return Chip{}, e
 	}
@@ -43,7 +45,7 @@ func setScoreandType(value string) (int, string) {
 	case string(constants.Add_sub), string(constants.Multi_divide):
 		return 1, string(constants.AlterOperatorType)
 	case string(constants.Equal):
-		return 1, string(constants.Equal)
+		return 1, string(constants.EqualType)
 	default:
 		return 0, string(constants.BlankType)
 	}
