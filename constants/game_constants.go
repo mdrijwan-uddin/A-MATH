@@ -54,14 +54,15 @@ const (
 
 	OneDigitNumberType chipType = "1 Digit Number"
 	TwoDigitNumberType chipType = "2 Digit Number"
-	OperatorType       chipType = "Operator"
-	EqualType          chipType = "Equal"
+	OperatorType       chipType = "Normal Operator"
+	AlterOperatorType  chipType = "Alternative Operator"
+	EqualType          chipType = "Equal Operator"
 	BlankType          chipType = "Blank"
 
 	NormalSquare squareType = "Normal Square"
-	CenterSquare squareType = "Center Square"
 	OrangeSquare squareType = "Orange Square"
 	BlueSquare   squareType = "Blue Square"
 	YellowSquare squareType = "Yellow Square"
 	RedSquare    squareType = "Red Square"
+	CenterSquare squareType = "Center Square"
 )

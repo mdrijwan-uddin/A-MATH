@@ -1,9 +1,8 @@
 package game
 
 import (
-	. "A-MATH/constants"
-	"A-MATH/err"
-	"slices"
+	"A-MATH/constants"
+	"A-MATH/utils"
 	"strconv"
 )
 
@@ -14,69 +13,48 @@ type Chip struct {
 }
 
 func NewChip(value string) (Chip, error) {
-	score, e := setChipScore(value)
+	e := utils.ValidateChip(value)
 	if e != nil {
 		return Chip{}, e
 	}
 
-	chipType := setChipType(value)
+	score, chipType := setScoreandType(value)
 	return Chip{value, score, chipType}, nil
 }
 
-func setChipScore(values string) (int, error) {
-	onePointSet := []string{string(Zero), string(One), string(Two), string(Three), string(Add_sub),
-		string(Multi_divide), string(Equal)}
-	twoPointSet := []string{string(Four), string(Five), string(Six), string(Seven), string(Eight),
-		string(Nine), string(Addition), string(Subtraction), string(Multiply), string(Division)}
-	threePointSet := []string{string(Ten), string(Twelve)}
-	fourPointSet := []string{string(Eleven), string(Fourteen), string(Fifteen), string(Sixteen),
-		string(Eighteen)}
-	fivePointSet := []string{string(Twenty)}
-	SixPointSet := []string{string(Thirteen), string(Seventeen)}
-	sevenPointSet := []string{string(Nineteen)}
-	zeroPointSet := []string{string(Blank)}
-
-	if slices.Contains(onePointSet, values) {
-		return 1, nil
-	} else if slices.Contains(twoPointSet, values) {
-		return 2, nil
-	} else if slices.Contains(threePointSet, values) {
-		return 3, nil
-	} else if slices.Contains(fourPointSet, values) {
-		return 4, nil
-	} else if slices.Contains(fivePointSet, values) {
-		return 5, nil
-	} else if slices.Contains(SixPointSet, values) {
-		return 6, nil
-	} else if slices.Contains(sevenPointSet, values) {
-		return 7, nil
-	} else if slices.Contains(zeroPointSet, values) {
-		return 0, nil
-	} else {
-		return -1, err.New(int(BadRequest), string(InvalidInputForChip))
+func setScoreandType(value string) (int, string) {
+	switch value {
+	case string(constants.Zero), string(constants.One), string(constants.Two), string(constants.Three):
+		return 1, string(constants.OneDigitNumberType)
+	case string(constants.Four), string(constants.Five), string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine):
+		return 2, string(constants.OneDigitNumberType)
+	case string(constants.Ten), string(constants.Twelve):
+		return 3, string(constants.TwoDigitNumberType)
+	case string(constants.Eleven), string(constants.Fourteen), string(constants.Fifteen), string(constants.Sixteen), string(constants.Eighteen):
+		return 4, string(constants.TwoDigitNumberType)
+	case string(constants.Thirteen), string(constants.Seventeen):
+		return 6, string(constants.TwoDigitNumberType)
+	case string(constants.Nineteen):
+		return 7, string(constants.TwoDigitNumberType)
+	case string(constants.Twenty):
+		return 5, string(constants.TwoDigitNumberType)
+	case string(constants.Addition), string(constants.Subtraction), string(constants.Multiply), string(constants.Division):
+		return 2, string(constants.OperatorType)
+	case string(constants.Add_sub), string(constants.Multi_divide):
+		return 1, string(constants.AlterOperatorType)
+	case string(constants.Equal):
+		return 1, string(constants.Equal)
+	default:
+		return 0, string(constants.BlankType)
 	}
 }
 
-func setChipType(values string) string {
-	oneDigitSet := []string{string(Zero), string(One), string(Two), string(Three), string(Four),
-		string(Five), string(Six), string(Seven), string(Eight), string(Nine)}
-	twoDigitSet := []string{string(Ten), string(Eleven), string(Twelve), string(Thirteen),
-		string(Fourteen), string(Fifteen), string(Sixteen), string(Seventeen), string(Eighteen),
-		string(Nineteen), string(Twenty)}
-	operatorSet := []string{string(Addition), string(Subtraction), string(Multiply),
-		string(Division), string(Add_sub), string(Multi_divide)}
-	equalSet := []string{string(Equal)}
-
-	if slices.Contains(oneDigitSet, values) {
-		return string(OneDigitNumberType)
-	} else if slices.Contains(twoDigitSet, values) {
-		return string(TwoDigitNumberType)
-	} else if slices.Contains(operatorSet, values) {
-		return string(OperatorType)
-	} else if slices.Contains(equalSet, values) {
-		return string(EqualType)
+func (c Chip) isEmpty() bool {
+	emptyChip := Chip{}
+	if c == emptyChip {
+		return true
 	} else {
-		return string(BlankType)
+		return false
 	}
 }
 
