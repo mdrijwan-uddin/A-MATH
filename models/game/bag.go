@@ -1,6 +1,9 @@
 package game
 
-// import "A-MATH/utils"
+import (
+	"A-MATH/utils"
+	"fmt"
+)
 
 type ChipCollector struct {
 	chip     Chip
@@ -13,25 +16,36 @@ type Bag struct {
 }
 
 func NewChipCollector(chip Chip, chipLeft int) ChipCollector {
+	// fmt.Println(chip)
 	return ChipCollector{chip, chipLeft}
 }
 
 func NewBag() Bag {
-	// var ChipCollectors []ChipCollector
+	var ChipCollectors []ChipCollector
+	var totalChipLeft int
 
-	// Chips := utils.ChipSet
-	// totalChipSet := [29]int{
-	// 	5, 6, 6, 5, 5,
-	// 	4, 4, 4, 4, 4,
-	// 	2, 1, 2, 1, 1,
-	// 	1, 1, 1, 1, 1,
-	// 	1, 4, 4, 5, 4,
-	// 	4, 4, 11, 4}
+	Chips := utils.ChipSet
+	totalChipSet := [29]int{
+		5, 6, 6, 5, 5,
+		4, 4, 4, 4, 4,
+		2, 1, 2, 1, 1,
+		1, 1, 1, 1, 1,
+		1, 4, 4, 5, 4,
+		4, 4, 11, 4}
 
-	// n := NewChipCollector(NewChip("0"), 5)
-	// ChipCollectors = append(ChipCollectors, n)
+	for i := range len(Chips) {
+		fmt.Println(Chips)
+		c, e := NewChip(Chips[i])
+		if e != nil {
+			fmt.Println(e)
+		}
+		totalChipLeft += totalChipSet[i]
+		n := NewChipCollector(c, totalChipSet[i])
+		ChipCollectors = append(ChipCollectors, n)
 
-	return Bag{}
+	}
+
+	return Bag{ChipCollectors, totalChipLeft}
 }
 
 // ChipCollector("0", 5), ChipCollector("1", 6), ChipCollector("2", 6),
