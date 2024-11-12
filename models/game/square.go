@@ -25,10 +25,18 @@ func NewSquare(pos string) (Square, error) {
 }
 
 func setSquareType(pos [2]int) string {
+	minimalizePosition := func(pos int) int {
+		if pos == 8 || pos == 15 {
+			return 1
+		} else if pos > 8 {
+			return pos - ((pos - 8) * 2)
+		}
+		return pos
+	}
 
 	if pos[0] != 8 && pos[1] != 8 {
-		pos[0] = minimalizePositionForSpecificType(pos[0])
-		pos[1] = minimalizePositionForSpecificType(pos[1])
+		pos[0] = minimalizePosition(pos[0])
+		pos[1] = minimalizePosition(pos[1])
 	}
 
 	var CenterSquareSet [][2]int
@@ -68,15 +76,6 @@ func setSquareType(pos [2]int) string {
 	} else {
 		return string(constants.NormalSquare)
 	}
-}
-
-func minimalizePositionForSpecificType(pos int) int {
-	if pos == 8 || pos == 15 {
-		return 1
-	} else if pos > 8 {
-		return pos - ((pos - 8) * 2)
-	}
-	return pos
 }
 
 func (s Square) String() string {

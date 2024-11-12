@@ -61,7 +61,7 @@ func (c Chip) isEmpty() bool {
 }
 
 func (c Chip) String() string {
-	return "Value: " + c.Value +
-		"\tScore: " + strconv.Itoa(c.Score) +
-		"\tType: " + c.ChipType
+	return "Value: " + c.Value + "\t" +
+		"Score: " + strconv.Itoa(c.Score) + "\t" +
+		"Type: " + c.ChipType + "\t|"
 }

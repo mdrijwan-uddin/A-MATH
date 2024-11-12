@@ -39,3 +39,14 @@ func (b Board) String() string {
 	}
 	return str
 }
+
+// func (b Board) String() string {
+// 	var str string
+// 	for i := 0; i < 15; i++ {
+// 		for j := 0; j < 15; j++ {
+// 			str += string(b.Squares[j][i].String()) + "\n"
+// 		}
+// 		str += "-----------------------------------------------------------\n"
+// 	}
+// 	return str
+// }

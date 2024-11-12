@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	// c := game.NewChip("x")
-	// d := game.NewChip("/")
+	// c, _ := game.NewChip("x")
+	// d, _ := game.NewChip("/")
 	// fmt.Println(c == d)
 
 	// a, _ := game.NewChip("1")
@@ -22,6 +22,10 @@ func main() {
 	// f := game.NewBoard()
 	// fmt.Println(f)
 
-	g := game.NewBag()
-	fmt.Println(g)
+	// g := game.NewBag()
+	// fmt.Println(g)
+
+	r := game.NewRack(1)
+	fmt.Println(r)
+
 }

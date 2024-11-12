@@ -50,7 +50,7 @@ const (
 	Add_sub      values = "+-"
 	Multi_divide values = "x/"
 	Equal        values = "="
-	Blank        values = ""
+	Blank        values = "~"
 
 	OneDigitNumberType chipType = "1 Digit Number"
 	TwoDigitNumberType chipType = "2 Digit Number"
