@@ -78,6 +78,14 @@ func setSquareType(pos [2]int) string {
 	}
 }
 
+// func (s Square) isChipPlacedOn() bool {
+// 	if s.ChipPlaceOn.isEmpty() {
+// 		return false
+// 	} else {
+// 		return true
+// 	}
+// }
+
 func (s Square) String() string {
 	str := "Position: [" + fmt.Sprint(s.Position[0]) +
 		", " + fmt.Sprint(s.Position[1]) + "]" +

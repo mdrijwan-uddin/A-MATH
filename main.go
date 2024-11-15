@@ -19,13 +19,13 @@ func main() {
 	// }
 	// fmt.Println(b)
 
-	// f := game.NewBoard()
-	// fmt.Println(f)
+	f := game.NewBoard()
+	fmt.Println(f)
 
 	// g := game.NewBag()
 	// fmt.Println(g)
 
-	r := game.NewRack(1)
-	fmt.Println(r)
+	// r := game.NewRack(1)
+	// fmt.Println(r)
 
 }

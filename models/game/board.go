@@ -2,6 +2,7 @@ package game
 
 import (
 	"A-MATH/constants"
+	"strconv"
 )
 
 type Board struct {
@@ -33,9 +34,21 @@ func (b Board) String() string {
 	var str string
 	for i := 0; i < 15; i++ {
 		for j := 0; j < 15; j++ {
-			str += string(b.Squares[j][i].String()) + "\n"
+			str += "[$" + string(b.Squares[j][i].SquareType[:1]) + "] "
 		}
-		str += "-----------------------------------------------------------\n"
+		if i < 9 {
+			str += "0" + strconv.Itoa(i+1) + "\n"
+		} else {
+			str += strconv.Itoa(i+1) + "\n"
+		}
+	}
+	str += " "
+	for i := 0; i < 15; i++ {
+		if i < 9 {
+			str += "0" + strconv.Itoa(i+1) + "   "
+		} else {
+			str += strconv.Itoa(i+1) + "   "
+		}
 	}
 	return str
 }
