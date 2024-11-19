@@ -45,10 +45,10 @@ const (
 	Twenty       values = "20"
 	Addition     values = "+"
 	Subtraction  values = "-"
-	Multiply     values = "x"
+	Multiply     values = "*"
 	Division     values = "/"
 	Add_sub      values = "+-"
-	Multi_divide values = "x/"
+	Multi_divide values = "*/"
 	Equal        values = "="
 	Blank        values = "~"
 

@@ -7,21 +7,21 @@ import (
 	"strconv"
 )
 
-type Chip struct {
+type chip struct {
 	Value    string
 	Score    int
 	ChipType string
 }
 
-func NewChip(value string) (Chip, error) {
+func NewChip(value string) (chip, error) {
 	e := utils.ValidateChip(value)
 
 	if e != nil {
-		return Chip{}, e
+		return chip{}, e
 	}
 
 	score, chipType := setScoreandType(value)
-	return Chip{value, score, chipType}, nil
+	return chip{value, score, chipType}, nil
 }
 
 func setScoreandType(value string) (int, string) {
@@ -51,17 +51,12 @@ func setScoreandType(value string) (int, string) {
 	}
 }
 
-func (c Chip) isEmpty() bool {
-	emptyChip := Chip{}
-	if c == emptyChip {
-		return true
-	} else {
-		return false
-	}
+func (c chip) IsEmpty() bool {
+	return c == chip{}
 }
 
-func (c Chip) String() string {
-	return "Value: " + c.Value + "\t" +
-		"Score: " + strconv.Itoa(c.Score) + "\t" +
-		"Type: " + c.ChipType + "\t|"
+func (c chip) String() string {
+	return "Value: " + c.Value + ", " +
+		"Score: " + strconv.Itoa(c.Score) + ", " +
+		"Type: " + c.ChipType
 }
