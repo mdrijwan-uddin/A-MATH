@@ -1,6 +1,9 @@
-package game
+package components
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 type chipCollectors struct {
 	Chips   chip
@@ -25,7 +28,13 @@ func (c *chipCollectors) DecreaseChip() {
 }
 
 func (c chipCollectors) String() string {
-	return "{" + c.Chips.Value + "|" +
-		strconv.Itoa(c.Total) +
-		"/" + strconv.Itoa(c.MaxChip) + "}"
+	var sb strings.Builder
+	sb.WriteString("{")
+	sb.WriteString(c.Chips.Value)
+	sb.WriteString("|")
+	sb.WriteString(strconv.Itoa(c.Total))
+	sb.WriteString("/")
+	sb.WriteString(strconv.Itoa(c.MaxChip))
+	sb.WriteString("}")
+	return sb.String()
 }

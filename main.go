@@ -1,7 +1,7 @@
 package main
 
 import (
-	"A-MATH/game"
+	"A-MATH/game/utils"
 	"fmt"
 )
 
@@ -25,16 +25,16 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	a, _ := game.NewChip("1")
-	f := game.NewBoard()
+	// a, _ := game.NewChip("1")
+	// f := game.NewBoard()
 
-	pos := [2]int{4, 1}
+	// pos := [2]int{4, 1}
 
-	f.Add(pos, a)
-	fmt.Println(f)
+	// f.Add(pos, a)
+	// fmt.Println(f)
 
-	f.Remove(pos)
-	fmt.Println(f)
+	// f.Remove(pos)
+	// fmt.Println(f)
 
 	//--------------------------------------------------------------------------
 
@@ -90,4 +90,6 @@ func main() {
 	// e.IncreaseChip()
 	// fmt.Println(e)
 
+	r := utils.RandomString(8)
+	fmt.Println(r)
 }

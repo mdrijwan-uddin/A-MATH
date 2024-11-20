@@ -1,11 +1,12 @@
-package game
+package components
 
 import (
-	"fmt"
-	"slices"
+	"A-MATH/game/constants"
+	"A-MATH/game/utils"
 
-	"A-MATH/constants"
-	"A-MATH/utils"
+	"slices"
+	"strconv"
+	"strings"
 )
 
 type square struct {
@@ -82,15 +83,20 @@ func (s square) IsChipPlacedOn() bool {
 }
 
 func (s square) String() string {
-	str := "Position: [" + fmt.Sprint(s.Position[0]) +
-		", " + fmt.Sprint(s.Position[1]) + "]|" +
-		"\tType: " + s.SquareType
-
+	var sb strings.Builder
+	sb.WriteString("Position: [")
+	sb.WriteString(strconv.Itoa(s.Position[0]))
+	sb.WriteString(", ")
+	sb.WriteString(strconv.Itoa(s.Position[1]))
+	sb.WriteString("]|\tType: ")
+	sb.WriteString(s.SquareType)
+	sb.WriteString("\t|Chip: ")
 	if s.ChipPlaceOn.IsEmpty() {
-		str = str + "\t|Chip: Empty"
+		sb.WriteString("Empty")
 	} else {
-		str = str + "\t|Chip: {" + s.ChipPlaceOn.String() + "}"
+		sb.WriteString("{")
+		sb.WriteString(s.ChipPlaceOn.String())
+		sb.WriteString("}")
 	}
-
-	return str
+	return sb.String()
 }

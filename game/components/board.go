@@ -1,16 +1,17 @@
-package game
+package components
 
 import (
-	"A-MATH/constants"
+	"A-MATH/game/constants"
+
 	"strconv"
 	"strings"
 )
 
-type board struct {
+type Board struct {
 	Squares [15][15]square
 }
 
-func NewBoard() board {
+func NewBoard() Board {
 	var boardsSquare [15][15]square
 
 	xAxisSet := []string{string(constants.A), string(constants.B), string(constants.C), string(constants.D), string(constants.E), string(constants.F),
@@ -28,10 +29,10 @@ func NewBoard() board {
 		}
 	}
 
-	return board{boardsSquare}
+	return Board{boardsSquare}
 }
 
-func (b *board) Add(pos [2]int, c chip) {
+func (b *Board) Add(pos [2]int, c chip) {
 	posX, posY := pos[1]-1, pos[0]-1
 
 	if b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
@@ -39,7 +40,7 @@ func (b *board) Add(pos [2]int, c chip) {
 	}
 }
 
-func (b *board) Remove(pos [2]int) {
+func (b *Board) Remove(pos [2]int) {
 	posX, posY := pos[1]-1, pos[0]-1
 
 	c := chip{}
@@ -48,7 +49,7 @@ func (b *board) Remove(pos [2]int) {
 	}
 }
 
-func (b board) String() string {
+func (b Board) String() string {
 	var sb strings.Builder
 
 	// Build the board rows

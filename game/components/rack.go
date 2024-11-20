@@ -1,21 +1,20 @@
-package game
+package components
 
 import (
-	"strconv"
+	"strings"
 )
 
 const maxChipInRack = 8
 
-type rack struct {
-	OwnerId uint
-	Chips   [maxChipInRack]chip
+type Rack struct {
+	Chips [maxChipInRack]chip
 }
 
-func NewRack(id uint) rack {
-	return rack{id, [maxChipInRack]chip{}}
+func NewRack() Rack {
+	return Rack{[maxChipInRack]chip{}}
 }
 
-func (r *rack) Add(c chip) {
+func (r *Rack) Add(c chip) {
 	if r.IsFull() {
 		return
 	}
@@ -28,7 +27,7 @@ func (r *rack) Add(c chip) {
 	}
 }
 
-func (r *rack) Remove(c chip) {
+func (r *Rack) Remove(c chip) {
 	if r.IsEmpty() {
 		return
 	}
@@ -54,7 +53,7 @@ func (r *rack) Remove(c chip) {
 	r.Chips[len(r.Chips)-1] = emptyChip
 }
 
-func (r rack) IsFull() bool {
+func (r Rack) IsFull() bool {
 	for _, ch := range r.Chips {
 		if ch.IsEmpty() {
 			return false
@@ -63,15 +62,17 @@ func (r rack) IsFull() bool {
 	return true
 }
 
-func (r rack) IsEmpty() bool {
+func (r Rack) IsEmpty() bool {
 	return r.Chips == [maxChipInRack]chip{}
 }
 
-func (r rack) String() string {
-	var str string
+func (r Rack) String() string {
+	var sb strings.Builder
+	sb.WriteString("Rack: {")
 	for i := range len(r.Chips) {
-		str += "[" + r.Chips[i].Value + "]"
+		sb.WriteString("[")
+		sb.WriteString(r.Chips[i].Value)
+		sb.WriteString("]")
 	}
-
-	return "Rack{" + strconv.Itoa(int(r.OwnerId)) + "} : " + str
+	return sb.String()
 }

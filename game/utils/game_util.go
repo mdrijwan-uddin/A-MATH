@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"A-MATH/constants"
+	"A-MATH/err"
+	"A-MATH/game/constants"
+
 	"fmt"
 	"slices"
-
-	"A-MATH/err"
 	"strconv"
 )
 
@@ -38,7 +38,6 @@ func ValidateSquarePosition(pos string) ([2]int, error) {
 }
 
 func ValidateChip(values string) error {
-
 	if !slices.Contains(ChipSet, values) {
 		fmt.Println(ChipSet)
 		return err.New(int(constants.BadRequest), string(constants.InvalidInputForChip))

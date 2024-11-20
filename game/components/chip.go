@@ -1,10 +1,11 @@
-package game
+package components
 
 import (
-	"A-MATH/constants"
-	"A-MATH/utils"
+	"A-MATH/game/constants"
+	"A-MATH/game/utils"
 
 	"strconv"
+	"strings"
 )
 
 type chip struct {
@@ -56,7 +57,12 @@ func (c chip) IsEmpty() bool {
 }
 
 func (c chip) String() string {
-	return "Value: " + c.Value + ", " +
-		"Score: " + strconv.Itoa(c.Score) + ", " +
-		"Type: " + c.ChipType
+	var sb strings.Builder
+	sb.WriteString("Value: ")
+	sb.WriteString(c.Value)
+	sb.WriteString(", Score: ")
+	sb.WriteString(strconv.Itoa(c.Score))
+	sb.WriteString(", Type: ")
+	sb.WriteString(c.ChipType)
+	return sb.String()
 }

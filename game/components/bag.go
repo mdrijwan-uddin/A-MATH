@@ -1,11 +1,12 @@
-package game
+package components
 
 import (
-	"A-MATH/utils"
-	"strconv"
-
-	"A-MATH/constants"
 	"A-MATH/err"
+	"A-MATH/game/constants"
+	"A-MATH/game/utils"
+
+	"strconv"
+	"strings"
 )
 
 var totalSet = [29]int{
@@ -25,13 +26,13 @@ var chipSet = utils.ChipSet
 // ChipCollector("20", 1), ChipCollector("+", 4),  ChipCollector("-", 4),   ChipCollector("x", 4), ChipCollector("%", 4),
 // ChipCollector("+/-", 5), ChipCollector("x/%", 4), ChipCollector("=", 11), ChipCollector("Blank", 4)
 
-type bag struct {
+type Bag struct {
 	ChipCollectors []chipCollectors
 	TotalChipLeft  int
 	MaxChip        int
 }
 
-func NewBag() bag {
+func NewBag() Bag {
 	var chipCollectors []chipCollectors
 	var totalChip int
 
@@ -42,10 +43,10 @@ func NewBag() bag {
 		chipCollectors = append(chipCollectors, n)
 	}
 
-	return bag{chipCollectors, totalChip, totalChip}
+	return Bag{chipCollectors, totalChip, totalChip}
 }
 
-func (b *bag) getIndex(c chip) (int, error) {
+func (b *Bag) getIndex(c chip) (int, error) {
 	for i, cs := range chipSet {
 		if cs == c.Value {
 			return i, nil
@@ -54,7 +55,7 @@ func (b *bag) getIndex(c chip) (int, error) {
 	return -1, err.New(int(constants.BadRequest), string(constants.InvalidInputForChip))
 }
 
-func (b *bag) DecreaseChip(c chip) error {
+func (b *Bag) DecreaseChip(c chip) error {
 	index, e := b.getIndex(c)
 	if e != nil {
 		return e
@@ -68,7 +69,7 @@ func (b *bag) DecreaseChip(c chip) error {
 	return nil
 }
 
-func (b *bag) IncreaseChip(c chip) error {
+func (b *Bag) IncreaseChip(c chip) error {
 	index, e := b.getIndex(c)
 	if e != nil {
 		return e
@@ -83,15 +84,21 @@ func (b *bag) IncreaseChip(c chip) error {
 	return nil
 }
 
-func (b bag) String() string {
-	var str string
+func (b Bag) String() string {
+	var sb strings.Builder
+
 	for i := range len(totalSet) {
-		str += "[" + b.ChipCollectors[i].Chips.Value + "]"
-		str += strconv.Itoa(b.ChipCollectors[i].Total) +
-			"/" + strconv.Itoa(b.ChipCollectors[i].MaxChip) + "\t"
+		sb.WriteString("[")
+		sb.WriteString(b.ChipCollectors[i].Chips.Value)
+		sb.WriteString("]")
+		sb.WriteString(strconv.Itoa(b.ChipCollectors[i].Total))
+		sb.WriteString("/")
+		sb.WriteString(strconv.Itoa(b.ChipCollectors[i].MaxChip))
+		sb.WriteString("\t")
+
 		if i%5 == 4 {
-			str += "\n"
+			sb.WriteString("\n")
 		}
 	}
-	return str
+	return sb.String()
 }

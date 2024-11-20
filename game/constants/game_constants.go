@@ -65,4 +65,6 @@ const (
 	YellowSquare squareType = "Yellow Square"
 	RedSquare    squareType = "Red Square"
 	CenterSquare squareType = "Center Square"
+
+	RandomLetter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
