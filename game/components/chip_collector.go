@@ -6,12 +6,12 @@ import (
 )
 
 type chipCollectors struct {
-	Chips   chip
+	Chips   Chip
 	Total   int
 	MaxChip int
 }
 
-func NewChipCollector(c chip, total int) chipCollectors {
+func NewChipCollector(c Chip, total int) chipCollectors {
 	return chipCollectors{c, total, total}
 }
 

@@ -7,14 +7,14 @@ import (
 const maxChipInRack = 8
 
 type Rack struct {
-	Chips [maxChipInRack]chip
+	Chips [maxChipInRack]Chip
 }
 
 func NewRack() Rack {
-	return Rack{[maxChipInRack]chip{}}
+	return Rack{[maxChipInRack]Chip{}}
 }
 
-func (r *Rack) Add(c chip) {
+func (r *Rack) Add(c Chip) {
 	if r.IsFull() {
 		return
 	}
@@ -27,12 +27,12 @@ func (r *Rack) Add(c chip) {
 	}
 }
 
-func (r *Rack) Remove(c chip) {
+func (r *Rack) Remove(c Chip) {
 	if r.IsEmpty() {
 		return
 	}
 
-	emptyChip := chip{}
+	emptyChip := Chip{}
 	index := -1
 
 	for i, ch := range r.Chips {
@@ -63,7 +63,7 @@ func (r Rack) IsFull() bool {
 }
 
 func (r Rack) IsEmpty() bool {
-	return r.Chips == [maxChipInRack]chip{}
+	return r.Chips == [maxChipInRack]Chip{}
 }
 
 func (r Rack) String() string {
@@ -74,5 +74,6 @@ func (r Rack) String() string {
 		sb.WriteString(r.Chips[i].Value)
 		sb.WriteString("]")
 	}
+	sb.WriteString("}")
 	return sb.String()
 }

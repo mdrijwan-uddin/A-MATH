@@ -46,7 +46,7 @@ func NewBag() Bag {
 	return Bag{chipCollectors, totalChip, totalChip}
 }
 
-func (b *Bag) getIndex(c chip) (int, error) {
+func (b *Bag) getIndex(c Chip) (int, error) {
 	for i, cs := range chipSet {
 		if cs == c.Value {
 			return i, nil
@@ -55,7 +55,7 @@ func (b *Bag) getIndex(c chip) (int, error) {
 	return -1, err.New(int(constants.BadRequest), string(constants.InvalidInputForChip))
 }
 
-func (b *Bag) DecreaseChip(c chip) error {
+func (b *Bag) DecreaseChip(c Chip) error {
 	index, e := b.getIndex(c)
 	if e != nil {
 		return e
@@ -69,7 +69,7 @@ func (b *Bag) DecreaseChip(c chip) error {
 	return nil
 }
 
-func (b *Bag) IncreaseChip(c chip) error {
+func (b *Bag) IncreaseChip(c Chip) error {
 	index, e := b.getIndex(c)
 	if e != nil {
 		return e
@@ -87,13 +87,13 @@ func (b *Bag) IncreaseChip(c chip) error {
 func (b Bag) String() string {
 	var sb strings.Builder
 
-	for i := range len(totalSet) {
+	for i, ch := range b.ChipCollectors {
 		sb.WriteString("[")
-		sb.WriteString(b.ChipCollectors[i].Chips.Value)
+		sb.WriteString(ch.Chips.Value)
 		sb.WriteString("]")
-		sb.WriteString(strconv.Itoa(b.ChipCollectors[i].Total))
+		sb.WriteString(strconv.Itoa(ch.Total))
 		sb.WriteString("/")
-		sb.WriteString(strconv.Itoa(b.ChipCollectors[i].MaxChip))
+		sb.WriteString(strconv.Itoa(ch.MaxChip))
 		sb.WriteString("\t")
 
 		if i%5 == 4 {

@@ -1,7 +1,8 @@
 package main
 
 import (
-	"A-MATH/game/utils"
+	"A-MATH/game/actions"
+	"A-MATH/game/players"
 	"fmt"
 )
 
@@ -80,7 +81,7 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	// c, _ := game.NewChip("x")
+	// c, _ := components.NewChip("x")
 	// e := game.NewChipCollector(c, 4)
 	// fmt.Println(e)
 
@@ -90,6 +91,12 @@ func main() {
 	// e.IncreaseChip()
 	// fmt.Println(e)
 
-	r := utils.RandomString(8)
-	fmt.Println(r)
+	//--------------------------------------------------------------------------
+
+	p1 := players.NewPlayer(1, "p1")
+	p2 := players.NewPlayer(2, "p2")
+	ng := actions.NewGame([2]players.Player{p1, p2})
+	fmt.Println(ng)
+	ng.Draw(&ng.GamePlayers[0])
+	fmt.Println(ng)
 }

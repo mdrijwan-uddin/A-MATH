@@ -32,7 +32,7 @@ func NewBoard() Board {
 	return Board{boardsSquare}
 }
 
-func (b *Board) Add(pos [2]int, c chip) {
+func (b *Board) Add(pos [2]int, c Chip) {
 	posX, posY := pos[1]-1, pos[0]-1
 
 	if b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
@@ -43,7 +43,7 @@ func (b *Board) Add(pos [2]int, c chip) {
 func (b *Board) Remove(pos [2]int) {
 	posX, posY := pos[1]-1, pos[0]-1
 
-	c := chip{}
+	c := Chip{}
 	if !b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
 		b.Squares[posY][posX].ChipPlaceOn = c
 	}
@@ -83,6 +83,7 @@ func (b Board) String() string {
 		sb.WriteString(string(rune(i + 'A')))
 		sb.WriteString("    ")
 	}
+	sb.WriteString("\n")
 
 	return sb.String()
 }

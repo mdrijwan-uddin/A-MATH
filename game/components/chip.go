@@ -8,21 +8,21 @@ import (
 	"strings"
 )
 
-type chip struct {
+type Chip struct {
 	Value    string
 	Score    int
 	ChipType string
 }
 
-func NewChip(value string) (chip, error) {
+func NewChip(value string) (Chip, error) {
 	e := utils.ValidateChip(value)
 
 	if e != nil {
-		return chip{}, e
+		return Chip{}, e
 	}
 
 	score, chipType := setScoreandType(value)
-	return chip{value, score, chipType}, nil
+	return Chip{value, score, chipType}, nil
 }
 
 func setScoreandType(value string) (int, string) {
@@ -52,11 +52,11 @@ func setScoreandType(value string) (int, string) {
 	}
 }
 
-func (c chip) IsEmpty() bool {
-	return c == chip{}
+func (c Chip) IsEmpty() bool {
+	return c == Chip{}
 }
 
-func (c chip) String() string {
+func (c Chip) String() string {
 	var sb strings.Builder
 	sb.WriteString("Value: ")
 	sb.WriteString(c.Value)

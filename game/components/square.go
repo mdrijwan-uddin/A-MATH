@@ -12,7 +12,7 @@ import (
 type square struct {
 	Position    [2]int
 	SquareType  string
-	ChipPlaceOn chip
+	ChipPlaceOn Chip
 }
 
 func NewSquare(pos string) (square, error) {
@@ -22,7 +22,7 @@ func NewSquare(pos string) (square, error) {
 	}
 
 	squareType := setSquareType(position)
-	return square{position, squareType, chip{}}, nil
+	return square{position, squareType, Chip{}}, nil
 }
 
 func setSquareType(pos [2]int) string {
