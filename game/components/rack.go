@@ -1,17 +1,16 @@
 package components
 
 import (
+	"A-MATH/game/constants"
 	"strings"
 )
 
-const maxChipInRack = 8
-
 type Rack struct {
-	Chips [maxChipInRack]Chip
+	Chips [constants.MaxChipInRack]Chip
 }
 
 func NewRack() Rack {
-	return Rack{[maxChipInRack]Chip{}}
+	return Rack{[constants.MaxChipInRack]Chip{}}
 }
 
 func (r *Rack) Add(c Chip) {
@@ -53,6 +52,28 @@ func (r *Rack) Remove(c Chip) {
 	r.Chips[len(r.Chips)-1] = emptyChip
 }
 
+func (r Rack) GetTotalChip() int {
+	for i, ch := range r.Chips {
+		if ch.IsEmpty() {
+			return i
+		}
+	}
+	return 8
+}
+
+// need to discuss
+func (r Rack) IsChipFound(c Chip) bool {
+	for _, ch := range r.Chips {
+		if ch.IsEmpty() {
+			return false
+		}
+		if ch == c {
+			return true
+		}
+	}
+	return false
+}
+
 func (r Rack) IsFull() bool {
 	for _, ch := range r.Chips {
 		if ch.IsEmpty() {
@@ -63,7 +84,7 @@ func (r Rack) IsFull() bool {
 }
 
 func (r Rack) IsEmpty() bool {
-	return r.Chips == [maxChipInRack]Chip{}
+	return r.Chips == [constants.MaxChipInRack]Chip{}
 }
 
 func (r Rack) String() string {

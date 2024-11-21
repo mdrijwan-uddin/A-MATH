@@ -19,12 +19,12 @@ var totalSet = [29]int{
 
 var chipSet = utils.ChipSet
 
-// ChipCollector("0", 5),  ChipCollector("1", 6),  ChipCollector("2", 6),  ChipCollector("3", 5),  ChipCollector("4", 5),
-// ChipCollector("5", 4),  ChipCollector("6", 4),  ChipCollector("7", 4),  ChipCollector("8", 4),  ChipCollector("9", 4),
-// ChipCollector("10", 2), ChipCollector("11", 1), ChipCollector("12", 2), ChipCollector("13", 1), ChipCollector("14", 1),
-// ChipCollector("15", 1), ChipCollector("16", 1), ChipCollector("17", 1), ChipCollector("18", 1), ChipCollector("19", 1),
-// ChipCollector("20", 1), ChipCollector("+", 4),  ChipCollector("-", 4),   ChipCollector("x", 4), ChipCollector("%", 4),
-// ChipCollector("+/-", 5), ChipCollector("x/%", 4), ChipCollector("=", 11), ChipCollector("Blank", 4)
+// ("0", 5),  ("1", 6),  ("2", 6),  ("3", 5),  ("4", 5),
+// ("5", 4),  ("6", 4),  ("7", 4),  ("8", 4),  ("9", 4),
+// ("10", 2), ("11", 1), ("12", 2), ("13", 1), ("14", 1),
+// ("15", 1), ("16", 1), ("17", 1), ("18", 1), ("19", 1),
+// ("20", 1), ("+", 4),  ("-", 4),  ("x", 4),  ("%", 4),
+// ("+-", 5), (*/", 4),  ("=", 11), ("~", 4)
 
 type Bag struct {
 	ChipCollectors []chipCollectors
@@ -77,7 +77,7 @@ func (b *Bag) IncreaseChip(c Chip) error {
 
 	totalChipInBag := b.ChipCollectors[index].Total
 	maximumChipInBag := b.ChipCollectors[index].MaxChip
-	if 0 < totalChipInBag && totalChipInBag < maximumChipInBag {
+	if 0 <= totalChipInBag && totalChipInBag < maximumChipInBag {
 		b.ChipCollectors[index].IncreaseChip()
 		b.TotalChipLeft++
 	}

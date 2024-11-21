@@ -22,10 +22,10 @@ func NewBoard() Board {
 		string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine), string(constants.Ten), string(constants.Eleven),
 		string(constants.Twelve), string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen)}
 
-	for i := 0; i < 15; i++ {
-		for j := 0; j < 15; j++ {
-			position := xAxisSet[i] + yAxisSet[j]
-			boardsSquare[j][i], _ = NewSquare(position)
+	for posX := 0; posX < 15; posX++ {
+		for posY := 0; posY < 15; posY++ {
+			position := xAxisSet[posX] + yAxisSet[posY]
+			boardsSquare[posY][posX], _ = NewSquare(position)
 		}
 	}
 
@@ -47,6 +47,17 @@ func (b *Board) Remove(pos [2]int) {
 	if !b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
 		b.Squares[posY][posX].ChipPlaceOn = c
 	}
+}
+
+func (b *Board) IsEmpty() bool {
+	for posX := 0; posX < 15; posX++ {
+		for posY := 0; posY < 15; posY++ {
+			if !b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (b Board) String() string {

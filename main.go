@@ -2,6 +2,7 @@ package main
 
 import (
 	"A-MATH/game/actions"
+	"A-MATH/game/components"
 	"A-MATH/game/players"
 	"fmt"
 )
@@ -39,15 +40,17 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	// c, _ := game.NewChip("+")
+	// c, _ := components.NewChip("10")
 
-	// g := game.NewBag()
+	// g := components.NewBag()
 
 	// g.DecreaseChip(c)
+	// g.DecreaseChip(c)
 	// fmt.Println(g)
-
+	// fmt.Println("--------------------------------------------------------------")
 	// g.IncreaseChip(c)
 	// fmt.Println(g)
+
 	//--------------------------------------------------------------------------
 
 	// a, _ := game.NewChip("1")
@@ -81,8 +84,8 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	// c, _ := components.NewChip("x")
-	// e := game.NewChipCollector(c, 4)
+	// c, _ := components.NewChip("*")
+	// e := components.NewChipCollector(c, 4)
 	// fmt.Println(e)
 
 	// e.DecreaseChip()
@@ -96,7 +99,26 @@ func main() {
 	p1 := players.NewPlayer(1, "p1")
 	p2 := players.NewPlayer(2, "p2")
 	ng := actions.NewGame([2]players.Player{p1, p2})
+	// ng.FullyDraw(&ng.GamePlayers[0])
+	// ng.FullyDraw(&ng.GamePlayers[1])
+	a, _ := components.NewChip("1")
+	b, _ := components.NewChip("18")
+	c, _ := components.NewChip("=")
+	d, _ := components.NewChip("=")
+	e, _ := components.NewChip("7")
+	f, _ := components.NewChip("+-")
+	g, _ := components.NewChip("+")
+	h, _ := components.NewChip("0")
+	ng.DrawSpecificChip(&ng.GamePlayers[0], a)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], b)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], c)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], d)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], e)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], f)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], g)
+	ng.DrawSpecificChip(&ng.GamePlayers[0], h)
 	fmt.Println(ng)
-	ng.Draw(&ng.GamePlayers[0])
+
+	ng.Exchange(&ng.GamePlayers[0], []components.Chip{b, c, g})
 	fmt.Println(ng)
 }

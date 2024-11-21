@@ -66,5 +66,7 @@ const (
 	RedSquare    squareType = "Red Square"
 	CenterSquare squareType = "Center Square"
 
+	MaxChipInRack = 8
+
 	RandomLetter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
