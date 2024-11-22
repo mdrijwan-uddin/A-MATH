@@ -27,25 +27,22 @@ func IsChipPlaceOnOneLineCorrectly(c []ChipForPlacing) bool {
 		return true
 	}
 
-	return isChipsOnVertical(c) || isChipsOnHorizontal(c)
-}
+	isVertical := true
+	isHorizontal := true
+	firstColumn, firstRow := c[0].position[0], c[0].position[1]
 
-func isChipsOnVertical(c []ChipForPlacing) bool {
-	firstColumn := c[0].position[0]
 	for _, chip := range c[1:] {
 		if chip.position[0] != firstColumn {
-			return false
+			isVertical = false
 		}
-	}
-	return true
-}
-
-func isChipsOnHorizontal(c []ChipForPlacing) bool {
-	firstRow := c[0].position[1]
-	for _, chip := range c[1:] {
 		if chip.position[1] != firstRow {
+			isHorizontal = false
+		}
+		// If neither vertical nor horizontal alignment is possible, exit early
+		if !isVertical && !isHorizontal {
 			return false
 		}
 	}
-	return true
+
+	return isVertical || isHorizontal
 }

@@ -130,9 +130,9 @@ func main() {
 	h, _ := components.NewChip("0")
 
 	var chipForPlacing []actions.ChipForPlacing
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{7, 7}, a))
+	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{8, 8}, a))
 	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{9, 8}, b))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{10, 8}, c))
+	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{7, 7}, c))
 	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{11, 8}, d))
 	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{12, 8}, e))
 	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{13, 8}, f))
@@ -140,4 +140,5 @@ func main() {
 	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{15, 8}, h))
 
 	println(actions.IsChipPlaceOnCenterSquare(chipForPlacing))
+	println(actions.IsChipPlaceOnOneLineCorrectly(chipForPlacing))
 }
