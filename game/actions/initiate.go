@@ -4,33 +4,34 @@ import (
 	"A-MATH/game/components"
 	"A-MATH/game/players"
 	"A-MATH/game/utils"
+
 	"strconv"
 	"strings"
 )
 
 type Game struct {
 	ID          string
-	GamePlayers []InGamePlayers
+	GamePlayers []inGamePlayers
 	Board       *components.Board
 	Bag         *components.Bag
 	Turn        int
 	Winner      string
 }
 
-type InGamePlayers struct {
+type inGamePlayers struct {
 	Players players.Player
 	Score   int
 	Racks   *components.Rack
 }
 
-func NewInGamePlayers(player players.Player) InGamePlayers {
+func NewInGamePlayers(player players.Player) inGamePlayers {
 	rack := components.NewRack()
-	return InGamePlayers{player, 0, &rack}
+	return inGamePlayers{player, 0, &rack}
 }
 
 func NewGame(players [2]players.Player) Game {
 	gameID := utils.RandomString(8)
-	gamePlayers := []InGamePlayers{NewInGamePlayers(players[0]), NewInGamePlayers(players[1])}
+	gamePlayers := []inGamePlayers{NewInGamePlayers(players[0]), NewInGamePlayers(players[1])}
 	board := components.NewBoard()
 	bag := components.NewBag()
 	turn := 1
@@ -38,7 +39,7 @@ func NewGame(players [2]players.Player) Game {
 	return Game{gameID, gamePlayers, &board, &bag, turn, winner}
 }
 
-func (p InGamePlayers) String() string {
+func (p inGamePlayers) String() string {
 	var sb strings.Builder
 	sb.WriteString(p.Players.String())
 	sb.WriteString(" |Score: ")

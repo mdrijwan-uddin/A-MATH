@@ -53,15 +53,15 @@ func setSquareType(pos [2]int) string {
 	YellowSquareSet = append(YellowSquareSet, [2]int{4, 4})
 
 	var BlueSquareSet [][2]int
-	BlueSquareSet = append(BlueSquareSet, [2]int{5, 5})
 	BlueSquareSet = append(BlueSquareSet, [2]int{2, 6})
+	BlueSquareSet = append(BlueSquareSet, [2]int{5, 5})
 	BlueSquareSet = append(BlueSquareSet, [2]int{6, 2})
 	BlueSquareSet = append(BlueSquareSet, [2]int{6, 6})
 
 	var OrangeSquareSet [][2]int
-	OrangeSquareSet = append(OrangeSquareSet, [2]int{4, 1})
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{1, 4})
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{3, 7})
+	OrangeSquareSet = append(OrangeSquareSet, [2]int{4, 1})
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{7, 3})
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{7, 7})
 

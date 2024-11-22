@@ -8,12 +8,12 @@ import (
 )
 
 // Cheating Method
-func (g *Game) DrawSpecificChip(player *InGamePlayers, chip components.Chip) {
+func (g *Game) DrawSpecificChip(player *inGamePlayers, chip components.Chip) {
 	g.Bag.DecreaseChip(chip)
 	player.Racks.Add(chip)
 }
 
-func (g *Game) Draw(player *InGamePlayers) {
+func (g *Game) Draw(player *inGamePlayers) {
 	totalChipLeft := g.Bag.TotalChipLeft
 	if totalChipLeft == 0 {
 		return
@@ -33,7 +33,7 @@ func (g *Game) Draw(player *InGamePlayers) {
 	g.DrawSpecificChip(player, chip)
 }
 
-func (g *Game) FullyDraw(player *InGamePlayers) {
+func (g *Game) FullyDraw(player *inGamePlayers) {
 	rack := player.Racks
 	if rack.IsFull() {
 		return
@@ -42,19 +42,5 @@ func (g *Game) FullyDraw(player *InGamePlayers) {
 	chipsNeedtoDraw := constants.MaxChipInRack - rack.GetTotalChip()
 	for i := 0; i < chipsNeedtoDraw; i++ {
 		g.Draw(player)
-	}
-}
-
-func (g *Game) Exchange(player *InGamePlayers, chips []components.Chip) {
-	tempChips := []components.Chip{}
-	for _, ch := range chips {
-		if player.Racks.IsChipFound(ch) {
-			tempChips = append(tempChips, ch)
-			player.Racks.Remove(ch)
-		}
-	}
-	g.FullyDraw(player)
-	for _, tc := range tempChips {
-		g.Bag.IncreaseChip(tc)
 	}
 }
