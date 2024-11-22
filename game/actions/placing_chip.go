@@ -32,8 +32,8 @@ func IsChipPlaceOnOneLineCorrectly(c []ChipForPlacing) bool {
 
 func isChipsOnVertical(c []ChipForPlacing) bool {
 	firstColumn := c[0].position[0]
-	for i := 1; i < len(c); i++ {
-		if firstColumn != c[i].position[0] {
+	for _, chip := range c[1:] {
+		if chip.position[0] != firstColumn {
 			return false
 		}
 	}
@@ -42,8 +42,8 @@ func isChipsOnVertical(c []ChipForPlacing) bool {
 
 func isChipsOnHorizontal(c []ChipForPlacing) bool {
 	firstRow := c[0].position[1]
-	for i := 1; i < len(c); i++ {
-		if firstRow != c[i].position[1] {
+	for _, chip := range c[1:] {
+		if chip.position[1] != firstRow {
 			return false
 		}
 	}
