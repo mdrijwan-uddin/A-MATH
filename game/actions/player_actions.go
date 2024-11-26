@@ -1,18 +1,23 @@
 package actions
 
-import "A-MATH/game/components"
+import (
+	"A-MATH/game/components"
+	"A-MATH/game/models"
+)
 
-func (g *Game) Submit(player *inGamePlayers, c []ChipForPlacing) {
+func (g *Game) Submit(player *inGamePlayers, c []models.ChipForPlacing) {
 	if !g.isPlayersTurn(player) {
 		return //add error
 	}
 
-	if !IsChipPlaceOnCenterSquare(c) && g.Board.IsEmpty() {
-		return //add error
-	}
+	// var position [][2]int
+	// for _, chip := range c {
+	// 	position = append(position, chip.Position)
+	// }
 
 	for _, chip := range c {
-		g.Board.Add(chip.position, chip.chip)
+		g.Board.Add(chip.Position, chip.Chip)
+		player.Racks.Remove(chip.Chip)
 	}
 
 	g.FullyDraw(player)
@@ -31,6 +36,7 @@ func (g *Game) Exchange(player *inGamePlayers, chips []components.Chip) {
 			player.Racks.Remove(ch)
 		}
 	}
+
 	g.FullyDraw(player)
 	for _, tc := range tempChips {
 		g.Bag.IncreaseChip(tc)
@@ -47,6 +53,6 @@ func (g *Game) EndTurn(player *inGamePlayers) {
 }
 
 func (g *Game) isPlayersTurn(player *inGamePlayers) bool {
-	playersTurn := g.Turn % 2
+	playersTurn := (g.Turn + 1) % 2
 	return g.GamePlayers[playersTurn].Players.ID == player.Players.ID
 }

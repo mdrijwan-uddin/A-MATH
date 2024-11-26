@@ -2,8 +2,9 @@ package constants
 
 type values string
 type chipType string
-
 type squareType string
+
+type chipPlaceMent string
 
 const (
 	A values = "A"
@@ -66,7 +67,12 @@ const (
 	RedSquare    squareType = "Red Square"
 	CenterSquare squareType = "Center Square"
 
+	SingleChip chipPlaceMent = "Single Chip"
+	Vertical   chipPlaceMent = "Vertical"
+	Horizontal chipPlaceMent = "Horizontal"
+
 	MaxChipInRack = 8
+	BoardRange    = 15
 
 	RandomLetter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )

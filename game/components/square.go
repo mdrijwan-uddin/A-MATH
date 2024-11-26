@@ -78,7 +78,7 @@ func setSquareType(pos [2]int) string {
 	}
 }
 
-func (s square) IsChipPlacedOn() bool {
+func (s square) HasChipPlacedOn() bool {
 	return !s.ChipPlaceOn.IsEmpty()
 }
 

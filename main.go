@@ -3,6 +3,10 @@ package main
 import (
 	"A-MATH/game/actions"
 	"A-MATH/game/components"
+	"A-MATH/game/models"
+	"A-MATH/game/players"
+	"A-MATH/game/rules"
+	"fmt"
 )
 
 func main() {
@@ -120,7 +124,11 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	a, _ := components.NewChip("1")
+	p1 := players.NewPlayer(1, "p1")
+	p2 := players.NewPlayer(2, "p2")
+	ng := actions.NewGame([2]players.Player{p1, p2})
+
+	a, _ := components.NewChip("10")
 	b, _ := components.NewChip("18")
 	c, _ := components.NewChip("=")
 	d, _ := components.NewChip("=")
@@ -128,17 +136,79 @@ func main() {
 	f, _ := components.NewChip("+-")
 	g, _ := components.NewChip("+")
 	h, _ := components.NewChip("0")
+	i, _ := components.NewChip("8")
+	j, _ := components.NewChip("5")
+	k, _ := components.NewChip("+-")
+	l, _ := components.NewChip("3")
+	m, _ := components.NewChip("2")
+	n, _ := components.NewChip("*/")
+	o, _ := components.NewChip("~")
 
-	var chipForPlacing []actions.ChipForPlacing
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{8, 8}, a))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{9, 8}, b))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{7, 7}, c))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{11, 8}, d))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{12, 8}, e))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{13, 8}, f))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{14, 8}, g))
-	chipForPlacing = append(chipForPlacing, actions.NewChipForPlacing([2]int{15, 8}, h))
+	var chipForPlacing []models.ChipForPlacing
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 8}, a))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 8}, b))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 8}, c))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 8}, d))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{12, 8}, e))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{13, 8}, f))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{14, 8}, g))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{15, 8}, h))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 9}, i))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 10}, j))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 11}, k))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 12}, l))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 13}, m))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 14}, n))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 15}, o))
 
-	println(actions.IsChipPlaceOnCenterSquare(chipForPlacing))
-	println(actions.IsChipPlaceOnOneLineCorrectly(chipForPlacing))
+	for _, ch := range chipForPlacing {
+		ng.Board.Add(ch.Position, ch.Chip)
+		ng.Bag.DecreaseChip(ch.Chip)
+	}
+	fmt.Println(ng)
+
+	// var position [][2]int
+	// for _, chip := range chipForPlacing {
+	// 	position = append(position, chip.Position)
+	// }
+	// fmt.Println(rules.IsChipPlaceOnCenterSquare(position))
+	// fmt.Println(rules.IsChipPlaceOnVerticalOrHorizontal(position))
+
+	//--------------------------------------------------------------------------
+
+	var position [][2]int
+
+	// position = append(position, [2]int{9, 15})
+
+	// position = append(position, [2]int{12, 5})
+	// position = append(position, [2]int{12, 6})
+	// position = append(position, [2]int{12, 7})
+	// position = append(position, [2]int{12, 9})
+	// position = append(position, [2]int{12, 10})
+	// position = append(position, [2]int{12, 11})
+
+	position = append(position, [2]int{5, 12})
+	position = append(position, [2]int{6, 12})
+	position = append(position, [2]int{7, 12})
+	position = append(position, [2]int{9, 12})
+	position = append(position, [2]int{10, 12})
+	position = append(position, [2]int{11, 12})
+
+	fmt.Println(rules.IsChipPlaceOnVerticalOrHorizontal(position))
+
+	// actual := rules.EdgeConnector(*ng.Board, position, true, true)
+	// fmt.Println("---------------------------------------------------------")
+	// fmt.Print("Actual Connector: ")
+	// fmt.Println(actual)
+
+	actual := rules.CrossConnector(*ng.Board, position, false, true)
+	fmt.Println("---------------------------------------------------------")
+	fmt.Print("Actual Connector: ")
+	fmt.Println(actual)
+
+	fmt.Print("Chip: ")
+	for _, ch := range actual {
+		fmt.Print(ng.Board.Squares[ch[1]-1][ch[0]-1].ChipPlaceOn.Value)
+		fmt.Print(" ")
+	}
 }
