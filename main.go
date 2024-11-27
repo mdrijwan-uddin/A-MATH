@@ -138,7 +138,7 @@ func main() {
 	h, _ := components.NewChip("0")
 	i, _ := components.NewChip("8")
 	j, _ := components.NewChip("5")
-	k, _ := components.NewChip("+-")
+	k, _ := components.NewChip("-")
 	l, _ := components.NewChip("3")
 	m, _ := components.NewChip("2")
 	n, _ := components.NewChip("*/")
@@ -166,6 +166,9 @@ func main() {
 		ng.Bag.DecreaseChip(ch.Chip)
 	}
 	fmt.Println(ng)
+	// for _, ch := range chipForPlacing {
+	// 	fmt.Println(ng.Board.GetSquare(ch.Position))
+	// }
 
 	// var position [][2]int
 	// for _, chip := range chipForPlacing {
@@ -194,21 +197,21 @@ func main() {
 	position = append(position, [2]int{10, 12})
 	position = append(position, [2]int{11, 12})
 
-	fmt.Println(rules.IsChipPlaceOnVerticalOrHorizontal(position))
+	isVertical, isHorizontal := rules.IsChipPlaceOnVerticalOrHorizontal(position)
 
 	// actual := rules.EdgeConnector(*ng.Board, position, true, true)
 	// fmt.Println("---------------------------------------------------------")
 	// fmt.Print("Actual Connector: ")
 	// fmt.Println(actual)
 
-	actual := rules.CrossConnector(*ng.Board, position, false, true)
+	actual := rules.CrossConnector(*ng.Board, position, isVertical, isHorizontal)
 	fmt.Println("---------------------------------------------------------")
 	fmt.Print("Actual Connector: ")
 	fmt.Println(actual)
 
 	fmt.Print("Chip: ")
 	for _, ch := range actual {
-		fmt.Print(ng.Board.Squares[ch[1]-1][ch[0]-1].ChipPlaceOn.Value)
+		fmt.Print(ng.Board.GetSquare([2]int{ch[0], ch[1]}).ChipPlaceOn.Value)
 		fmt.Print(" ")
 	}
 }

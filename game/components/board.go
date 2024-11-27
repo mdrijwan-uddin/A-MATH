@@ -10,7 +10,7 @@ import (
 )
 
 type Board struct {
-	Squares [constants.BoardRange][constants.BoardRange]square
+	squares [constants.BoardRange][constants.BoardRange]square
 }
 
 func NewBoard() Board {
@@ -24,37 +24,40 @@ func NewBoard() Board {
 		string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine), string(constants.Ten), string(constants.Eleven),
 		string(constants.Twelve), string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen)}
 
-	for posX := 0; posX < constants.BoardRange; posX++ {
-		for posY := 0; posY < constants.BoardRange; posY++ {
-			position := xAxisSet[posX] + yAxisSet[posY]
-			boardsSquare[posY][posX], _ = NewSquare(position)
+	for x := 0; x < constants.BoardRange; x++ {
+		for y := 0; y < constants.BoardRange; y++ {
+			position := xAxisSet[x] + yAxisSet[y]
+			boardsSquare[y][x], _ = NewSquare(position)
 		}
 	}
 
 	return Board{boardsSquare}
 }
 
-func (b *Board) Add(pos [2]int, c Chip) {
-	posX, posY := pos[1]-1, pos[0]-1
+func (b *Board) GetSquare(coordinate [2]int) *square {
+	return &b.squares[coordinate[1]-1][coordinate[0]-1]
+}
 
-	if b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
-		b.Squares[posY][posX].ChipPlaceOn = c
+func (b *Board) Add(coordinate [2]int, c Chip) {
+	selectedSquare := b.GetSquare(coordinate)
+	if selectedSquare.ChipPlaceOn.IsEmpty() {
+		selectedSquare.ChipPlaceOn = c
 	}
 }
 
-func (b *Board) Remove(pos [2]int) {
-	posX, posY := pos[1]-1, pos[0]-1
-
+func (b *Board) Remove(coordinate [2]int) {
 	c := Chip{}
-	if !b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
-		b.Squares[posY][posX].ChipPlaceOn = c
+	selectedSquare := b.GetSquare(coordinate)
+	if !selectedSquare.ChipPlaceOn.IsEmpty() {
+		selectedSquare.ChipPlaceOn = c
 	}
 }
 
 func (b *Board) IsEmpty() bool {
-	for posX := 0; posX < constants.BoardRange; posX++ {
-		for posY := 0; posY < constants.BoardRange; posY++ {
-			if !b.Squares[posY][posX].ChipPlaceOn.IsEmpty() {
+	for y := 0; y < constants.BoardRange; y++ {
+		for x := 0; x < constants.BoardRange; x++ {
+			coordinate := [2]int{x, y}
+			if !b.GetSquare(coordinate).ChipPlaceOn.IsEmpty() {
 				return false
 			}
 		}
@@ -91,18 +94,20 @@ func (b Board) String() string {
 	}
 
 	// Build the board rows
-	for j := 0; j < constants.BoardRange; j++ {
-		for i := 0; i < constants.BoardRange; i++ {
-			if b.Squares[j][i].HasChipPlacedOn() {
-				writeSquare(b.Squares[j][i].ChipPlaceOn.Value)
-			} else if b.Squares[j][i].SquareType != string(constants.NormalSquare) {
-				writeSquare(string(b.Squares[j][i].SquareType[:1]))
+	for y := 0; y < constants.BoardRange; y++ {
+		for x := 0; x < constants.BoardRange; x++ {
+
+			if b.squares[y][x].HasChipPlacedOn() {
+
+				writeSquare(b.squares[y][x].ChipPlaceOn.Value)
+			} else if b.squares[y][x].SquareType != string(constants.NormalSquare) {
+				writeSquare(string(b.squares[y][x].SquareType[:1]))
 			} else {
 				writeSquare("  ")
 			}
 		}
 		// Append row number
-		sb.WriteString(fmt.Sprintf("%02d\n", j+1))
+		sb.WriteString(fmt.Sprintf("%02d\n", y+1))
 	}
 
 	// Build the column labels

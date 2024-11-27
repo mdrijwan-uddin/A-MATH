@@ -5,45 +5,45 @@ import (
 	"A-MATH/game/constants"
 )
 
-func IsChipPlaceCorrectly(board components.Board, position [][2]int) {
-	if !IsChipPlaceOnCenterSquare(position) && board.IsEmpty() {
+func IsChipPlaceCorrectly(board components.Board, coordinate [][2]int) {
+	if !IsChipPlaceOnCenterSquare(coordinate) && board.IsEmpty() {
 		return //add error
 	}
 
-	if IsChipsPlacedOnOccupiedSquare(board, position) {
+	if IsChipsPlacedOnOccupiedSquare(board, coordinate) {
 		return //add error
 	}
 
-	isVertical, isHorizontal := IsChipPlaceOnVerticalOrHorizontal(position)
+	isVertical, isHorizontal := IsChipPlaceOnVerticalOrHorizontal(coordinate)
 	if !isVertical && !isHorizontal {
 		return //add error
 	}
 }
 
-func IsChipPlaceOnCenterSquare(position [][2]int) bool {
-	for _, pos := range position {
-		if pos == [2]int{8, 8} {
+func IsChipPlaceOnCenterSquare(coordinate [][2]int) bool {
+	for _, co := range coordinate {
+		if co == [2]int{8, 8} {
 			return true
 		}
 	}
 	return false
 }
 
-func IsChipPlaceOnVerticalOrHorizontal(position [][2]int) (bool, bool) {
-	if len(position) == 1 {
+func IsChipPlaceOnVerticalOrHorizontal(coordinate [][2]int) (bool, bool) {
+	if len(coordinate) == 1 {
 		return true, true
 	}
 
 	isVertical := true
 	isHorizontal := true
-	firstRow, firstColumn := position[0][0], position[0][1]
+	firstRow, firstColumn := coordinate[0][0], coordinate[0][1]
 
-	for _, pos := range position[1:] {
-		if pos[0] != firstRow {
+	for _, co := range coordinate[1:] {
+		if co[0] != firstRow {
 			isVertical = false
 		}
 
-		if pos[1] != firstColumn {
+		if co[1] != firstColumn {
 			isHorizontal = false
 		}
 
@@ -56,25 +56,25 @@ func IsChipPlaceOnVerticalOrHorizontal(position [][2]int) (bool, bool) {
 	return isVertical, isHorizontal
 }
 
-func IsChipsPlacedOnOccupiedSquare(board components.Board, position [][2]int) bool {
-	for _, pos := range position {
-		if board.Squares[pos[1]-1][pos[0]-1].HasChipPlacedOn() {
+func IsChipsPlacedOnOccupiedSquare(board components.Board, coordinate [][2]int) bool {
+	for _, co := range coordinate {
+		if board.GetSquare(co).HasChipPlacedOn() {
 			return true
 		}
 	}
 	return false
 }
 
-func ChipPlacementConnector(board components.Board, position [][2]int, isVertical, isHorizontal bool) {
-	if len(position) == 0 {
+func ChipPlacementConnector(board components.Board, coordinate [][2]int, isVertical, isHorizontal bool) {
+	if len(coordinate) == 0 {
 		return
 	}
-	if len(position) == 1 {
+	if len(coordinate) == 1 {
 		return
 	}
 
-	edgeConnectorSet := EdgeConnector(board, position, isVertical, isHorizontal)
-	crossConnectorSet := CrossConnector(board, position, isVertical, isHorizontal)
+	edgeConnectorSet := EdgeConnector(board, coordinate, isVertical, isHorizontal)
+	crossConnectorSet := CrossConnector(board, coordinate, isVertical, isHorizontal)
 
 	if len(edgeConnectorSet) == 0 {
 		return
@@ -85,77 +85,83 @@ func ChipPlacementConnector(board components.Board, position [][2]int, isVertica
 
 }
 
-func SingleChipConnector(board components.Board, position [2]int) [][2]int {
-	var connector [][2]int
-	isAvailable := func(pos int) bool {
-		return 0 < pos && pos <= constants.BoardRange
-	}
+func SingleChipConnector(board components.Board, coordinate [2]int) [][2]int {
+	var connectors [][2]int
 
-	addConnector := func(x, y int) {
-		if isAvailable(x) && isAvailable(y) && board.Squares[y-1][x-1].HasChipPlacedOn() {
-			connector = append(connector, [2]int{x, y})
-		}
-	}
+	directions := [][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+	addDirectionalConnectors(board, coordinate[0], coordinate[1], directions, &connectors)
 
-	x, y := position[0], position[1]
-	addConnector(x-1, y)
-	addConnector(x+1, y)
-	addConnector(x, y-1)
-	addConnector(x, y+1)
-	return connector
+	return connectors
 }
 
-func EdgeConnector(board components.Board, position [][2]int, isVertical, isHorizontal bool) [][2]int {
-	var connector [][2]int
-
-	isAvailable := func(pos int) bool {
-		return 0 < pos && pos <= constants.BoardRange
-	}
-
-	addConnector := func(x, y int) {
-		if isAvailable(x) && isAvailable(y) && board.Squares[y-1][x-1].HasChipPlacedOn() {
-			connector = append(connector, [2]int{x, y})
-		}
-	}
+func PrefixSuffixConnector(board components.Board, coordinate [][2]int, isVertical, isHorizontal bool) [][2]int {
+	var connectors [][2]int
 
 	if isVertical {
-		addConnector(position[0][0], position[0][1]-1)
-		for _, pos := range position {
-			addConnector(pos[0]-1, pos[1])
-			addConnector(pos[0]+1, pos[1])
-		}
-		addConnector(position[len(position)-1][0], position[len(position)-1][1]+1)
+		addConnector(board, coordinate[0][0], coordinate[0][1]-1, &connectors)
+		addConnector(board, coordinate[len(coordinate)-1][0], coordinate[len(coordinate)-1][1]+1, &connectors)
 	}
 
 	if isHorizontal {
-		addConnector(position[0][0]-1, position[0][1])
-		for _, pos := range position {
-			addConnector(pos[0], pos[1]-1)
-			addConnector(pos[0], pos[1]+1)
-		}
-		addConnector(position[len(position)-1][0]+1, position[len(position)-1][1])
+		addConnector(board, coordinate[0][0]-1, coordinate[0][1], &connectors)
+		addConnector(board, coordinate[len(coordinate)-1][0]+1, coordinate[len(coordinate)-1][1], &connectors)
 	}
 
-	return connector
+	return connectors
 }
 
-func CrossConnector(board components.Board, position [][2]int, isVertical, isHorizontal bool) [][2]int {
-	var connector [][2]int
+func EdgeConnector(board components.Board, coordinate [][2]int, isVertical, isHorizontal bool) [][2]int {
+	var connectors [][2]int
+
 	if isVertical {
-		for i := 0; i < len(position)-1; i++ {
-			if position[i][1]+1 != position[i+1][1] {
-				connector = append(connector, [2]int{position[i][0], position[i][1] + 1})
+		for _, co := range coordinate {
+			addDirectionalConnectors(board, co[0], co[1], [][2]int{{-1, 0}, {1, 0}}, &connectors)
+		}
+	}
+
+	if isHorizontal {
+		for _, co := range coordinate {
+			addDirectionalConnectors(board, co[0], co[1], [][2]int{{0, -1}, {0, 1}}, &connectors)
+		}
+	}
+
+	return connectors
+}
+
+func CrossConnector(board components.Board, coordinate [][2]int, isVertical, isHorizontal bool) [][2]int {
+	var connectors [][2]int
+
+	if isVertical {
+		for i := 0; i < len(coordinate)-1; i++ {
+			if coordinate[i][1]+1 != coordinate[i+1][1] {
+				connectors = append(connectors, [2]int{coordinate[i][0], coordinate[i][1] + 1})
 			}
 		}
 	}
 
 	if isHorizontal {
-		for i := 0; i < len(position)-1; i++ {
-			if position[i][0]+1 != position[i+1][0] {
-				connector = append(connector, [2]int{position[i][0] + 1, position[i][1]})
+		for i := 0; i < len(coordinate)-1; i++ {
+			if coordinate[i][0]+1 != coordinate[i+1][0] {
+				connectors = append(connectors, [2]int{coordinate[i][0] + 1, coordinate[i][1]})
 			}
 		}
 	}
 
-	return connector
+	return connectors
+}
+
+func addConnector(board components.Board, x, y int, connectors *[][2]int) {
+	isAvailable := func(x, y int) bool {
+		return 0 < x && x <= constants.BoardRange && 0 < y && y <= constants.BoardRange
+	}
+
+	if isAvailable(x, y) && board.GetSquare([2]int{x, y}).HasChipPlacedOn() {
+		*connectors = append(*connectors, [2]int{x, y})
+	}
+}
+
+func addDirectionalConnectors(board components.Board, x, y int, directions [][2]int, connectors *[][2]int) {
+	for _, delta := range directions {
+		addConnector(board, x+delta[0], y+delta[1], connectors)
+	}
 }
