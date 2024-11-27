@@ -2,46 +2,40 @@ package components
 
 import (
 	"A-MATH/game/constants"
-	"A-MATH/game/utils"
 
 	"slices"
 	"strconv"
 	"strings"
 )
 
-type square struct {
+type Square struct {
 	Position    [2]int
 	SquareType  string
 	ChipPlaceOn Chip
 }
 
-func NewSquare(pos string) (square, error) {
-	position, e := utils.ValidateSquarePosition(pos)
-	if e != nil {
-		return square{}, e
-	}
-
-	squareType := setSquareType(position)
-	return square{position, squareType, Chip{}}, nil
+func NewSquare(coordinate [2]int) Square {
+	squareType := setSquareType(coordinate)
+	return Square{coordinate, squareType, Chip{}}
 }
 
-func setSquareType(pos [2]int) string {
-	minimalizePosition := func(pos int) int {
-		if pos == 8 || pos == 15 {
+func setSquareType(co [2]int) string {
+	minimalizePosition := func(co int) int {
+		if co == 8 || co == 15 {
 			return 1
 		}
-		if pos > 8 {
-			return 16 - pos
+		if co > 8 {
+			return 16 - co
 		}
-		return pos
+		return co
 	}
 
-	if pos[0] == 8 && pos[1] == 8 {
+	if co[0] == 8 && co[1] == 8 {
 		return string(constants.CenterSquare)
 	}
 
 	for i := 0; i < 2; i++ {
-		pos[i] = minimalizePosition(pos[i])
+		co[i] = minimalizePosition(co[i])
 	}
 
 	var RedSquareSet [][2]int
@@ -65,24 +59,24 @@ func setSquareType(pos [2]int) string {
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{7, 3})
 	OrangeSquareSet = append(OrangeSquareSet, [2]int{7, 7})
 
-	if slices.Contains(RedSquareSet, pos) {
+	if slices.Contains(RedSquareSet, co) {
 		return string(constants.RedSquare)
-	} else if slices.Contains(YellowSquareSet, pos) {
+	} else if slices.Contains(YellowSquareSet, co) {
 		return string(constants.YellowSquare)
-	} else if slices.Contains(BlueSquareSet, pos) {
+	} else if slices.Contains(BlueSquareSet, co) {
 		return string(constants.BlueSquare)
-	} else if slices.Contains(OrangeSquareSet, pos) {
+	} else if slices.Contains(OrangeSquareSet, co) {
 		return string(constants.OrangeSquare)
 	} else {
 		return string(constants.NormalSquare)
 	}
 }
 
-func (s square) HasChipPlacedOn() bool {
+func (s Square) HasChipPlacedOn() bool {
 	return !s.ChipPlaceOn.IsEmpty()
 }
 
-func (s square) String() string {
+func (s Square) String() string {
 	var sb strings.Builder
 	sb.WriteString("Position: [")
 	sb.WriteString(strconv.Itoa(s.Position[0]))

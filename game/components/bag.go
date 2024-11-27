@@ -37,7 +37,7 @@ func NewBag() Bag {
 	var totalChip int
 
 	for i := range len(chipSet) {
-		c, _ := NewChip(chipSet[i])
+		c := NewChip(chipSet[i])
 		totalChip += totalSet[i]
 		n := NewChipCollector(c, totalSet[i])
 		chipCollectors = append(chipCollectors, n)

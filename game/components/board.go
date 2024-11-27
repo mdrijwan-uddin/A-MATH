@@ -2,6 +2,7 @@ package components
 
 import (
 	"A-MATH/game/constants"
+	"A-MATH/game/utils"
 	"fmt"
 
 	"strings"
@@ -10,11 +11,11 @@ import (
 )
 
 type Board struct {
-	squares [constants.BoardRange][constants.BoardRange]square
+	squares [constants.BoardRange][constants.BoardRange]Square
 }
 
 func NewBoard() Board {
-	var boardsSquare [constants.BoardRange][constants.BoardRange]square
+	var boardsSquare [constants.BoardRange][constants.BoardRange]Square
 
 	xAxisSet := []string{string(constants.A), string(constants.B), string(constants.C), string(constants.D), string(constants.E), string(constants.F),
 		string(constants.G), string(constants.H), string(constants.I), string(constants.J), string(constants.K), string(constants.L), string(constants.M),
@@ -27,14 +28,15 @@ func NewBoard() Board {
 	for x := 0; x < constants.BoardRange; x++ {
 		for y := 0; y < constants.BoardRange; y++ {
 			position := xAxisSet[x] + yAxisSet[y]
-			boardsSquare[y][x], _ = NewSquare(position)
+			coordinate, _ := utils.ValidateSquarePosition(position)
+			boardsSquare[y][x] = NewSquare(coordinate)
 		}
 	}
 
 	return Board{boardsSquare}
 }
 
-func (b *Board) GetSquare(coordinate [2]int) *square {
+func (b *Board) GetSquare(coordinate [2]int) *Square {
 	return &b.squares[coordinate[1]-1][coordinate[0]-1]
 }
 

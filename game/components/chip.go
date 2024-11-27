@@ -2,7 +2,6 @@ package components
 
 import (
 	"A-MATH/game/constants"
-	"A-MATH/game/utils"
 
 	"strconv"
 	"strings"
@@ -14,15 +13,9 @@ type Chip struct {
 	ChipType string
 }
 
-func NewChip(value string) (Chip, error) {
-	e := utils.ValidateChip(value)
-
-	if e != nil {
-		return Chip{}, e
-	}
-
+func NewChip(value string) Chip {
 	score, chipType := setScoreandType(value)
-	return Chip{value, score, chipType}, nil
+	return Chip{value, score, chipType}
 }
 
 func setScoreandType(value string) (int, string) {
