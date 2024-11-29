@@ -1,4 +1,4 @@
-package components_test
+package rules_test
 
 import (
 	"A-MATH/game/rules"
