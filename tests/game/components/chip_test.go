@@ -47,12 +47,13 @@ func TestNewChip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := components.NewChip(tt.value)
+
 			if result.Score != tt.expectedScore {
-				t.Errorf("NewChip(%s) = Score:%d; want %d", tt.value, result.Score, tt.expectedScore)
+				t.Errorf("NewChip(%s) = Score:%d; expected %d", tt.value, result.Score, tt.expectedScore)
 			}
 
 			if result.ChipType != tt.expectedChipType {
-				t.Errorf("NewChip(%s) = Chip Type:%s; want %s", tt.value, result.ChipType, tt.expectedChipType)
+				t.Errorf("NewChip(%s) = Chip Type:%s; expected %s", tt.value, result.ChipType, tt.expectedChipType)
 			}
 		})
 	}
