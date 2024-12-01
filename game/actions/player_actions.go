@@ -20,7 +20,7 @@ func (g *Game) Submit(player *inGamePlayers, c []models.ChipForPlacing) {
 		player.Racks.Remove(chip.Chip)
 	}
 
-	g.FullyDraw(player)
+	g.RefillRack(player)
 	g.EndTurn(player)
 }
 
@@ -37,7 +37,7 @@ func (g *Game) Exchange(player *inGamePlayers, chips []components.Chip) {
 		}
 	}
 
-	g.FullyDraw(player)
+	g.RefillRack(player)
 	for _, tc := range tempChips {
 		g.Bag.IncreaseChip(tc)
 	}
