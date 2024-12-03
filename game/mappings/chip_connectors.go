@@ -7,7 +7,7 @@ import (
 
 func SingleChipConnector(board components.Board, coordinates [2]int) [][2]int {
 	var connectors [][2]int
-	directions := [][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+	directions := [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}}
 	addDirectionalConnectors(board, coordinates[0], coordinates[1], directions, &connectors)
 	return connectors
 }
@@ -46,6 +46,7 @@ func EdgeConnector(board components.Board, coordinates [][2]int, isVertical bool
 	return connectors
 }
 
+// might not be used
 func CrossConnector(board components.Board, coordinates [][2]int, isVertical bool) [][2]int {
 	var start, end, fixedCoord int
 	var connectors [][2]int
@@ -78,6 +79,8 @@ func addConnector(board components.Board, x, y int, connectors *[][2]int) {
 
 	if isAvailable(x, y) && board.GetSquare([2]int{x, y}).HasChipPlacedOn() {
 		*connectors = append(*connectors, [2]int{x, y})
+	} else {
+		*connectors = append(*connectors, [2]int{})
 	}
 }
 

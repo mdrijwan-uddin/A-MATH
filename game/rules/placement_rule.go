@@ -4,7 +4,8 @@ import (
 	"A-MATH/game/components"
 )
 
-func IsChipPlaceCorrectly(board components.Board, coordinates [][2]int) {
+// not finish
+func ValidateChipPlacement(board components.Board, coordinates [][2]int) {
 	if len(coordinates) == 0 {
 		return //add error
 	}
