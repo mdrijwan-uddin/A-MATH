@@ -242,11 +242,26 @@ func main() {
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 8}, components.NewChip("14")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 8}, components.NewChip("-")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 8}, components.NewChip("7")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 8}, components.NewChip("+-")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 8}, components.NewChip("+")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{12, 8}, components.NewChip("11")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{13, 8}, components.NewChip("=")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{14, 8}, components.NewChip("1")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{15, 8}, components.NewChip("~")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{15, 8}, components.NewChip("8")))
 
-	fmt.Println(mappings.FirstTurnMapping(*ng.Board, chipForPlacing))
+	for _, ch := range chipForPlacing {
+		ng.Board.Add(ch.Position, ch.Chip)
+		ng.Bag.DecreaseChip(ch.Chip)
+	}
+
+	var chipForPlacing2 []models.ChipForPlacing
+	chipForPlacing2 = append(chipForPlacing2, models.NewChipForPlacing([2]int{7, 8}, components.NewChip("-")))
+
+	var position [][2]int
+	for _, chip := range chipForPlacing2 {
+		position = append(position, chip.Position)
+	}
+
+	connector := mappings.SingleChipConnector(*ng.Board, position[0])
+	fmt.Println(connector)
+	fmt.Println(mappings.SingleChipMapping(*ng.Board, chipForPlacing2, connector))
 }

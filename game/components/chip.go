@@ -18,6 +18,10 @@ func NewChip(value string) Chip {
 	return Chip{value, score, chipType}
 }
 
+func NewChipForCalculating(value string, score int, chipType string) Chip {
+	return Chip{value, score, chipType}
+}
+
 func setScoreandType(value string) (int, string) {
 	switch value {
 	case string(constants.Zero), string(constants.One), string(constants.Two), string(constants.Three):

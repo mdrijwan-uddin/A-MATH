@@ -7,7 +7,7 @@ import (
 
 func SingleChipConnector(board components.Board, coordinates [2]int) [][2]int {
 	var connectors [][2]int
-	directions := [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}}
+	directions := [][2]int{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
 	addDirectionalConnectors(board, coordinates[0], coordinates[1], directions, &connectors)
 	return connectors
 }

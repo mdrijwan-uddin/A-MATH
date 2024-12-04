@@ -2,6 +2,7 @@ package mappings
 
 import (
 	"A-MATH/game/components"
+	"A-MATH/game/constants"
 	"A-MATH/game/models"
 )
 
@@ -26,14 +27,29 @@ func ChipPlacementManagement(board components.Board, coordinates [][2]int, isVer
 
 }
 
-func straightLineMapping(board components.Board, chipForPlacing []models.ChipForPlacing, isPlacedOnBoard bool, chipForCalculatingSet *[]models.ChipForCalculating) {
-	for _, ch := range chipForPlacing {
-		chipForCalculating := models.ChipForCalculating{
-			SquareType:      board.GetSquare(ch.Position).SquareType,
-			Chip:            ch.Chip,
-			IsPlacedOnBoard: isPlacedOnBoard,
+func straightLineMapping(
+	board components.Board,
+	chipsForPlacing []models.ChipForPlacing,
+	isPlacedOnBoard bool,
+	chipForCalculatingSet *[]models.ChipForCalculating,
+) {
+	for _, chipForPlacing := range chipsForPlacing {
+		// Determine the chip to use (normal or alternative)
+		chip := chipForPlacing.Chip
+		if chip.ChipType == string(constants.AlterOperatorType) || chip.ChipType == string(constants.BlankType) {
+			chip = components.NewChipForCalculating(
+				chipForPlacing.SelectedChip.Value,
+				chip.Score,
+				chipForPlacing.SelectedChip.ChipType,
+			)
 		}
-		*chipForCalculatingSet = append(*chipForCalculatingSet, chipForCalculating)
+
+		// Create a new ChipForCalculating and add it to the set
+		*chipForCalculatingSet = append(*chipForCalculatingSet, models.ChipForCalculating{
+			SquareType:         board.GetSquare(chipForPlacing.Position).SquareType,
+			ChipForCalculating: chip,
+			IsPlacedOnBoard:    isPlacedOnBoard,
+		})
 	}
 }
 
@@ -47,28 +63,67 @@ func connectorsIndex(connectors [][2]int) []int {
 	return counter
 }
 
+// Done
 func FirstTurnMapping(board components.Board, chipForPlacing []models.ChipForPlacing) []models.ChipForCalculating {
 	chipForCalculatingSet := []models.ChipForCalculating{}
 	straightLineMapping(board, chipForPlacing, false, &chipForCalculatingSet)
 	return chipForCalculatingSet
 }
 
-func SingleChipMapping(board components.Board, SingleChipConnectorSet [][2]int) []models.ChipForCalculating {
+func SingleChipMapping(
+	board components.Board,
+	chipForPlacing []models.ChipForPlacing,
+	singleChipConnectorSet [][2]int,
+) []models.ChipForCalculating {
 	chipForCalculating := []models.ChipForCalculating{}
 
-	index := connectorsIndex(SingleChipConnectorSet)
+	// Determine the indexes of relevant connectors
+	indexes := connectorsIndex(singleChipConnectorSet)
 
-	if len(index) == 1 {
-		if index[0] == 0 {
-			leftConnectedMapping(board, SingleChipConnectorSet[0], &chipForCalculating)
+	// Handle single index case
+	if len(indexes) == 1 {
+		if indexes[0] == 0 {
+			leftConnectedMapping(board, chipForPlacing, singleChipConnectorSet[0], &chipForCalculating)
 		}
 	}
 
 	return chipForCalculating
 }
 
-func leftConnectedMapping(board components.Board, ChipConnector [2]int, chipForCalculatingSet *[]models.ChipForCalculating) {
+// Done
+func leftConnectedMapping(
+	board components.Board,
+	chipForPlacing []models.ChipForPlacing,
+	chipConnector [2]int,
+	chipForCalculatingSet *[]models.ChipForCalculating,
+) {
+	// Map existing chips in a straight line
+	straightLineMapping(board, chipForPlacing, false, chipForCalculatingSet)
 
+	currentPosition, fixedCoord := chipConnector[0], chipConnector[1]
+
+	var chipsForAdding []models.ChipForPlacing
+
+	// Traverse left and detect chips
+	for currentPosition <= 15 {
+		position := [2]int{currentPosition, fixedCoord}
+		square := board.GetSquare(position)
+
+		if square.ChipPlaceOn.IsEmpty() {
+			break
+		}
+
+		chipsForAdding = append(chipsForAdding, models.ChipForPlacing{
+			Position:     square.Position,
+			Chip:         square.ChipPlaceOn,
+			SelectedChip: components.Chip{}, // Empty chip as placeholder
+		})
+
+		currentPosition++
+	}
+
+	// Map the detected chips in a straight line
+	straightLineMapping(board, chipsForAdding, true, chipForCalculatingSet)
 }
 
 // func SingleChipMapping(board components.Board, SingleChipConnectorSet [][2]int) []models.ChipForCalculating {

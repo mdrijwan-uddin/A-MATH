@@ -6,9 +6,9 @@ import (
 )
 
 type ChipForCalculating struct {
-	SquareType      string
-	Chip            components.Chip
-	IsPlacedOnBoard bool
+	SquareType         string
+	ChipForCalculating components.Chip
+	IsPlacedOnBoard    bool
 }
 
 func NewChipForCalculating(squareType string, chip components.Chip, IsPlacedOnBoard bool) ChipForCalculating {
@@ -21,7 +21,7 @@ func (c ChipForCalculating) String() string {
 	sb.WriteString("Type: ")
 	sb.WriteString(c.SquareType)
 	sb.WriteString(",\tChip: {")
-	sb.WriteString(c.Chip.String())
+	sb.WriteString(c.ChipForCalculating.String())
 	sb.WriteString("},\t")
 	if c.IsPlacedOnBoard {
 		sb.WriteString(" (No need to place on board)")
