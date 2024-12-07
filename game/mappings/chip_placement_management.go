@@ -63,69 +63,6 @@ func connectorsIndex(connectors [][2]int) []int {
 	return counter
 }
 
-// Done
-func FirstTurnMapping(board components.Board, chipForPlacing []models.ChipForPlacing) []models.ChipForCalculating {
-	chipForCalculatingSet := []models.ChipForCalculating{}
-	straightLineMapping(board, chipForPlacing, false, &chipForCalculatingSet)
-	return chipForCalculatingSet
-}
-
-func SingleChipMapping(
-	board components.Board,
-	chipForPlacing []models.ChipForPlacing,
-	singleChipConnectorSet [][2]int,
-) []models.ChipForCalculating {
-	chipForCalculating := []models.ChipForCalculating{}
-
-	// Determine the indexes of relevant connectors
-	indexes := connectorsIndex(singleChipConnectorSet)
-
-	// Handle single index case
-	if len(indexes) == 1 {
-		if indexes[0] == 0 {
-			leftConnectedMapping(board, chipForPlacing, singleChipConnectorSet[0], &chipForCalculating)
-		}
-	}
-
-	return chipForCalculating
-}
-
-// Done
-func leftConnectedMapping(
-	board components.Board,
-	chipForPlacing []models.ChipForPlacing,
-	chipConnector [2]int,
-	chipForCalculatingSet *[]models.ChipForCalculating,
-) {
-	// Map existing chips in a straight line
-	straightLineMapping(board, chipForPlacing, false, chipForCalculatingSet)
-
-	currentPosition, fixedCoord := chipConnector[0], chipConnector[1]
-
-	var chipsForAdding []models.ChipForPlacing
-
-	// Traverse left and detect chips
-	for currentPosition <= 15 {
-		position := [2]int{currentPosition, fixedCoord}
-		square := board.GetSquare(position)
-
-		if square.ChipPlaceOn.IsEmpty() {
-			break
-		}
-
-		chipsForAdding = append(chipsForAdding, models.ChipForPlacing{
-			Position:     square.Position,
-			Chip:         square.ChipPlaceOn,
-			SelectedChip: components.Chip{}, // Empty chip as placeholder
-		})
-
-		currentPosition++
-	}
-
-	// Map the detected chips in a straight line
-	straightLineMapping(board, chipsForAdding, true, chipForCalculatingSet)
-}
-
 // func SingleChipMapping(board components.Board, SingleChipConnectorSet [][2]int) []models.ChipForCalculating {
 // 	chipForCalculating := []models.ChipForCalculating{}
 

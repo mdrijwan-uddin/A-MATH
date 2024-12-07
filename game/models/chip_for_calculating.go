@@ -24,7 +24,7 @@ func (c ChipForCalculating) String() string {
 	sb.WriteString(c.ChipForCalculating.String())
 	sb.WriteString("},\t")
 	if c.IsPlacedOnBoard {
-		sb.WriteString(" (No need to place on board)")
+		sb.WriteString(" (Placed on board)")
 	} else {
 		sb.WriteString(" (Need to place on board)")
 	}

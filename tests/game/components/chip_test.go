@@ -58,3 +58,61 @@ func TestNewChip(t *testing.T) {
 		})
 	}
 }
+
+func TestNewChipForCalculating(t *testing.T) {
+	tests := []struct {
+		name             string
+		value            string
+		score            int
+		chipType         string
+		expectedValue    string
+		expectedScore    int
+		expectedChipType string
+	}{
+		{
+			name:             "Chip: Add_sub (Alternative)",
+			value:            string(constants.Addition),
+			score:            1,
+			chipType:         string(constants.OperatorType),
+			expectedValue:    string(constants.Addition),
+			expectedScore:    1,
+			expectedChipType: string(constants.OperatorType),
+		},
+		{
+			name:             "Chip: Multi_divide (Alternative)",
+			value:            string(constants.Division),
+			score:            1,
+			chipType:         string(constants.OperatorType),
+			expectedValue:    string(constants.Division),
+			expectedScore:    1,
+			expectedChipType: string(constants.OperatorType),
+		},
+		{
+			name:             "Chip: Blank (Alternative)",
+			value:            string(constants.Twenty),
+			score:            0,
+			chipType:         string(constants.TwoDigitNumberType),
+			expectedValue:    string(constants.Twenty),
+			expectedScore:    0,
+			expectedChipType: string(constants.TwoDigitNumberType),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := components.NewChipForCalculating(tt.value, tt.score, tt.chipType)
+
+			if result.Value != tt.expectedValue {
+				t.Errorf("NewChipForCalculating(%s) = Value:%s; expected %s", tt.value, result.Value, tt.expectedValue)
+			}
+
+			if result.Score != tt.expectedScore {
+				t.Errorf("NewChipForCalculating(%s) = Score:%d; expected %d", tt.value, result.Score, tt.expectedScore)
+			}
+
+			if result.ChipType != tt.expectedChipType {
+				t.Errorf("NewChipForCalculating(%s) = Chip Type:%s; expected %s", tt.value, result.ChipType, tt.expectedChipType)
+			}
+		})
+	}
+}

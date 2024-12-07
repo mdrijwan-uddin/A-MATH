@@ -1,10 +1,9 @@
 package constants
 
 type values string
-type chipType string
-type squareType string
-
-type chipPlaceMent string
+type chipTypes string
+type squareTypes string
+type directions string
 
 const (
 	A values = "A"
@@ -53,26 +52,27 @@ const (
 	Equal        values = "="
 	Blank        values = "~"
 
-	OneDigitNumberType chipType = "1 Digit Number"
-	TwoDigitNumberType chipType = "2 Digit Number"
-	OperatorType       chipType = "Normal Operator"
-	AlterOperatorType  chipType = "Alternative Operator"
-	EqualType          chipType = "Equal Operator"
-	BlankType          chipType = "Blank"
+	OneDigitNumberType chipTypes = "1 Digit Number"
+	TwoDigitNumberType chipTypes = "2 Digit Number"
+	OperatorType       chipTypes = "Normal Operator"
+	AlterOperatorType  chipTypes = "Alternative Operator"
+	EqualType          chipTypes = "Equal Operator"
+	BlankType          chipTypes = "Blank"
 
-	NormalSquare squareType = "Normal Square"
-	OrangeSquare squareType = "Orange Square"
-	BlueSquare   squareType = "Blue Square"
-	YellowSquare squareType = "Yellow Square"
-	RedSquare    squareType = "Red Square"
-	CenterSquare squareType = "Center Square"
-
-	SingleChip chipPlaceMent = "Single Chip"
-	Vertical   chipPlaceMent = "Vertical"
-	Horizontal chipPlaceMent = "Horizontal"
+	NormalSquare squareTypes = "Normal Square"
+	OrangeSquare squareTypes = "Orange Square"
+	BlueSquare   squareTypes = "Blue Square"
+	YellowSquare squareTypes = "Yellow Square"
+	RedSquare    squareTypes = "Red Square"
+	CenterSquare squareTypes = "Center Square"
 
 	MaxChipInRack = 8
 	BoardRange    = 15
+
+	Left  directions = "left"
+	Right directions = "right"
+	Up    directions = "up"
+	Down  directions = "down"
 
 	RandomLetter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )

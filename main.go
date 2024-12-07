@@ -3,6 +3,7 @@ package main
 import (
 	"A-MATH/game/actions"
 	"A-MATH/game/components"
+	"A-MATH/game/constants"
 	"A-MATH/game/mappings"
 	"A-MATH/game/models"
 	"A-MATH/game/players"
@@ -73,18 +74,6 @@ func main() {
 
 	// r.Remove(e)
 	// fmt.Println(r)
-
-	//--------------------------------------------------------------------------
-
-	// c, _ := components.NewChip("*")
-	// e := components.NewChipCollector(c, 4)
-	// fmt.Println(e)
-
-	// e.DecreaseChip()
-	// fmt.Println(e)
-
-	// e.IncreaseChip()
-	// fmt.Println(e)
 
 	//--------------------------------------------------------------------------
 
@@ -233,7 +222,7 @@ func main() {
 	// fmt.Println(isSeperated)
 
 	//--------------------------------------------------------------------------
-
+	//FirstTurnMapping
 	p1 := players.NewPlayer(1, "p1")
 	p2 := players.NewPlayer(2, "p2")
 	ng := actions.NewGame([2]players.Player{p1, p2})
@@ -248,20 +237,9 @@ func main() {
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{14, 8}, components.NewChip("1")))
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{15, 8}, components.NewChip("8")))
 
-	for _, ch := range chipForPlacing {
-		ng.Board.Add(ch.Position, ch.Chip)
-		ng.Bag.DecreaseChip(ch.Chip)
-	}
+	result := mappings.FirstTurnMapping(*ng.Board, chipForPlacing)
+	fmt.Println(result[0][0].SquareType == string(constants.CenterSquare))
+	fmt.Println(ng.Board.GetSquare([2]int{8, 8}).SquareType)
+	fmt.Println(result)
 
-	var chipForPlacing2 []models.ChipForPlacing
-	chipForPlacing2 = append(chipForPlacing2, models.NewChipForPlacing([2]int{7, 8}, components.NewChip("-")))
-
-	var position [][2]int
-	for _, chip := range chipForPlacing2 {
-		position = append(position, chip.Position)
-	}
-
-	connector := mappings.SingleChipConnector(*ng.Board, position[0])
-	fmt.Println(connector)
-	fmt.Println(mappings.SingleChipMapping(*ng.Board, chipForPlacing2, connector))
 }

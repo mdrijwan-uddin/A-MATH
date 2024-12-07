@@ -16,6 +16,14 @@ var ChipSet = []string{string(constants.Zero), string(constants.One), string(con
 	string(constants.Addition), string(constants.Subtraction), string(constants.Multiply), string(constants.Division),
 	string(constants.Add_sub), string(constants.Multi_divide), string(constants.Equal), string(constants.Blank)}
 
+var TotalSet = []int{
+	5, 6, 6, 5, 5,
+	4, 4, 4, 4, 4,
+	2, 1, 2, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 4, 4, 4, 4,
+	5, 4, 11, 4}
+
 func ValidateSquarePosition(pos string) ([2]int, error) {
 	if len(pos) != 2 && len(pos) != 3 {
 		return [2]int{}, err.New(int(constants.BadRequest), string(constants.InvalidInputForBoard))

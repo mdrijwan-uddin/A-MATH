@@ -40,6 +40,11 @@ func (b *Board) GetSquare(coordinate [2]int) *Square {
 	return &b.squares[coordinate[1]-1][coordinate[0]-1]
 }
 
+func (b *Board) IsValidSquare(coordinate [2]int) bool {
+	return 0 < coordinate[0] && coordinate[0] <= 15 &&
+		0 < coordinate[1] && coordinate[1] <= 15
+}
+
 func (b *Board) Add(coordinate [2]int, c Chip) {
 	selectedSquare := b.GetSquare(coordinate)
 	if selectedSquare.ChipPlaceOn.IsEmpty() {
