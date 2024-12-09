@@ -111,7 +111,6 @@ func singleChipThreeDirectionMapping(
 	firstConnector, secondConnector := connector.TemporarySeperateConnector()
 
 	singleChipTwoDirectionMapping(board, chipForPlacing, firstConnector, chipForCalculatingSet)
-
 	singleChipOneDirectionMapping(board, chipForPlacing, secondConnector, chipForCalculatingSet)
 }
 
