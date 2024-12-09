@@ -2,90 +2,118 @@ package mappings
 
 import (
 	"A-MATH/game/components"
-	"A-MATH/game/constants"
+	"A-MATH/game/models"
 )
 
-func SingleChipConnector(board components.Board, coordinates [2]int) [][2]int {
-	var connectors [][2]int
-	directions := [][2]int{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
-	addDirectionalConnectors(board, coordinates[0], coordinates[1], directions, &connectors)
+func SingleChipConnector(board components.Board, coordinates [2]int) []models.ChipConnector {
+	var connectors []models.ChipConnector
+
+	singleConnector := models.NewChipConnector(coordinates)
+	singleConnector.CheckAllDirectionConnector(board)
+
+	connectors = append(connectors, singleConnector)
 	return connectors
 }
 
-func PrefixSuffixConnector(board components.Board, coordinates [][2]int, isVertical, isHorizontal bool) [][2]int {
-	var connectors [][2]int
+func StraightConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
+	var connectors []models.ChipConnector
 
 	if isVertical {
-		addConnector(board, coordinates[0][0], coordinates[0][1]-1, &connectors)
-		addConnector(board, coordinates[len(coordinates)-1][0], coordinates[len(coordinates)-1][1]+1, &connectors)
-	}
 
-	if isHorizontal {
-		addConnector(board, coordinates[0][0]-1, coordinates[0][1], &connectors)
-		addConnector(board, coordinates[len(coordinates)-1][0]+1, coordinates[len(coordinates)-1][1], &connectors)
-	}
+		firstChipConnector := models.NewChipConnector(coordinates[0])
+		firstChipConnector.CheckTopConnector(board)
+		firstChipConnector.CheckHorizontalConnector(board)
+		connectors = append(connectors, firstChipConnector)
 
-	return connectors
-}
-
-func EdgeConnector(board components.Board, coordinates [][2]int, isVertical bool) [][2]int {
-	var connectors [][2]int
-
-	if isVertical {
-		for _, co := range coordinates {
-			addDirectionalConnectors(board, co[0], co[1], [][2]int{{-1, 0}, {1, 0}}, &connectors)
+		for i := 1; i < len(coordinates)-1; i++ {
+			connector := models.NewChipConnector(coordinates[i])
+			connector.CheckHorizontalConnector(board)
+			connectors = append(connectors, connector)
 		}
+
+		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
+		lastChipConnector.CheckHorizontalConnector(board)
+		lastChipConnector.CheckBottomConnector(board)
+		connectors = append(connectors, lastChipConnector)
 	}
 
 	if !isVertical { //isHorizontal
-		for _, co := range coordinates {
-			addDirectionalConnectors(board, co[0], co[1], [][2]int{{0, -1}, {0, 1}}, &connectors)
+
+		firstChipConnector := models.NewChipConnector(coordinates[0])
+		firstChipConnector.CheckLeftConnector(board)
+		firstChipConnector.CheckVerticalConnector(board)
+		connectors = append(connectors, firstChipConnector)
+
+		for i := 1; i < len(coordinates)-1; i++ {
+			connector := models.NewChipConnector(coordinates[i])
+			connector.CheckVerticalConnector(board)
+			connectors = append(connectors, connector)
 		}
+
+		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
+		lastChipConnector.CheckVerticalConnector(board)
+		lastChipConnector.CheckRightConnector(board)
+		connectors = append(connectors, lastChipConnector)
 	}
 
 	return connectors
 }
 
-// might not be used
-func CrossConnector(board components.Board, coordinates [][2]int, isVertical bool) [][2]int {
-	var start, end, fixedCoord int
+func CrossConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
+	var connectors []models.ChipConnector
+	splitConnectors := splitConnector(coordinates, isVertical)
+
+	for _, sp := range splitConnectors {
+		if len(sp) == 1 {
+			connectors = append(connectors, SingleChipConnector(board, sp[0])[0])
+
+		} else {
+			length := len(sp)
+			straightConnector := StraightConnector(board, sp, isVertical)
+
+			for i := 0; i < length; i++ {
+				connectors = append(connectors, straightConnector[i])
+
+			}
+		}
+	}
+	return connectors
+}
+
+func splitConnector(coordinates [][2]int, isVertical bool) [][][2]int {
+	var currentCoord, nextCoord, fixedCoord int
 	var connectors [][2]int
+	var connectorsSet [][][2]int
 
 	for i := 0; i < len(coordinates)-1; i++ {
 		if isVertical {
-			start, end = coordinates[i][1], coordinates[i+1][1]
+			currentCoord, nextCoord = coordinates[i][1], coordinates[i+1][1]
 			fixedCoord = coordinates[i][0]
-			if start+1 != end { // Check for separation
-				connectors = append(connectors, [2]int{fixedCoord, start + 1})
-			}
-		}
 
-		if !isVertical { //isHorizontal
-			start, end = coordinates[i][0], coordinates[i+1][0]
+			connectors = append(connectors, [2]int{fixedCoord, currentCoord})
+			if currentCoord+1 != nextCoord { // Check for separation
+				connectorsSet = append(connectorsSet, connectors)
+				connectors = nil //reset connectors
+			}
+		} else { //isHorizontal
+			currentCoord, nextCoord = coordinates[i][0], coordinates[i+1][0]
 			fixedCoord = coordinates[i][1]
-			if start+1 != end { // Check for separation
-				connectors = append(connectors, [2]int{start + 1, fixedCoord})
+
+			connectors = append(connectors, [2]int{currentCoord, fixedCoord})
+			if currentCoord+1 != nextCoord { // Check for separation
+				connectorsSet = append(connectorsSet, connectors)
+				connectors = nil //reset connectors
 			}
 		}
 	}
 
-	return connectors
-}
-
-func addConnector(board components.Board, x, y int, connectors *[][2]int) {
-	isAvailable := func(x, y int) bool {
-		return 0 < x && x <= constants.BoardRange && 0 < y && y <= constants.BoardRange
-	}
-
-	if isAvailable(x, y) && board.GetSquare([2]int{x, y}).HasChipPlacedOn() {
-		*connectors = append(*connectors, [2]int{x, y})
+	// Append the lastconnector
+	if isVertical {
+		connectors = append(connectors, [2]int{fixedCoord, nextCoord})
 	} else {
-		*connectors = append(*connectors, [2]int{})
+		connectors = append(connectors, [2]int{nextCoord, fixedCoord})
 	}
-}
+	connectorsSet = append(connectorsSet, connectors)
 
-func addDirectionalConnectors(board components.Board, x, y int, directions [][2]int, connectors *[][2]int) {
-	for _, delta := range directions {
-		addConnector(board, x+delta[0], y+delta[1], connectors)
-	}
+	return connectorsSet
 }

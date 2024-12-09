@@ -9,12 +9,16 @@ import (
 	"strconv"
 )
 
-var ChipSet = []string{string(constants.Zero), string(constants.One), string(constants.Two), string(constants.Three), string(constants.Four),
-	string(constants.Five), string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine), string(constants.Ten),
-	string(constants.Eleven), string(constants.Twelve), string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen),
-	string(constants.Sixteen), string(constants.Seventeen), string(constants.Eighteen), string(constants.Nineteen), string(constants.Twenty),
-	string(constants.Addition), string(constants.Subtraction), string(constants.Multiply), string(constants.Division),
-	string(constants.Add_sub), string(constants.Multi_divide), string(constants.Equal), string(constants.Blank)}
+var ChipSet = []string{
+	string(constants.Zero), string(constants.One), string(constants.Two), string(constants.Three),
+	string(constants.Four), string(constants.Five), string(constants.Six), string(constants.Seven),
+	string(constants.Eight), string(constants.Nine), string(constants.Ten), string(constants.Eleven),
+	string(constants.Twelve), string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen),
+	string(constants.Sixteen), string(constants.Seventeen), string(constants.Eighteen), string(constants.Nineteen),
+	string(constants.Twenty), string(constants.Addition), string(constants.Subtraction), string(constants.Multiply),
+	string(constants.Division), string(constants.Add_sub), string(constants.Multi_divide), string(constants.Equal),
+	string(constants.Blank),
+}
 
 var TotalSet = []int{
 	5, 6, 6, 5, 5,
@@ -22,7 +26,8 @@ var TotalSet = []int{
 	2, 1, 2, 1, 1,
 	1, 1, 1, 1, 1,
 	1, 4, 4, 4, 4,
-	5, 4, 11, 4}
+	5, 4, 11, 4,
+}
 
 func ValidateSquarePosition(pos string) ([2]int, error) {
 	if len(pos) != 2 && len(pos) != 3 {

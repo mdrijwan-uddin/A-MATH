@@ -13,6 +13,7 @@ func (g *Game) DrawSpecificChip(player *inGamePlayers, chip components.Chip) {
 	player.Racks.Add(chip)
 }
 
+// Normal Method
 func (g *Game) SingleDraw(player *inGamePlayers) {
 	totalChipLeft := g.Bag.TotalChipLeft
 	if totalChipLeft == 0 {
@@ -33,6 +34,7 @@ func (g *Game) SingleDraw(player *inGamePlayers) {
 	g.DrawSpecificChip(player, chip)
 }
 
+// Draw until full
 func (g *Game) RefillRack(player *inGamePlayers) {
 	rack := player.Racks
 	if rack.IsFull() {

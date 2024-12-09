@@ -12,13 +12,6 @@ import (
 var chipSet = utils.ChipSet
 var totalSet = utils.TotalSet
 
-// ("0", 5),  ("1", 6),  ("2", 6),  ("3", 5),  ("4", 5),
-// ("5", 4),  ("6", 4),  ("7", 4),  ("8", 4),  ("9", 4),
-// ("10", 2), ("11", 1), ("12", 2), ("13", 1), ("14", 1),
-// ("15", 1), ("16", 1), ("17", 1), ("18", 1), ("19", 1),
-// ("20", 1), ("+", 4),  ("-", 4),  ("x", 4),  ("%", 4),
-// ("+-", 5), (*/", 4),  ("=", 11), ("~", 4)
-
 type Bag struct {
 	ChipCollectors []chipCollectors
 	TotalChipLeft  int
@@ -30,11 +23,17 @@ func NewBag() Bag {
 	var totalChip int
 
 	for i := range len(chipSet) {
-		c := NewChip(chipSet[i])
 		totalChip += totalSet[i]
-		n := NewChipCollector(c, totalSet[i])
+		n := NewChipCollector(NewChip(chipSet[i]), totalSet[i])
 		chipCollectors = append(chipCollectors, n)
 	}
+
+	// ("0", 5),  ("1", 6),  ("2", 6),  ("3", 5),  ("4", 5),
+	// ("5", 4),  ("6", 4),  ("7", 4),  ("8", 4),  ("9", 4),
+	// ("10", 2), ("11", 1), ("12", 2), ("13", 1), ("14", 1),
+	// ("15", 1), ("16", 1), ("17", 1), ("18", 1), ("19", 1),
+	// ("20", 1), ("+", 4),  ("-", 4),  ("x", 4),  ("%", 4),
+	// ("+-", 5), (*/", 4),  ("=", 11), ("~", 4)
 
 	return Bag{chipCollectors, totalChip, totalChip}
 }

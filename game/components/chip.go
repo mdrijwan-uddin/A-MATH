@@ -24,26 +24,61 @@ func NewChipForCalculating(value string, score int, chipType string) Chip {
 
 func setScoreandType(value string) (int, string) {
 	switch value {
-	case string(constants.Zero), string(constants.One), string(constants.Two), string(constants.Three):
+	case
+		string(constants.Zero),
+		string(constants.One),
+		string(constants.Two),
+		string(constants.Three):
 		return 1, string(constants.OneDigitNumberType)
-	case string(constants.Four), string(constants.Five), string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine):
+
+	case
+		string(constants.Four),
+		string(constants.Five),
+		string(constants.Six),
+		string(constants.Seven),
+		string(constants.Eight),
+		string(constants.Nine):
 		return 2, string(constants.OneDigitNumberType)
-	case string(constants.Ten), string(constants.Twelve):
+
+	case
+		string(constants.Ten),
+		string(constants.Twelve):
 		return 3, string(constants.TwoDigitNumberType)
-	case string(constants.Eleven), string(constants.Fourteen), string(constants.Fifteen), string(constants.Sixteen), string(constants.Eighteen):
+
+	case
+		string(constants.Eleven),
+		string(constants.Fourteen),
+		string(constants.Fifteen),
+		string(constants.Sixteen),
+		string(constants.Eighteen):
 		return 4, string(constants.TwoDigitNumberType)
-	case string(constants.Thirteen), string(constants.Seventeen):
+
+	case
+		string(constants.Thirteen),
+		string(constants.Seventeen):
 		return 6, string(constants.TwoDigitNumberType)
+
 	case string(constants.Nineteen):
 		return 7, string(constants.TwoDigitNumberType)
+
 	case string(constants.Twenty):
 		return 5, string(constants.TwoDigitNumberType)
-	case string(constants.Addition), string(constants.Subtraction), string(constants.Multiply), string(constants.Division):
+
+	case
+		string(constants.Addition),
+		string(constants.Subtraction),
+		string(constants.Multiply),
+		string(constants.Division):
 		return 2, string(constants.OperatorType)
-	case string(constants.Add_sub), string(constants.Multi_divide):
+
+	case
+		string(constants.Add_sub),
+		string(constants.Multi_divide):
 		return 1, string(constants.AlterOperatorType)
+
 	case string(constants.Equal):
 		return 1, string(constants.EqualType)
+
 	default:
 		return 0, string(constants.BlankType)
 	}

@@ -17,13 +17,18 @@ type Board struct {
 func NewBoard() Board {
 	var boardsSquare [constants.BoardRange][constants.BoardRange]Square
 
-	xAxisSet := []string{string(constants.A), string(constants.B), string(constants.C), string(constants.D), string(constants.E), string(constants.F),
-		string(constants.G), string(constants.H), string(constants.I), string(constants.J), string(constants.K), string(constants.L), string(constants.M),
-		string(constants.N), string(constants.O)}
+	xAxisSet := []string{
+		string(constants.A), string(constants.B), string(constants.C), string(constants.D), string(constants.E),
+		string(constants.F), string(constants.G), string(constants.H), string(constants.I), string(constants.J),
+		string(constants.K), string(constants.L), string(constants.M), string(constants.N), string(constants.O),
+	}
 
-	yAxisSet := []string{string(constants.One), string(constants.Two), string(constants.Three), string(constants.Four), string(constants.Five),
-		string(constants.Six), string(constants.Seven), string(constants.Eight), string(constants.Nine), string(constants.Ten), string(constants.Eleven),
-		string(constants.Twelve), string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen)}
+	yAxisSet := []string{
+		string(constants.One), string(constants.Two), string(constants.Three), string(constants.Four),
+		string(constants.Five), string(constants.Six), string(constants.Seven), string(constants.Eight),
+		string(constants.Nine), string(constants.Ten), string(constants.Eleven), string(constants.Twelve),
+		string(constants.Thirteen), string(constants.Fourteen), string(constants.Fifteen),
+	}
 
 	for x := 0; x < constants.BoardRange; x++ {
 		for y := 0; y < constants.BoardRange; y++ {
@@ -36,10 +41,12 @@ func NewBoard() Board {
 	return Board{boardsSquare}
 }
 
+// input: {X, Y} | output: Square{X, Y}
 func (b *Board) GetSquare(coordinate [2]int) *Square {
 	return &b.squares[coordinate[1]-1][coordinate[0]-1]
 }
 
+// check if {0 < X,Y <= 15} or not
 func (b *Board) IsValidSquare(coordinate [2]int) bool {
 	return 0 < coordinate[0] && coordinate[0] <= 15 &&
 		0 < coordinate[1] && coordinate[1] <= 15
@@ -60,6 +67,7 @@ func (b *Board) Remove(coordinate [2]int) {
 	}
 }
 
+// has no chip place on board
 func (b *Board) IsEmpty() bool {
 	for y := 0; y < constants.BoardRange; y++ {
 		for x := 0; x < constants.BoardRange; x++ {
@@ -105,7 +113,6 @@ func (b Board) String() string {
 		for x := 0; x < constants.BoardRange; x++ {
 
 			if b.squares[y][x].HasChipPlacedOn() {
-
 				writeSquare(b.squares[y][x].ChipPlaceOn.Value)
 			} else if b.squares[y][x].SquareType != string(constants.NormalSquare) {
 				writeSquare(string(b.squares[y][x].SquareType[:1]))

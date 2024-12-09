@@ -6,26 +6,26 @@ import (
 	"A-MATH/game/models"
 )
 
-// not finish
-func ChipPlacementManagement(board components.Board, coordinates [][2]int, isVertical, isStraightLine bool) {
-	if len(coordinates) == 1 {
-		SingleChipConnectorSet := SingleChipConnector(board, coordinates[0])
-		if len(SingleChipConnectorSet) == 0 {
-			return // add error
-		}
-	}
+// // not finish
+// func ChipPlacementManagement(board components.Board, coordinates [][2]int, isVertical, isStraightLine bool) {
+// 	if len(coordinates) == 1 {
+// 		SingleChipConnectorSet := SingleChipConnector(board, coordinates[0])
+// 		if len(SingleChipConnectorSet) == 0 {
+// 			return // add error
+// 		}
+// 	}
 
-	edgeConnectorSet := EdgeConnector(board, coordinates, isVertical)
-	crossConnectorSet := CrossConnector(board, coordinates, isVertical)
+// 	edgeConnectorSet := EdgeConnector(board, coordinates, isVertical)
+// 	crossConnectorSet := CrossConnector(board, coordinates, isVertical)
 
-	if len(edgeConnectorSet) == 0 {
-		return
-	}
-	if len(crossConnectorSet) == 0 {
-		return
-	}
+// 	if len(edgeConnectorSet) == 0 {
+// 		return
+// 	}
+// 	if len(crossConnectorSet) == 0 {
+// 		return
+// 	}
 
-}
+// }
 
 func straightLineMapping(
 	board components.Board,
@@ -53,15 +53,15 @@ func straightLineMapping(
 	}
 }
 
-func connectorsIndex(connectors [][2]int) []int {
-	var counter []int
-	for i := 0; i < len(connectors); i++ {
-		if connectors[i] != [2]int{} {
-			counter = append(counter, i)
-		}
-	}
-	return counter
-}
+// func connectorsIndex(connectors [][2]int) []int {
+// 	var counter []int
+// 	for i := 0; i < len(connectors); i++ {
+// 		if connectors[i] != [2]int{} {
+// 			counter = append(counter, i)
+// 		}
+// 	}
+// 	return counter
+// }
 
 // func SingleChipMapping(board components.Board, SingleChipConnectorSet [][2]int) []models.ChipForCalculating {
 // 	chipForCalculating := []models.ChipForCalculating{}
