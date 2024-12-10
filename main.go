@@ -332,7 +332,7 @@ func main() {
 	// fmt.Println(connectorsSet)
 
 	var chipForPlacing2 []models.ChipForPlacing
-	chipForPlacing2 = append(chipForPlacing2, models.NewChipForPlacing([2]int{11, 11}, components.NewChip("=")))
+	chipForPlacing2 = append(chipForPlacing2, models.NewChipForPlacing([2]int{5, 5}, components.NewChip("=")))
 
 	singleChipConnector := mappings.SingleChipConnector(*ng.Board, chipForPlacing2[0].Position)
 

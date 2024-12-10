@@ -15,46 +15,101 @@ func SingleChipConnector(board components.Board, coordinates [2]int) []models.Ch
 	return connectors
 }
 
+// func StraightConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
+// 	var connectors []models.ChipConnector
+
+// 	if isVertical {
+
+// 		firstChipConnector := models.NewChipConnector(coordinates[0])
+// 		firstChipConnector.CheckTopConnector(board)
+// 		firstChipConnector.CheckHorizontalConnector(board)
+// 		connectors = append(connectors, firstChipConnector)
+
+// 		for i := 1; i < len(coordinates)-1; i++ {
+// 			connector := models.NewChipConnector(coordinates[i])
+// 			connector.CheckHorizontalConnector(board)
+// 			connectors = append(connectors, connector)
+// 		}
+
+// 		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
+// 		lastChipConnector.CheckHorizontalConnector(board)
+// 		lastChipConnector.CheckBottomConnector(board)
+// 		connectors = append(connectors, lastChipConnector)
+// 	}
+
+// 	if !isVertical { //isHorizontal
+
+// 		firstChipConnector := models.NewChipConnector(coordinates[0])
+// 		firstChipConnector.CheckLeftConnector(board)
+// 		firstChipConnector.CheckVerticalConnector(board)
+// 		connectors = append(connectors, firstChipConnector)
+
+// 		for i := 1; i < len(coordinates)-1; i++ {
+// 			connector := models.NewChipConnector(coordinates[i])
+// 			connector.CheckVerticalConnector(board)
+// 			connectors = append(connectors, connector)
+// 		}
+
+// 		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
+// 		lastChipConnector.CheckVerticalConnector(board)
+// 		lastChipConnector.CheckRightConnector(board)
+// 		connectors = append(connectors, lastChipConnector)
+// 	}
+
+// 	return connectors
+// }
+
 func StraightConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
+
 	var connectors []models.ChipConnector
 
-	if isVertical {
-
-		firstChipConnector := models.NewChipConnector(coordinates[0])
-		firstChipConnector.CheckTopConnector(board)
-		firstChipConnector.CheckHorizontalConnector(board)
-		connectors = append(connectors, firstChipConnector)
-
-		for i := 1; i < len(coordinates)-1; i++ {
-			connector := models.NewChipConnector(coordinates[i])
+	// Helper function to process the first chip
+	processFirstChip := func(coord [2]int) models.ChipConnector {
+		connector := models.NewChipConnector(coord)
+		if isVertical {
+			connector.CheckTopConnector(board)
 			connector.CheckHorizontalConnector(board)
-			connectors = append(connectors, connector)
-		}
-
-		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
-		lastChipConnector.CheckHorizontalConnector(board)
-		lastChipConnector.CheckBottomConnector(board)
-		connectors = append(connectors, lastChipConnector)
-	}
-
-	if !isVertical { //isHorizontal
-
-		firstChipConnector := models.NewChipConnector(coordinates[0])
-		firstChipConnector.CheckLeftConnector(board)
-		firstChipConnector.CheckVerticalConnector(board)
-		connectors = append(connectors, firstChipConnector)
-
-		for i := 1; i < len(coordinates)-1; i++ {
-			connector := models.NewChipConnector(coordinates[i])
+		} else {
+			connector.CheckLeftConnector(board)
 			connector.CheckVerticalConnector(board)
-			connectors = append(connectors, connector)
 		}
-
-		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
-		lastChipConnector.CheckVerticalConnector(board)
-		lastChipConnector.CheckRightConnector(board)
-		connectors = append(connectors, lastChipConnector)
+		return connector
 	}
+
+	// Helper function to process a middle chip
+	processMiddleChip := func(coord [2]int) models.ChipConnector {
+		connector := models.NewChipConnector(coord)
+		if isVertical {
+			connector.CheckHorizontalConnector(board)
+		} else {
+			connector.CheckVerticalConnector(board)
+		}
+		return connector
+	}
+
+	// Helper function to process the last chip
+	processLastChip := func(coord [2]int) models.ChipConnector {
+		connector := models.NewChipConnector(coord)
+		if isVertical {
+			connector.CheckHorizontalConnector(board)
+			connector.CheckBottomConnector(board)
+		} else {
+			connector.CheckVerticalConnector(board)
+			connector.CheckRightConnector(board)
+		}
+		return connector
+	}
+
+	// Process first chip
+	connectors = append(connectors, processFirstChip(coordinates[0]))
+
+	// Process middle chips
+	for i := 1; i < len(coordinates)-1; i++ {
+		connectors = append(connectors, processMiddleChip(coordinates[i]))
+	}
+
+	// Process last chip
+	connectors = append(connectors, processLastChip(coordinates[len(coordinates)-1]))
 
 	return connectors
 }
