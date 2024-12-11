@@ -380,13 +380,13 @@ func TestOneDirectionMapping(t *testing.T) {
 			connector := mappings.SingleChipConnector(tt.board, tt.position)
 			results := mappings.SingleChipMapping(tt.board, chipForPlacing, connector)
 
-			testOneDirectionMapChecking(t, results, tt.expectedIsPlaceOnBoard, tt.expectedValue)
+			testSingleChipMapChecking(t, results, tt.expectedIsPlaceOnBoard, tt.expectedValue)
 
 		})
 	}
 }
 
-func testOneDirectionMapChecking(t *testing.T, singleChipMapping [][]models.ChipForCalculating, expectedIsPlaceOnBoard [][]bool, expectedValue [][]string) {
+func testSingleChipMapChecking(t *testing.T, singleChipMapping [][]models.ChipForCalculating, expectedIsPlaceOnBoard [][]bool, expectedValue [][]string) {
 	for j, resultSet := range singleChipMapping {
 		for i, result := range resultSet {
 			if result.IsPlacedOnBoard != expectedIsPlaceOnBoard[j][i] {
