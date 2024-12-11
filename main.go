@@ -6,6 +6,7 @@ import (
 	"A-MATH/game/mappings"
 	"A-MATH/game/models"
 	"A-MATH/game/players"
+	"A-MATH/game/rules"
 	"fmt"
 )
 
@@ -225,117 +226,45 @@ func main() {
 	p2 := players.NewPlayer(2, "p2")
 	ng := actions.NewGame([2]players.Player{p1, p2})
 
-	var chipForPlacing []models.ChipForPlacing
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 8}, components.NewChip("5")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{6, 8}, components.NewChip("1")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{7, 8}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 8}, components.NewChip("4")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 8}, components.NewChip("+")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 8}, components.NewChip("4")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 8}, components.NewChip("7")))
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 5}, components.NewChip("4")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 6}, components.NewChip("9")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 7}, components.NewChip("-")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 9}, components.NewChip("7")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 10}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 11}, components.NewChip("2")))
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 6}, components.NewChip("5")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 7}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 9}, components.NewChip("*")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 10}, components.NewChip("1")))
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 6}, components.NewChip("13")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 7}, components.NewChip("-")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 9}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 10}, components.NewChip("6")))
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{6, 5}, components.NewChip("18")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{7, 5}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 5}, components.NewChip("+")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 5}, components.NewChip("14")))
-
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{6, 11}, components.NewChip("0")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{7, 11}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 11}, components.NewChip("*")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 11}, components.NewChip("2")))
+	var chips []models.ChipForPlacing
 
 	//---------------------------------------------------------------------------------------
 
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{2, 8}, components.NewChip("1")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{3, 8}, components.NewChip("*")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 8}, components.NewChip("10")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{5, 8}, components.NewChip("+")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{6, 8}, components.NewChip("7")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{7, 8}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 8}, components.NewChip("17")))
+	chips = append(chips, models.NewChipForPlacing([2]int{6, 8}, components.NewChip("3")))
+	chips = append(chips, models.NewChipForPlacing([2]int{7, 8}, components.NewChip("*")))
+	chips = append(chips, models.NewChipForPlacing([2]int{8, 8}, components.NewChip("1")))
+	chips = append(chips, models.NewChipForPlacing([2]int{9, 8}, components.NewChip("=")))
+	chips = append(chips, models.NewChipForPlacing([2]int{10, 8}, components.NewChip("3")))
 
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{2, 6}, components.NewChip("1")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{2, 7}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{2, 9}, components.NewChip("+")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{2, 10}, components.NewChip("0")))
+	chips = append(chips, models.NewChipForPlacing([2]int{8, 6}, components.NewChip("6")))
+	chips = append(chips, models.NewChipForPlacing([2]int{8, 7}, components.NewChip("=")))
+	chips = append(chips, models.NewChipForPlacing([2]int{8, 9}, components.NewChip("+")))
+	chips = append(chips, models.NewChipForPlacing([2]int{8, 10}, components.NewChip("5")))
 
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 2}, components.NewChip("4")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 3}, components.NewChip("*")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 4}, components.NewChip("5")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 5}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 6}, components.NewChip("10")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 7}, components.NewChip("+")))
-
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 5}, components.NewChip("2")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 6}, components.NewChip("2")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 7}, components.NewChip("-")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 9}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 10}, components.NewChip("5")))
-
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{1, 10}, components.NewChip("2")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{3, 10}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{4, 10}, components.NewChip("20")))
-
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{6, 10}, components.NewChip("15")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{7, 10}, components.NewChip("+")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 10}, components.NewChip("=")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 10}, components.NewChip("2")))
-	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 10}, components.NewChip("0")))
-
-	for _, ch := range chipForPlacing {
+	for _, ch := range chips {
 		ng.Board.Add(ch.Position, ch.Chip)
 		ng.Bag.DecreaseChip(ch.Chip)
 	}
 	fmt.Println(ng)
 
-	// fmt.Println("----------------------------------------------")
-	// cc := models.NewChipConnector([2]int{15, 14})
-	// cc.CheckAllDirectionConnector(*ng.Board)
-	// fmt.Println(cc)
+	var chipForPlacing []models.ChipForPlacing
 
-	fmt.Println("----------------------------------------------")
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 6}, components.NewChip("+")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 6}, components.NewChip("4")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 6}, components.NewChip("=")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{12, 6}, components.NewChip("1")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{13, 6}, components.NewChip("0")))
 
-	// var position [][2]int
+	var coordinates [][2]int
+	for _, chips := range chipForPlacing {
+		coordinates = append(coordinates, chips.Position)
+	}
 
-	// position = append(position, [2]int{11, 7})
-	// position = append(position, [2]int{11, 9})
-	// position = append(position, [2]int{11, 10})
-	// position = append(position, [2]int{11, 11})
+	isVertical, _ := rules.IsChipPlaceOnVerticalOrHorizontal(coordinates)
 
-	// // position = append(position, [2]int{5, 11})
-	// // position = append(position, [2]int{6, 11})
-	// // position = append(position, [2]int{7, 11})
-	// // position = append(position, [2]int{9, 11})
-	// // position = append(position, [2]int{10, 11})
-	// // position = append(position, [2]int{11, 11})
+	connector := mappings.StraightConnector(*ng.Board, coordinates, isVertical)
 
-	// isVertical, _ := rules.IsChipPlaceOnVerticalOrHorizontal(position)
-	// connectorsSet := mappings.CrossConnector(*ng.Board, position, isVertical)
-	// fmt.Println(connectorsSet)
+	mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical)
 
-	var chipForPlacing2 []models.ChipForPlacing
-	chipForPlacing2 = append(chipForPlacing2, models.NewChipForPlacing([2]int{5, 5}, components.NewChip("=")))
-
-	singleChipConnector := mappings.SingleChipConnector(*ng.Board, chipForPlacing2[0].Position)
-
-	singleChipMapping := mappings.SingleChipMapping(*ng.Board, chipForPlacing2, singleChipConnector)
-	fmt.Println(singleChipMapping)
+	fmt.Println(mapping)
 }

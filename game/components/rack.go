@@ -41,6 +41,7 @@ func (r *Rack) Remove(c Chip) {
 		}
 	}
 
+	// if it is no chip in rack
 	if index == -1 {
 		return
 	}
@@ -49,6 +50,7 @@ func (r *Rack) Remove(c Chip) {
 		r.Chips[j] = r.Chips[j+1]
 	}
 
+	// empty the chip
 	r.Chips[len(r.Chips)-1] = emptyChip
 }
 
@@ -58,7 +60,7 @@ func (r Rack) GetTotalChip() int {
 			return i
 		}
 	}
-	return 8
+	return constants.MaxChipInRack
 }
 
 // need to discuss

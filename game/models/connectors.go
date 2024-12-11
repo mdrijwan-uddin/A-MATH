@@ -101,6 +101,14 @@ func (c ChipConnector) TemporarySeperateConnector() (ChipConnector, ChipConnecto
 	return c.disconnectedConnectors()
 }
 
+func (c ChipConnector) EdgeConnector(isVertical bool) ChipConnector {
+	if isVertical {
+		return ChipConnector{c.ChipCoordinate, c.LeftConnected, false, c.RightConnected, false}
+	} else {
+		return ChipConnector{c.ChipCoordinate, false, c.TopConnected, false, c.BottomConnected}
+	}
+}
+
 // Helper to handle two connections
 func (c ChipConnector) splitTwoConnections() (ChipConnector, ChipConnector) {
 	// Identify two connections and split them

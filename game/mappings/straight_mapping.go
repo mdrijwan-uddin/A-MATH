@@ -19,6 +19,7 @@ func StraightMapping(
 	firstIndex := 0
 	lastIndex := len(straightConnector) - 1
 
+	// first of all: mapping on input straight line
 	if isVertical {
 		if straightConnector[firstIndex].TopConnected {
 			directionsMapping(board, straightConnector[firstIndex], &chipForCalculating, string(constants.Up))
@@ -45,8 +46,10 @@ func StraightMapping(
 	chipForCalculatingSet = append(chipForCalculatingSet, chipForCalculating)
 	chipForCalculating = nil //reset
 
-	for i := 0; i < lastIndex; i++ {
-		if straightConnector[i].TotalConnecter() > 0 {
+	// and then: mapping on possible edge connector
+	for i, connector := range straightConnector {
+		edgeConnector := connector.EdgeConnector(isVertical)
+		if edgeConnector.TotalConnecter() > 0 {
 			newChipForPlacing := []models.ChipForPlacing{chipForPlacing[i]}
 			newConnector := []models.ChipConnector{straightConnector[i]}
 

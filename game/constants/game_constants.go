@@ -6,6 +6,7 @@ type squareTypes string
 type directions string
 
 const (
+	// to remove
 	A values = "A"
 	B values = "B"
 	C values = "C"
