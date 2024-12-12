@@ -19,7 +19,7 @@ func TestOneDirectionMapping(t *testing.T) {
 	}{
 		{
 			name:                   "(1D) Right Connected Mapping",
-			board:                  SingleDirectionChipMapping(),
+			board:                  mockSingleDirectionChipMapping(),
 			position:               [2]int{1, 8},
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseFirst14(),
@@ -27,7 +27,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:                   "(1D) Bottom Connected Mapping",
-			board:                  SingleDirectionChipMapping(),
+			board:                  mockSingleDirectionChipMapping(),
 			position:               [2]int{8, 1},
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseFirst14(),
@@ -35,7 +35,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:                   "(1D) Left Connected Mapping",
-			board:                  SingleDirectionChipMapping(),
+			board:                  mockSingleDirectionChipMapping(),
 			position:               [2]int{15, 8},
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseLast14(),
@@ -43,7 +43,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:                   "(1D) Top Connected Mapping",
-			board:                  SingleDirectionChipMapping(),
+			board:                  mockSingleDirectionChipMapping(),
 			position:               [2]int{8, 15},
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseLast14(),
@@ -51,7 +51,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Top-Right Connected Mapping",
-			board:    TwoDirectionChipMapping1(),
+			board:    mockTwoDirectionChipMapping1(),
 			position: [2]int{5, 5},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -79,7 +79,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Bottom-Right Connected Mapping",
-			board:    TwoDirectionChipMapping1(),
+			board:    mockTwoDirectionChipMapping1(),
 			position: [2]int{5, 11},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -107,7 +107,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Top-Left Connected Mapping",
-			board:    TwoDirectionChipMapping1(),
+			board:    mockTwoDirectionChipMapping1(),
 			position: [2]int{11, 5},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -135,7 +135,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Bottom-Left Connected Mapping",
-			board:    TwoDirectionChipMapping1(),
+			board:    mockTwoDirectionChipMapping1(),
 			position: [2]int{11, 11},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -163,7 +163,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Left-Right Horizontal Mapping",
-			board:    TwoDirectionChipMapping2(),
+			board:    mockTwoDirectionChipMapping2(),
 			position: [2]int{4, 9},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -185,7 +185,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(2D) Top-Bottom Vertical Mapping",
-			board:    TwoDirectionChipMapping2(),
+			board:    mockTwoDirectionChipMapping2(),
 			position: [2]int{5, 10},
 			value:    string(constants.Equal),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -209,7 +209,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(3D) Top-Bottom Vertical & Right Connected Mapping",
-			board:    ThreeDirectionChipMapping(),
+			board:    mockThreeDirectionChipMapping(),
 			position: [2]int{4, 8},
 			value:    string(constants.Nineteen),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -242,7 +242,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(3D) Left-Right Horizontal & Bottom Connected Mapping",
-			board:    ThreeDirectionChipMapping(),
+			board:    mockThreeDirectionChipMapping(),
 			position: [2]int{8, 4},
 			value:    string(constants.Nineteen),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -275,7 +275,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(3D) Top-Bottom Vertical & Left Connected Mapping",
-			board:    ThreeDirectionChipMapping(),
+			board:    mockThreeDirectionChipMapping(),
 			position: [2]int{12, 8},
 			value:    string(constants.Nineteen),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -308,7 +308,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(3D) Left-Right Horizontal & Top Connected Mapping",
-			board:    ThreeDirectionChipMapping(),
+			board:    mockThreeDirectionChipMapping(),
 			position: [2]int{8, 12},
 			value:    string(constants.Nineteen),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -341,7 +341,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		},
 		{
 			name:     "(4D) Left-Right Horizontal & Top-Bottom Vertical Connected Mapping",
-			board:    FourDirectionChipMapping(),
+			board:    mockFourDirectionChipMapping(),
 			position: [2]int{5, 8},
 			value:    string(constants.Eight),
 			expectedIsPlaceOnBoard: [][]bool{
@@ -400,7 +400,7 @@ func testSingleChipMapChecking(t *testing.T, singleChipMapping [][]models.ChipFo
 	}
 }
 
-func SingleDirectionChipMapping() components.Board {
+func mockSingleDirectionChipMapping() components.Board {
 	board := components.NewBoard()
 
 	var chips []models.ChipForPlacing
@@ -437,57 +437,7 @@ func SingleDirectionChipMapping() components.Board {
 	return board
 }
 
-func mockResultValueAppendFirst1D() [][]string {
-	return [][]string{
-		{
-			string(constants.Subtraction),
-			string(constants.Subtraction),
-			string(constants.Seven),
-			string(constants.Addition),
-			string(constants.Four),
-			string(constants.Equal),
-			string(constants.One),
-			string(constants.Fourteen),
-			string(constants.Subtraction),
-			string(constants.Five),
-			string(constants.Multiply),
-			string(constants.Nineteen),
-			string(constants.Equal),
-			string(constants.Three),
-		},
-	}
-}
-
-func mockResultValueAppendLast1D() [][]string {
-	return [][]string{
-		{
-			string(constants.Subtraction),
-			string(constants.Seven),
-			string(constants.Addition),
-			string(constants.Four),
-			string(constants.Equal),
-			string(constants.One),
-			string(constants.Fourteen),
-			string(constants.Subtraction),
-			string(constants.Five),
-			string(constants.Multiply),
-			string(constants.Nineteen),
-			string(constants.Equal),
-			string(constants.Three),
-			string(constants.Subtraction),
-		},
-	}
-}
-
-func mockIsPlaceOnBoardFalseFirst14() [][]bool {
-	return [][]bool{{false, true, true, true, true, true, true, true, true, true, true, true, true, true}}
-}
-
-func mockIsPlaceOnBoardFalseLast14() [][]bool {
-	return [][]bool{{true, true, true, true, true, true, true, true, true, true, true, true, true, false}}
-}
-
-func TwoDirectionChipMapping1() components.Board {
+func mockTwoDirectionChipMapping1() components.Board {
 	board := components.NewBoard()
 
 	var chips []models.ChipForPlacing
@@ -532,15 +482,7 @@ func TwoDirectionChipMapping1() components.Board {
 	return board
 }
 
-func mockIsPlaceOnBoardFalseFirst6() []bool {
-	return []bool{false, true, true, true, true, true}
-}
-
-func mockIsPlaceOnBoardFalseLast6() []bool {
-	return []bool{true, true, true, true, true, false}
-}
-
-func TwoDirectionChipMapping2() components.Board {
+func mockTwoDirectionChipMapping2() components.Board {
 	board := components.NewBoard()
 
 	var chips []models.ChipForPlacing
@@ -586,7 +528,7 @@ func TwoDirectionChipMapping2() components.Board {
 	return board
 }
 
-func ThreeDirectionChipMapping() components.Board {
+func mockThreeDirectionChipMapping() components.Board {
 	board := components.NewBoard()
 
 	var chips []models.ChipForPlacing
@@ -659,19 +601,7 @@ func ThreeDirectionChipMapping() components.Board {
 	return board
 }
 
-func mockIsPlaceOnBoardFalseMiddle9() []bool {
-	return []bool{true, true, true, true, false, true, true, true, true}
-}
-
-func mockIsPlaceOnBoardFalseFirst8() []bool {
-	return []bool{false, true, true, true, true, true, true, true}
-}
-
-func mockIsPlaceOnBoardFalseLast8() []bool {
-	return []bool{true, true, true, true, true, true, true, false}
-}
-
-func FourDirectionChipMapping() components.Board {
+func mockFourDirectionChipMapping() components.Board {
 	board := components.NewBoard()
 
 	var chips []models.ChipForPlacing
@@ -717,6 +647,76 @@ func FourDirectionChipMapping() components.Board {
 	return board
 }
 
+func mockIsPlaceOnBoardFalseFirst14() [][]bool {
+	return [][]bool{{false, true, true, true, true, true, true, true, true, true, true, true, true, true}}
+}
+
+func mockIsPlaceOnBoardFalseLast14() [][]bool {
+	return [][]bool{{true, true, true, true, true, true, true, true, true, true, true, true, true, false}}
+}
+
+func mockIsPlaceOnBoardFalseFirst6() []bool {
+	return []bool{false, true, true, true, true, true}
+}
+
+func mockIsPlaceOnBoardFalseLast6() []bool {
+	return []bool{true, true, true, true, true, false}
+}
+
+func mockIsPlaceOnBoardFalseMiddle9() []bool {
+	return []bool{true, true, true, true, false, true, true, true, true}
+}
+
+func mockIsPlaceOnBoardFalseFirst8() []bool {
+	return []bool{false, true, true, true, true, true, true, true}
+}
+
+func mockIsPlaceOnBoardFalseLast8() []bool {
+	return []bool{true, true, true, true, true, true, true, false}
+}
+
 func mockIsPlaceOnBoardFalseMiddle7() []bool {
 	return []bool{true, true, true, false, true, true, true}
+}
+
+func mockResultValueAppendFirst1D() [][]string {
+	return [][]string{
+		{
+			string(constants.Subtraction),
+			string(constants.Subtraction),
+			string(constants.Seven),
+			string(constants.Addition),
+			string(constants.Four),
+			string(constants.Equal),
+			string(constants.One),
+			string(constants.Fourteen),
+			string(constants.Subtraction),
+			string(constants.Five),
+			string(constants.Multiply),
+			string(constants.Nineteen),
+			string(constants.Equal),
+			string(constants.Three),
+		},
+	}
+}
+
+func mockResultValueAppendLast1D() [][]string {
+	return [][]string{
+		{
+			string(constants.Subtraction),
+			string(constants.Seven),
+			string(constants.Addition),
+			string(constants.Four),
+			string(constants.Equal),
+			string(constants.One),
+			string(constants.Fourteen),
+			string(constants.Subtraction),
+			string(constants.Five),
+			string(constants.Multiply),
+			string(constants.Nineteen),
+			string(constants.Equal),
+			string(constants.Three),
+			string(constants.Subtraction),
+		},
+	}
 }

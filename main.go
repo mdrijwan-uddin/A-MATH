@@ -249,11 +249,10 @@ func main() {
 
 	var chipForPlacing []models.ChipForPlacing
 
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{9, 6}, components.NewChip("+")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{10, 6}, components.NewChip("4")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 6}, components.NewChip("=")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{12, 6}, components.NewChip("1")))
-	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{13, 6}, components.NewChip("0")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 2}, components.NewChip("4")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 3}, components.NewChip("+")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 4}, components.NewChip("2")))
+	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 5}, components.NewChip("=")))
 
 	var coordinates [][2]int
 	for _, chips := range chipForPlacing {
