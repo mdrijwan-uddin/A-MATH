@@ -12,24 +12,35 @@ func straightLineMapping(
 	isPlacedOnBoard bool,
 	chipForCalculatingSet *[]models.ChipForCalculating,
 ) {
-	for _, chipForPlacing := range chipsForPlacing {
+	for _, chips := range chipsForPlacing {
 		// Determine the chip to use (normal or alternative)
-		chip := chipForPlacing.Chip
-		if chip.ChipType == string(constants.AlterOperatorType) || chip.ChipType == string(constants.BlankType) {
-			chip = components.NewChipForCalculating(
-				chipForPlacing.SelectedChip.Value,
-				chip.Score,
-				chipForPlacing.SelectedChip.ChipType,
-			)
+		var chip components.Chip
+		if isPlacedOnBoard {
+			chip = chips.Chip
+		} else {
+			chip = mapChipForCalculating(chips)
 		}
 
 		// Create a new ChipForCalculating and add it to the set
 		*chipForCalculatingSet = append(*chipForCalculatingSet, models.ChipForCalculating{
-			SquareType:         board.GetSquare(chipForPlacing.Position).SquareType,
+			SquareType:         board.GetSquare(chips.Position).SquareType,
 			ChipForCalculating: chip,
 			IsPlacedOnBoard:    isPlacedOnBoard,
 		})
 	}
+}
+
+func mapChipForCalculating(c models.ChipForPlacing) components.Chip {
+	chip := c.Chip
+	if chip.ChipType == string(constants.AlterOperatorType) || chip.ChipType == string(constants.BlankType) {
+		chip = components.NewChipForCalculating(
+			c.SelectedChip.Value,
+			chip.Score,
+			c.SelectedChip.ChipType,
+		)
+	}
+
+	return chip
 }
 
 func directionsMapping(
@@ -38,8 +49,6 @@ func directionsMapping(
 	chipForCalculatingSet *[]models.ChipForCalculating,
 	directions string,
 ) {
-	var chipsOnBoard []models.ChipForPlacing
-
 	// Define direction vectors for movement
 	var delta [4]int
 	var chipConnector [2]int
@@ -86,6 +95,7 @@ func directionsMapping(
 	}
 
 	// Collect chips along the line
+	var chipsOnBoard []models.ChipForPlacing
 	for i := 0; i < counter; i++ {
 		position := [2]int{
 			currentPosition[0] + i*delta[0] + i*delta[2],

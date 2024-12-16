@@ -23,17 +23,17 @@ func ValidateChipPlacement(board components.Board, coordinates [][2]int) {
 			return //add error
 		}
 
-		isVertical, isHorizontal := IsChipPlaceOnVerticalOrHorizontal(coordinates)
-		if !isVertical && !isHorizontal {
-			return //add error
-		}
-
-		isStraightLine, isSeperated := IsChipPlacingOnStraightLineOrSeparated(board, coordinates, isVertical)
-		if !isStraightLine && !isSeperated {
-			return //add error
-		}
 	}
 
+	isVertical, isHorizontal := IsChipPlaceOnVerticalOrHorizontal(coordinates)
+	if !isVertical && !isHorizontal {
+		return //add error
+	}
+
+	isStraightLine, isSeperated := IsChipPlacingOnStraightLineOrSeparated(board, coordinates, isVertical)
+	if !isStraightLine && !isSeperated {
+		return //add error
+	}
 }
 
 func IsChipPlaceOnCenterSquare(coordinates [][2]int) bool {

@@ -15,52 +15,7 @@ func SingleChipConnector(board components.Board, coordinates [2]int) []models.Ch
 	return connectors
 }
 
-// func StraightConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
-// 	var connectors []models.ChipConnector
-
-// 	if isVertical {
-
-// 		firstChipConnector := models.NewChipConnector(coordinates[0])
-// 		firstChipConnector.CheckTopConnector(board)
-// 		firstChipConnector.CheckHorizontalConnector(board)
-// 		connectors = append(connectors, firstChipConnector)
-
-// 		for i := 1; i < len(coordinates)-1; i++ {
-// 			connector := models.NewChipConnector(coordinates[i])
-// 			connector.CheckHorizontalConnector(board)
-// 			connectors = append(connectors, connector)
-// 		}
-
-// 		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
-// 		lastChipConnector.CheckHorizontalConnector(board)
-// 		lastChipConnector.CheckBottomConnector(board)
-// 		connectors = append(connectors, lastChipConnector)
-// 	}
-
-// 	if !isVertical { //isHorizontal
-
-// 		firstChipConnector := models.NewChipConnector(coordinates[0])
-// 		firstChipConnector.CheckLeftConnector(board)
-// 		firstChipConnector.CheckVerticalConnector(board)
-// 		connectors = append(connectors, firstChipConnector)
-
-// 		for i := 1; i < len(coordinates)-1; i++ {
-// 			connector := models.NewChipConnector(coordinates[i])
-// 			connector.CheckVerticalConnector(board)
-// 			connectors = append(connectors, connector)
-// 		}
-
-// 		lastChipConnector := models.NewChipConnector(coordinates[len(coordinates)-1])
-// 		lastChipConnector.CheckVerticalConnector(board)
-// 		lastChipConnector.CheckRightConnector(board)
-// 		connectors = append(connectors, lastChipConnector)
-// 	}
-
-// 	return connectors
-// }
-
 func StraightConnector(board components.Board, coordinates [][2]int, isVertical bool) []models.ChipConnector {
-
 	var connectors []models.ChipConnector
 
 	// Helper function to process the first chip
