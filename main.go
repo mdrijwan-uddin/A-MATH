@@ -2,6 +2,7 @@ package main
 
 import (
 	"A-MATH/game/actions"
+	"A-MATH/game/calculations"
 	"A-MATH/game/components"
 	"A-MATH/game/mappings"
 	"A-MATH/game/models"
@@ -173,18 +174,16 @@ func main() {
 	}
 	fmt.Println(ng)
 
-	// for _, ch := range chipForPlacing {
-	// 	fmt.Println(ng.Board.GetSquare(ch.Position))
-	// }
+	// // for _, ch := range chipForPlacing {
+	// // 	fmt.Println(ng.Board.GetSquare(ch.Position))
+	// // }
 
-	// var position [][2]int
-	// for _, chip := range chipForPlacing {
-	// 	position = append(position, chip.Position)
-	// }
-	// fmt.Println(rules.IsChipPlaceOnCenterSquare(position))
-	// fmt.Println(rules.IsChipPlaceOnVerticalOrHorizontal(position))
-
-	//--------------------------------------------------------------------------
+	// // var position [][2]int
+	// // for _, chip := range chipForPlacing {
+	// // 	position = append(position, chip.Position)
+	// // }
+	// // fmt.Println(rules.IsChipPlaceOnCenterSquare(position))
+	// // fmt.Println(rules.IsChipPlaceOnVerticalOrHorizontal(position))
 
 	var chipForPlacing []models.ChipForPlacing
 
@@ -210,9 +209,10 @@ func main() {
 	connector := mappings.CrossConnector(*ng.Board, coordinates, isVertical)
 
 	mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical, isStraightLine)
-	fmt.Println(mapping)
 
-	fmt.Println("---------------------------------------------------------")
+	calculations.ChipCalculationSeperation(mapping[0])
+
+	// fmt.Println("---------------------------------------------------------")
 	// fmt.Println(isVertical)
 	// fmt.Println(isHorizontal)
 	// fmt.Println(isStraightLine)
@@ -261,4 +261,13 @@ func main() {
 	// mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical)
 
 	// fmt.Println(mapping)
+
+	//--------------------------------------------------------------------------
+
+	n := calculations.NumberForCalculation{}
+	fmt.Println(n)
+
+	f := calculations.NewFraction(6, 3)
+	fmt.Println(f)
+
 }
