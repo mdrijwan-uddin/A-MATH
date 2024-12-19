@@ -1,6 +1,7 @@
 package calculations
 
 import (
+	"A-MATH/game/components"
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
 	"fmt"
@@ -28,23 +29,23 @@ func ChipCalculationManagement(chipsForCalculationSet [][]models.ChipForCalculat
 
 func ChipCalculationSeperation(chipsForCalculation []models.ChipForCalculating) {
 	var index = 0
-	var valueForCalSet [][]string
-	var valueForCal []string
+	var valueForCalSet [][]components.Chip
+	var valueForCal []components.Chip
 
 	for i, chips := range chipsForCalculation {
 		currentChip := chips.ChipForCalculating.Value
 		if currentChip == "=" {
 			for j := index; j < i; j++ {
-				valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating.Value)
+				valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating)
 			}
 			valueForCalSet = append(valueForCalSet, valueForCal)
 			index = i + 1
-			valueForCal = []string{} // Empty chip as placeholder
+			valueForCal = []components.Chip{} // Empty chip as placeholder
 		}
 	}
 
 	for j := index; j < len(chipsForCalculation); j++ {
-		valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating.Value)
+		valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating)
 	}
 	valueForCalSet = append(valueForCalSet, valueForCal)
 
@@ -52,7 +53,21 @@ func ChipCalculationSeperation(chipsForCalculation []models.ChipForCalculating) 
 }
 
 // func calculating(valueForCalSet [][]string) {
+// 	var n = 0
+// 	var num [][]NumberForCalculation
+// 	var operator [][]string
+// 	var isFirstNumberNegative = false
 
+// 	for _, valueForCal := range valueForCalSet {
+// 		for i := 0; i < len(valueForCal); i++ {
+// 			if i == 0 && valueForCal[i] == string(constants.Subtraction) {
+// 				isFirstNumberNegative = true
+// 			}
+
+// 			if
+
+// 		}
+// 	}
 // }
 
 func mathematicOperating(firstNum, secondNum NumberForCalculation, sign string) NumberForCalculation {

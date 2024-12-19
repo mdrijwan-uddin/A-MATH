@@ -210,6 +210,8 @@ func main() {
 
 	mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical, isStraightLine)
 
+	fmt.Println("---------------------------------------------------------")
+
 	calculations.ChipCalculationSeperation(mapping[0])
 
 	// fmt.Println("---------------------------------------------------------")
@@ -263,11 +265,5 @@ func main() {
 	// fmt.Println(mapping)
 
 	//--------------------------------------------------------------------------
-
-	n := calculations.NumberForCalculation{}
-	fmt.Println(n)
-
-	f := calculations.NewFraction(6, 3)
-	fmt.Println(f)
 
 }
