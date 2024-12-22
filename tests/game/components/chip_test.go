@@ -116,3 +116,12 @@ func TestNewChipForCalculating(t *testing.T) {
 		})
 	}
 }
+
+func TestIsEmptyChip(t *testing.T) {
+	c := components.Chip{}
+	result := c.IsEmpty()
+
+	if result != true {
+		t.Errorf("IsEmpty() function is false")
+	}
+}

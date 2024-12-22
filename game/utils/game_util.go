@@ -58,3 +58,12 @@ func ValidateChip(values string) error {
 		return nil
 	}
 }
+
+// need to fix an error
+func RemoveSlideElement[T any](slice []T, index int) ([]T, error) {
+	if index < 0 || index >= len(slice) {
+		return slice, fmt.Errorf("index out of range")
+	}
+	// Remove the element at the specified index
+	return append(slice[:index], slice[index+1:]...), nil
+}

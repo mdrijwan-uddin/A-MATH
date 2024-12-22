@@ -211,8 +211,18 @@ func main() {
 	mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical, isStraightLine)
 
 	fmt.Println("---------------------------------------------------------")
+	fmt.Println(mapping)
+	fmt.Println("---------------------------------------------------------")
 
-	calculations.ChipCalculationSeperation(mapping[0])
+	result, err := calculations.Management(mapping)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(result)
+
+	// calculations.ChipCalculationSeperation(mapping[0])
+
+	// fmt.Println("Score:", calculations.ScoreCalculation(mapping[0]))
 
 	// fmt.Println("---------------------------------------------------------")
 	// fmt.Println(isVertical)

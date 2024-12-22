@@ -1,76 +1,205 @@
 package calculations
 
 import (
+	"A-MATH/err"
 	"A-MATH/game/components"
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
+	"A-MATH/game/utils"
 	"fmt"
+	"strconv"
 )
 
-type NumberForCalculation struct {
+type numberForCalculation struct {
 	Integer  int
 	Fraction Fraction
 }
 
-func ChipCalculationManagement(chipsForCalculationSet [][]models.ChipForCalculating) {
-	// var index int
-	var valueForCalSet [][]string
-	var valueForCal []string
+func Management(chipsForCalculationSet [][]models.ChipForCalculating) (int, error) {
+	var totalScore int
 
 	for _, chipsForCalculation := range chipsForCalculationSet {
-		for _, chips := range chipsForCalculation {
-			valueForCal = append(valueForCal, chips.ChipForCalculating.Value)
+		if chipSeperation(chipsForCalculation) {
+			score := scoring(chipsForCalculation)
+			totalScore += score
+		} else {
+			return -1, err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 		}
-		valueForCalSet = append(valueForCalSet, valueForCal)
 	}
-
-	fmt.Println(valueForCalSet)
+	return totalScore, nil
 }
 
-func ChipCalculationSeperation(chipsForCalculation []models.ChipForCalculating) {
-	var index = 0
-	var valueForCalSet [][]components.Chip
-	var valueForCal []components.Chip
+func chipSeperation(chipsForCalculation []models.ChipForCalculating) bool {
+	var (
+		index           = 0
+		valueForCalSet  [][]components.Chip
+		currentCalGroup []components.Chip
+	)
 
 	for i, chips := range chipsForCalculation {
 		currentChip := chips.ChipForCalculating.Value
-		if currentChip == "=" {
+
+		if currentChip == string(constants.Equal) {
 			for j := index; j < i; j++ {
-				valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating)
+				currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
 			}
-			valueForCalSet = append(valueForCalSet, valueForCal)
+			valueForCalSet = append(valueForCalSet, currentCalGroup)
 			index = i + 1
-			valueForCal = []components.Chip{} // Empty chip as placeholder
+			currentCalGroup = []components.Chip{} // Reset placeholder
 		}
 	}
 
 	for j := index; j < len(chipsForCalculation); j++ {
-		valueForCal = append(valueForCal, chipsForCalculation[j].ChipForCalculating)
+		currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
 	}
-	valueForCalSet = append(valueForCalSet, valueForCal)
+	valueForCalSet = append(valueForCalSet, currentCalGroup)
 
-	fmt.Println(valueForCalSet)
+	// Process the collected groups of chips
+	result := processCalculating(valueForCalSet)
+
+	// Debug output
+	fmt.Println("Result:", processCalculating(valueForCalSet))
+
+	return result
 }
 
-// func calculating(valueForCalSet [][]string) {
-// 	var n = 0
-// 	var num [][]NumberForCalculation
-// 	var operator [][]string
-// 	var isFirstNumberNegative = false
+func processCalculating(chipSets [][]components.Chip) bool {
+	allNumbers, allOperators := parseChipSets(chipSets)
 
-// 	for _, valueForCal := range valueForCalSet {
-// 		for i := 0; i < len(valueForCal); i++ {
-// 			if i == 0 && valueForCal[i] == string(constants.Subtraction) {
-// 				isFirstNumberNegative = true
-// 			}
+	// Debug output
+	fmt.Println("Parsed Numbers:", allNumbers)
+	fmt.Println("Parsed Operators:", allOperators)
 
-// 			if
+	for i := 0; i < len(allOperators); i++ {
+		// Process multiplication and division first
+		allNumbers[i], allOperators[i] = processOperators(allNumbers[i], allOperators[i],
+			[]string{
+				string(constants.Multiply),
+				string(constants.Division),
+			})
 
-// 		}
-// 	}
-// }
+		// Process addition and subtraction
+		allNumbers[i], allOperators[i] = processOperators(allNumbers[i], allOperators[i],
+			[]string{
+				string(constants.Addition),
+				string(constants.Subtraction),
+			})
+	}
 
-func mathematicOperating(firstNum, secondNum NumberForCalculation, sign string) NumberForCalculation {
+	// Debug output
+	fmt.Println("Parsed Numbers:", allNumbers)
+	fmt.Println("Parsed Operators:", allOperators)
+
+	return processComparition(allNumbers)
+}
+
+func processComparition(allNumbers [][]numberForCalculation) bool {
+	for i := 0; i < len(allNumbers)-1; i++ {
+		if allNumbers[i][0] != allNumbers[i+1][0] {
+			return false
+		}
+	}
+	return true
+}
+
+func processOperators(numbers []numberForCalculation, operators []string, targetOperators []string) ([]numberForCalculation, []string) {
+	j := 0
+	for j < len(operators) {
+
+		if len(operators) <= 0 {
+			break
+		}
+
+		if contains(targetOperators, operators[j]) {
+			numbers[j] = mathematicOperating(numbers[j], operators[j], numbers[j+1])
+
+			numberTemp, _ := utils.RemoveSlideElement(numbers, j+1)
+			numbers = numberTemp
+
+			OperatorTemp, _ := utils.RemoveSlideElement(operators, j)
+			operators = OperatorTemp
+
+		} else {
+			j++
+		}
+
+	}
+	return numbers, operators
+}
+
+// contains checks if a slice contains a specific string.
+func contains(slice []string, item string) bool {
+	for _, v := range slice {
+		if v == item {
+			return true
+		}
+	}
+	return false
+}
+
+func parseChipSets(chipSets [][]components.Chip) ([][]numberForCalculation, [][]string) {
+	var allNumbers [][]numberForCalculation
+	var allOperators [][]string
+
+	for _, chipSet := range chipSets {
+		numbersForCurrentSet, operatorsForCurrentSet := parseSingleChipSet(chipSet)
+		allNumbers = append(allNumbers, numbersForCurrentSet)
+		allOperators = append(allOperators, operatorsForCurrentSet)
+	}
+
+	return allNumbers, allOperators
+}
+
+func parseSingleChipSet(chipSet []components.Chip) ([]numberForCalculation, []string) {
+	var numbersForCurrentSet []numberForCalculation
+	var operatorsForCurrentSet []string
+	currentNumber := 0
+	isNegative := false
+
+	for i, chip := range chipSet {
+		if i == 0 && chip.Value == string(constants.Subtraction) {
+			isNegative = true
+		}
+
+		currentNumber = processChip(chip, currentNumber, &isNegative, &numbersForCurrentSet, &operatorsForCurrentSet)
+	}
+
+	// Add the last number in the current set
+	numbersForCurrentSet = append(numbersForCurrentSet, numberForCalculation{currentNumber, Fraction{}})
+
+	return numbersForCurrentSet, operatorsForCurrentSet
+}
+
+func processChip(
+	chip components.Chip,
+	currentNumber int,
+	isNegative *bool,
+	numbersForCurrentSet *[]numberForCalculation,
+	operatorsForCurrentSet *[]string,
+) int {
+
+	switch chip.ChipType {
+	case string(constants.OneDigitNumberType):
+		digitValue, _ := strconv.Atoi(chip.Value)
+		currentNumber = (currentNumber * 10) + digitValue
+
+	case string(constants.TwoDigitNumberType):
+		currentNumber, _ = strconv.Atoi(chip.Value)
+
+	case string(constants.OperatorType):
+		if *isNegative {
+			currentNumber *= -1
+			*isNegative = false
+		}
+		*numbersForCurrentSet = append(*numbersForCurrentSet, numberForCalculation{currentNumber, Fraction{}})
+		*operatorsForCurrentSet = append(*operatorsForCurrentSet, chip.Value)
+		currentNumber = 0
+	}
+
+	return currentNumber
+}
+
+func mathematicOperating(firstNum numberForCalculation, sign string, secondNum numberForCalculation) numberForCalculation {
 
 	switch sign {
 	case string(constants.Addition):
@@ -83,10 +212,10 @@ func mathematicOperating(firstNum, secondNum NumberForCalculation, sign string) 
 		return divisionOperating(firstNum, secondNum)
 	}
 
-	return NumberForCalculation{}
+	return numberForCalculation{}
 }
 
-func additionOperating(first, second NumberForCalculation) NumberForCalculation {
+func additionOperating(first, second numberForCalculation) numberForCalculation {
 	resultNum := 0
 	resultFraction := Fraction{}
 
@@ -121,10 +250,10 @@ func additionOperating(first, second NumberForCalculation) NumberForCalculation 
 		resultNum = first.Integer + second.Integer
 	}
 
-	return NumberForCalculation{resultNum, resultFraction}
+	return numberForCalculation{resultNum, resultFraction}
 }
 
-func subtractionOperating(first, second NumberForCalculation) NumberForCalculation {
+func subtractionOperating(first, second numberForCalculation) numberForCalculation {
 	resultNum := 0
 	resultFraction := Fraction{}
 
@@ -159,10 +288,10 @@ func subtractionOperating(first, second NumberForCalculation) NumberForCalculati
 		resultNum = first.Integer - second.Integer
 	}
 
-	return NumberForCalculation{resultNum, resultFraction}
+	return numberForCalculation{resultNum, resultFraction}
 }
 
-func multiplicationOperating(first, second NumberForCalculation) NumberForCalculation {
+func multiplicationOperating(first, second numberForCalculation) numberForCalculation {
 	resultNum := 0
 	resultFraction := Fraction{}
 
@@ -197,10 +326,10 @@ func multiplicationOperating(first, second NumberForCalculation) NumberForCalcul
 		resultNum = first.Integer * second.Integer
 	}
 
-	return NumberForCalculation{resultNum, resultFraction}
+	return numberForCalculation{resultNum, resultFraction}
 }
 
-func divisionOperating(first, second NumberForCalculation) NumberForCalculation {
+func divisionOperating(first, second numberForCalculation) numberForCalculation {
 	resultNum := 0
 	resultFraction := Fraction{}
 
@@ -236,5 +365,5 @@ func divisionOperating(first, second NumberForCalculation) NumberForCalculation 
 		handleFraction(newFraction)
 	}
 
-	return NumberForCalculation{resultNum, resultFraction}
+	return numberForCalculation{resultNum, resultFraction}
 }
