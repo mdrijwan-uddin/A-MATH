@@ -1,7 +1,6 @@
 package calculations
 
 import (
-	"A-MATH/err"
 	"A-MATH/game/components"
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
@@ -15,21 +14,7 @@ type numberForCalculation struct {
 	Fraction Fraction
 }
 
-func Management(chipsForCalculationSet [][]models.ChipForCalculating) (int, error) {
-	var totalScore int
-
-	for _, chipsForCalculation := range chipsForCalculationSet {
-		if chipSeperation(chipsForCalculation) {
-			score := scoring(chipsForCalculation)
-			totalScore += score
-		} else {
-			return -1, err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
-		}
-	}
-	return totalScore, nil
-}
-
-func chipSeperation(chipsForCalculation []models.ChipForCalculating) bool {
+func EquationSeperation(chipsForCalculation []models.ChipForCalculating) bool {
 	var (
 		index           = 0
 		valueForCalSet  [][]components.Chip
@@ -219,35 +204,21 @@ func additionOperating(first, second numberForCalculation) numberForCalculation 
 	resultNum := 0
 	resultFraction := Fraction{}
 
-	handleFraction := func(fraction Fraction) {
-		if fraction.Denominator == 1 {
-			resultNum = fraction.Numerator
-		} else {
-			resultFraction = fraction
-		}
-	}
-
-	// Both inputs have fractions
-	if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		first.Fraction.AddFractionBy(second.Fraction)
-		handleFraction(first.Fraction)
-	}
-
-	// First has a fraction, second is an integer
-	if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
-		first.Fraction.AddBy(second.Integer)
-		handleFraction(first.Fraction)
-	}
-
-	// First is an integer, second has a fraction
-	if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		second.Fraction.AddBy(first.Integer)
-		handleFraction(second.Fraction)
-	}
-
-	// Both inputs are integers
 	if first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// Both inputs are integers
 		resultNum = first.Integer + second.Integer
+	} else if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// First has a fraction, second is an integer
+		first.Fraction.AddBy(second.Integer)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
+	} else if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// First is an integer, second has a fraction
+		second.Fraction.AddBy(first.Integer)
+		handleFraction(second.Fraction, &resultNum, &resultFraction)
+	} else if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// Both inputs have fractions
+		first.Fraction.AddFractionBy(second.Fraction)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
 	}
 
 	return numberForCalculation{resultNum, resultFraction}
@@ -257,35 +228,21 @@ func subtractionOperating(first, second numberForCalculation) numberForCalculati
 	resultNum := 0
 	resultFraction := Fraction{}
 
-	handleFraction := func(fraction Fraction) {
-		if fraction.Denominator == 1 {
-			resultNum = fraction.Numerator
-		} else {
-			resultFraction = fraction
-		}
-	}
-
-	// Both inputs have fractions
-	if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		first.Fraction.SubtractFractionBy(second.Fraction)
-		handleFraction(first.Fraction)
-	}
-
-	// First has a fraction, second is an integer
-	if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
-		first.Fraction.SubtractBy(second.Integer)
-		handleFraction(first.Fraction)
-	}
-
-	// First is an integer, second has a fraction
-	if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		second.Fraction.IntegerSubtractFraction(first.Integer)
-		handleFraction(second.Fraction)
-	}
-
-	// Both inputs are integers
 	if first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// Both inputs are integers
 		resultNum = first.Integer - second.Integer
+	} else if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// First has a fraction, second is an integer
+		first.Fraction.SubtractBy(second.Integer)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
+	} else if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// First is an integer, second has a fraction
+		second.Fraction.IntegerSubtractFraction(first.Integer)
+		handleFraction(second.Fraction, &resultNum, &resultFraction)
+	} else if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// Both inputs have fractions
+		first.Fraction.SubtractFractionBy(second.Fraction)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
 	}
 
 	return numberForCalculation{resultNum, resultFraction}
@@ -295,35 +252,21 @@ func multiplicationOperating(first, second numberForCalculation) numberForCalcul
 	resultNum := 0
 	resultFraction := Fraction{}
 
-	handleFraction := func(fraction Fraction) {
-		if fraction.Denominator == 1 {
-			resultNum = fraction.Numerator
-		} else {
-			resultFraction = fraction
-		}
-	}
-
-	// Both inputs have fractions
-	if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		first.Fraction.MultiplyFractionBy(second.Fraction)
-		handleFraction(first.Fraction)
-	}
-
-	// First has a fraction, second is an integer
-	if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
-		first.Fraction.MultiplyBy(second.Integer)
-		handleFraction(first.Fraction)
-	}
-
-	// First is an integer, second has a fraction
-	if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		second.Fraction.MultiplyBy(first.Integer)
-		handleFraction(second.Fraction)
-	}
-
-	// Both inputs are integers
 	if first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// Both inputs are integers
 		resultNum = first.Integer * second.Integer
+	} else if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// First has a fraction, second is an integer
+		first.Fraction.MultiplyBy(second.Integer)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
+	} else if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// First is an integer, second has a fraction
+		second.Fraction.MultiplyBy(first.Integer)
+		handleFraction(second.Fraction, &resultNum, &resultFraction)
+	} else if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// Both inputs have fractions
+		first.Fraction.MultiplyFractionBy(second.Fraction)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
 	}
 
 	return numberForCalculation{resultNum, resultFraction}
@@ -333,37 +276,33 @@ func divisionOperating(first, second numberForCalculation) numberForCalculation 
 	resultNum := 0
 	resultFraction := Fraction{}
 
-	handleFraction := func(fraction Fraction) {
-		if fraction.Denominator == 1 {
-			resultNum = fraction.Numerator
-		} else {
-			resultFraction = fraction
-		}
-	}
-
-	// Both inputs have fractions
-	if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		first.Fraction.DivideFractionBy(second.Fraction)
-		handleFraction(first.Fraction)
-	}
-
-	// First has a fraction, second is an integer
-	if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
-		first.Fraction.DivideBy(second.Integer)
-		handleFraction(first.Fraction)
-	}
-
-	// First is an integer, second has a fraction
-	if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
-		second.Fraction.IntegerDivideFraction(first.Integer)
-		handleFraction(second.Fraction)
-	}
-
-	// Both inputs are integers
 	if first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// Both inputs are integers
 		newFraction := NewFraction(first.Integer, second.Integer)
-		handleFraction(newFraction)
+		handleFraction(newFraction, &resultNum, &resultFraction)
+	} else if !first.Fraction.IsEmpty() && second.Fraction.IsEmpty() {
+		// First has a fraction, second is an integer
+		first.Fraction.DivideBy(second.Integer)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
+	} else if first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// First is an integer, second has a fraction
+		second.Fraction.IntegerDivideFraction(first.Integer)
+		handleFraction(second.Fraction, &resultNum, &resultFraction)
+	} else if !first.Fraction.IsEmpty() && !second.Fraction.IsEmpty() {
+		// Both inputs have fractions
+		first.Fraction.DivideFractionBy(second.Fraction)
+		handleFraction(first.Fraction, &resultNum, &resultFraction)
 	}
 
 	return numberForCalculation{resultNum, resultFraction}
+}
+
+func handleFraction(fraction Fraction, resultNum *int, resultFraction *Fraction) {
+	if fraction.Denominator == 1 {
+		*resultNum = fraction.Numerator
+		*resultFraction = Fraction{}
+	} else {
+		*resultNum = 0
+		*resultFraction = fraction
+	}
 }

@@ -5,7 +5,7 @@ import (
 	"A-MATH/game/models"
 )
 
-func scoring(chipsForCalculation []models.ChipForCalculating) int {
+func Score(chipsForCalculation []models.ChipForCalculating) int {
 	var currentScore = 0
 	var multiplier = 1
 

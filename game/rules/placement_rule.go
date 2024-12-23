@@ -1,39 +1,42 @@
 package rules
 
 import (
+	"A-MATH/err"
 	"A-MATH/game/components"
+	"A-MATH/game/constants"
 )
 
-// not finish
-func ValidateChipPlacement(board components.Board, coordinates [][2]int) {
+func ValidateChipPlacement(board components.Board, coordinates [][2]int) (bool, bool, error) {
 	if len(coordinates) == 0 {
-		return //add error
+		return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 	}
 
 	if board.IsEmpty() {
 		if len(coordinates) < 3 {
-			return //add error
+			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
 
 		if !IsChipPlaceOnCenterSquare(coordinates) {
-			return //add error
+			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
 	} else {
 		if IsChipsPlacedOnOccupiedSquare(board, coordinates) {
-			return //add error
+			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
 
 	}
 
 	isVertical, isHorizontal := IsChipPlaceOnVerticalOrHorizontal(coordinates)
 	if !isVertical && !isHorizontal {
-		return //add error
+		return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 	}
 
 	isStraightLine, isSeperated := IsChipPlacingOnStraightLineOrSeparated(board, coordinates, isVertical)
 	if !isStraightLine && !isSeperated {
-		return //add error
+		return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 	}
+
+	return isVertical, isStraightLine, nil
 }
 
 func IsChipPlaceOnCenterSquare(coordinates [][2]int) bool {

@@ -47,37 +47,6 @@ func main() {
 
 	//--------------------------------------------------------------------------
 
-	// a, _ := game.NewChip("1")
-	// b, _ := game.NewChip("19")
-	// c, _ := game.NewChip("=")
-	// d, _ := game.NewChip("=")
-	// e, _ := game.NewChip("7")
-	// f, _ := game.NewChip("+-")
-	// g, _ := game.NewChip("+")
-	// h, _ := game.NewChip("0")
-
-	// r := game.NewRack(1)
-	// fmt.Println(r)
-
-	// r.Add(a)
-	// r.Add(b)
-	// r.Add(c)
-	// r.Add(d)
-	// r.Add(e)
-	// r.Add(f)
-	// r.Add(g)
-	// r.Add(h)
-	// fmt.Println(r)
-	// fmt.Println(r.IsFull())
-
-	// r.Remove(a)
-	// fmt.Println(r)
-
-	// r.Remove(e)
-	// fmt.Println(r)
-
-	//--------------------------------------------------------------------------
-
 	// p1 := players.NewPlayer(1, "p1")
 	// p2 := players.NewPlayer(2, "p2")
 	// ng := actions.NewGame([2]players.Player{p1, p2})

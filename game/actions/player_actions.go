@@ -10,11 +10,6 @@ func (g *Game) Submit(player *inGamePlayers, c []models.ChipForPlacing) {
 		return //add error
 	}
 
-	// var position [][2]int
-	// for _, chip := range c {
-	// 	position = append(position, chip.Position)
-	// }
-
 	for _, chip := range c {
 		g.Board.Add(chip.Position, chip.Chip)
 		player.Racks.Remove(chip.Chip)
