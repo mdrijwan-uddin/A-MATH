@@ -7,46 +7,41 @@ import (
 
 func ValidateMathameticPrinciple(chipSet []components.Chip) {
 
-	if !haveEqualsInEquation(chipSet) {
+	if !HaveEqualsInEquation(chipSet) {
 		return // add error
 	}
 
-	if !isChipsLenghtReasonably(chipSet) {
+	if !IsChipsLenghtReasonably(chipSet) {
 		return // add error
 	}
 
-	if isOperationPlaceOnUnusualLocation(chipSet) {
+	if IsOperationPlaceOnUnusualLocation(chipSet) {
 		return // add error
 	}
 
-	if areOperationNextToEachOther(chipSet) {
+	if AreOperationNextToEachOther(chipSet) {
 		return // add error
 	}
 
-	if areTwoDigitNumbersStackedWithTheOtherNumber(chipSet) {
+	if AreTwoDigitNumbersStackedWithTheOtherNumber(chipSet) {
 		return // add error
 	}
 
-	if !areOneDigitNumbersReasonablyStacked(chipSet) {
+	if !AreOneDigitNumbersReasonablyStacked(chipSet) {
 		return // add error
 	}
 
-	if isZeroAtTheBeginWithNumberFormed(chipSet) {
+	if IsZeroAtTheBeginWithNumberFormed(chipSet) {
 		return // add error
 	}
 
-	if isDivideByZero(chipSet) {
+	if HasDivideByZero(chipSet) {
 		return // add error
 	}
-}
-
-// lenght of calculating chip should be between 3 to 15
-func isChipsLenghtReasonably(chips []components.Chip) bool {
-	return 3 <= len(chips) && len(chips) <= constants.BoardRange
 }
 
 // Need atlease 1 Equal Chip in the equations
-func haveEqualsInEquation(chips []components.Chip) bool {
+func HaveEqualsInEquation(chips []components.Chip) bool {
 	for _, chip := range chips {
 		if chip.Value == string(constants.Equal) {
 			return true
@@ -55,8 +50,13 @@ func haveEqualsInEquation(chips []components.Chip) bool {
 	return false
 }
 
+// lenght of calculating chip should be between 3 to 15
+func IsChipsLenghtReasonably(chips []components.Chip) bool {
+	return 3 <= len(chips) && len(chips) <= constants.BoardRange
+}
+
 // Operation-type Chip in the equations shouldn't be place at the beginning and the end of the equation (except Subtraction-sign Chip)
-func isOperationPlaceOnUnusualLocation(chips []components.Chip) bool {
+func IsOperationPlaceOnUnusualLocation(chips []components.Chip) bool {
 	firstChip := chips[0]
 	lastChip := chips[len(chips)-1]
 
@@ -65,16 +65,18 @@ func isOperationPlaceOnUnusualLocation(chips []components.Chip) bool {
 }
 
 // Operation-type Chip in the equations shouldn't be place at next to the each other (except Equal Chip and Subtraction-sign Chip)
-func areOperationNextToEachOther(chips []components.Chip) bool {
+func AreOperationNextToEachOther(chips []components.Chip) bool {
 	for i := 0; i < len(chips)-1; i++ {
 		currentChip := chips[i]
 		nextChip := chips[i+1]
 
 		if isOperationType(currentChip) && isOperationType(nextChip) {
-			if currentChip.Value == string(constants.Equal) || nextChip.Value == string(constants.Subtraction) {
+
+			if currentChip.Value == string(constants.Equal) && nextChip.Value == string(constants.Subtraction) {
 				continue
+			} else {
+				return true
 			}
-			return true
 		}
 	}
 	return false
@@ -86,7 +88,7 @@ func isOperationType(chip components.Chip) bool {
 }
 
 // Two-Digit-Number-type Chip in the equations shouldn't be place at next to the other number
-func areTwoDigitNumbersStackedWithTheOtherNumber(chips []components.Chip) bool {
+func AreTwoDigitNumbersStackedWithTheOtherNumber(chips []components.Chip) bool {
 	for i := 0; i < len(chips)-1; i++ {
 		currentChip := chips[i]
 		nextChip := chips[i+1]
@@ -110,7 +112,7 @@ func areTwoDigitNumbersStackedWithTheOtherNumber(chips []components.Chip) bool {
 }
 
 // One-Digit-Number-type Chip in the equations are allow to be place at next to the each other for maximum 3 stacks (Become three digit number)
-func areOneDigitNumbersReasonablyStacked(chips []components.Chip) bool {
+func AreOneDigitNumbersReasonablyStacked(chips []components.Chip) bool {
 	counter := 0
 	for _, chip := range chips {
 		if chip.ChipType == string(constants.OneDigitNumberType) {
@@ -127,7 +129,7 @@ func areOneDigitNumbersReasonablyStacked(chips []components.Chip) bool {
 }
 
 // Zero Chip in the equations aren't allow to be place at next to the each other for maximum 3 stacks (Become three digit number)
-func isZeroAtTheBeginWithNumberFormed(chips []components.Chip) bool {
+func IsZeroAtTheBeginWithNumberFormed(chips []components.Chip) bool {
 
 	for i := 0; i < len(chips)-1; i++ {
 		previousChip := chips[i-1]
@@ -150,7 +152,7 @@ func isZeroAtTheBeginWithNumberFormed(chips []components.Chip) bool {
 }
 
 // The Equation with divide by zero is not allowed
-func isDivideByZero(chips []components.Chip) bool {
+func HasDivideByZero(chips []components.Chip) bool {
 
 	for i := 0; i < len(chips)-1; i++ {
 		currentChip := chips[i]

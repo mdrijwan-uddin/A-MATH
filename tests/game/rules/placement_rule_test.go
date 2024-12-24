@@ -14,7 +14,7 @@ func TestIsChipPlaceOnCenterSquare(t *testing.T) {
 		expected    bool
 	}{
 		{
-			name: "Correct vertical chip placement",
+			name: "Correct Center Square vertical chip placement",
 			coordinates: [][2]int{
 				{8, 8},
 				{8, 9},
@@ -28,14 +28,14 @@ func TestIsChipPlaceOnCenterSquare(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "Correct horizontal chip placement",
+			name: "Correct Center Square horizontal chip placement",
 			coordinates: [][2]int{
 				{1, 8}, {2, 8}, {3, 8}, {4, 8}, {5, 8}, {6, 8}, {7, 8}, {8, 8},
 			},
 			expected: true,
 		},
 		{
-			name: "Incorrect vertical chip placement",
+			name: "Incorrect Center Square vertical chip placement",
 			coordinates: [][2]int{
 				{9, 8},
 				{9, 9},
@@ -49,7 +49,7 @@ func TestIsChipPlaceOnCenterSquare(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "Incorrect horizontal chip placement",
+			name: "Incorrect Center Square horizontal chip placement",
 			coordinates: [][2]int{
 				{1, 9}, {2, 9}, {3, 9}, {4, 9}, {5, 9}, {6, 9}, {7, 9}, {8, 9},
 			},
