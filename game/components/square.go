@@ -9,14 +9,14 @@ import (
 )
 
 type Square struct {
-	Position    [2]int
+	Coordinate  [2]int
 	SquareType  string
 	ChipPlaceOn Chip
 }
 
-func NewSquare(coordinate [2]int) Square {
-	squareType := setSquareType(coordinate)
-	return Square{coordinate, squareType, Chip{}}
+func NewSquare(coords [2]int) Square {
+	squareType := setSquareType(coords)
+	return Square{coords, squareType, Chip{}}
 }
 
 func setSquareType(co [2]int) string {
@@ -79,9 +79,9 @@ func (s Square) HasChipPlacedOn() bool {
 func (s Square) String() string {
 	var sb strings.Builder
 	sb.WriteString("Position: [")
-	sb.WriteString(strconv.Itoa(s.Position[0]))
+	sb.WriteString(strconv.Itoa(s.Coordinate[0]))
 	sb.WriteString(", ")
-	sb.WriteString(strconv.Itoa(s.Position[1]))
+	sb.WriteString(strconv.Itoa(s.Coordinate[1]))
 	sb.WriteString("]|\tType: ")
 	sb.WriteString(s.SquareType)
 	sb.WriteString("\t|Chip: ")

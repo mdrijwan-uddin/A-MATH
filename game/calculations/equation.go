@@ -14,41 +14,8 @@ type numberForCalculation struct {
 	Fraction Fraction
 }
 
-func EquationSeperation(chipsForCalculation []models.ChipForCalculating) bool {
-	var (
-		index           = 0
-		valueForCalSet  [][]components.Chip
-		currentCalGroup []components.Chip
-	)
-
-	for i, chips := range chipsForCalculation {
-		currentChip := chips.ChipForCalculating.Value
-
-		if currentChip == string(constants.Equal) {
-			for j := index; j < i; j++ {
-				currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
-			}
-			valueForCalSet = append(valueForCalSet, currentCalGroup)
-			index = i + 1
-			currentCalGroup = []components.Chip{} // Reset placeholder
-		}
-	}
-
-	for j := index; j < len(chipsForCalculation); j++ {
-		currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
-	}
-	valueForCalSet = append(valueForCalSet, currentCalGroup)
-
-	// Process the collected groups of chips
-	result := processCalculating(valueForCalSet)
-
-	// Debug output
-	fmt.Println("Result:", processCalculating(valueForCalSet))
-
-	return result
-}
-
-func processCalculating(chipSets [][]components.Chip) bool {
+func ProcessCalculating(chipsForCalculation []models.ChipForCalculating) bool {
+	chipSets := equationSeperation(chipsForCalculation)
 	allNumbers, allOperators := parseChipSets(chipSets)
 
 	// Debug output
@@ -75,51 +42,41 @@ func processCalculating(chipSets [][]components.Chip) bool {
 	fmt.Println("Parsed Numbers:", allNumbers)
 	fmt.Println("Parsed Operators:", allOperators)
 
-	return processComparition(allNumbers)
+	// Process the compare groups of chips
+	result := processComparition(allNumbers)
+
+	// Debug output
+	fmt.Println("Result:", result)
+
+	return result
 }
 
-func processComparition(allNumbers [][]numberForCalculation) bool {
-	for i := 0; i < len(allNumbers)-1; i++ {
-		if allNumbers[i][0] != allNumbers[i+1][0] {
-			return false
+func equationSeperation(chipsForCalculation []models.ChipForCalculating) [][]components.Chip {
+	var (
+		index           = 0
+		valueForCalSet  [][]components.Chip
+		currentCalGroup []components.Chip
+	)
+
+	for i, chips := range chipsForCalculation {
+		currentChip := chips.ChipForCalculating.Value
+
+		if currentChip == string(constants.Equal) {
+			for j := index; j < i; j++ {
+				currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
+			}
+			valueForCalSet = append(valueForCalSet, currentCalGroup)
+			index = i + 1
+			currentCalGroup = []components.Chip{} // Reset placeholder
 		}
 	}
-	return true
-}
 
-func processOperators(numbers []numberForCalculation, operators []string, targetOperators []string) ([]numberForCalculation, []string) {
-	j := 0
-	for j < len(operators) {
-
-		if len(operators) <= 0 {
-			break
-		}
-
-		if contains(targetOperators, operators[j]) {
-			numbers[j] = mathematicOperating(numbers[j], operators[j], numbers[j+1])
-
-			numberTemp, _ := utils.RemoveSlideElement(numbers, j+1)
-			numbers = numberTemp
-
-			OperatorTemp, _ := utils.RemoveSlideElement(operators, j)
-			operators = OperatorTemp
-
-		} else {
-			j++
-		}
-
+	for j := index; j < len(chipsForCalculation); j++ {
+		currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
 	}
-	return numbers, operators
-}
+	valueForCalSet = append(valueForCalSet, currentCalGroup)
 
-// contains checks if a slice contains a specific string.
-func contains(slice []string, item string) bool {
-	for _, v := range slice {
-		if v == item {
-			return true
-		}
-	}
-	return false
+	return valueForCalSet
 }
 
 func parseChipSets(chipSets [][]components.Chip) ([][]numberForCalculation, [][]string) {
@@ -182,6 +139,41 @@ func processChip(
 	}
 
 	return currentNumber
+}
+
+func processOperators(numbers []numberForCalculation, operators []string, targetOperators []string) ([]numberForCalculation, []string) {
+	j := 0
+	for j < len(operators) {
+
+		if len(operators) <= 0 {
+			break
+		}
+
+		if contains(targetOperators, operators[j]) {
+			numbers[j] = mathematicOperating(numbers[j], operators[j], numbers[j+1])
+
+			numberTemp, _ := utils.RemoveSlideElement(numbers, j+1)
+			numbers = numberTemp
+
+			OperatorTemp, _ := utils.RemoveSlideElement(operators, j)
+			operators = OperatorTemp
+
+		} else {
+			j++
+		}
+
+	}
+	return numbers, operators
+}
+
+// contains checks if a slice contains a specific string.
+func contains(slice []string, item string) bool {
+	for _, v := range slice {
+		if v == item {
+			return true
+		}
+	}
+	return false
 }
 
 func mathematicOperating(firstNum numberForCalculation, sign string, secondNum numberForCalculation) numberForCalculation {
@@ -305,4 +297,13 @@ func handleFraction(fraction Fraction, resultNum *int, resultFraction *Fraction)
 		*resultNum = 0
 		*resultFraction = fraction
 	}
+}
+
+func processComparition(allNumbers [][]numberForCalculation) bool {
+	for i := 0; i < len(allNumbers)-1; i++ {
+		if allNumbers[i][0] != allNumbers[i+1][0] {
+			return false
+		}
+	}
+	return true
 }

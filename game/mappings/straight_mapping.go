@@ -160,7 +160,7 @@ func crossMappingSeperateChipForPlacing(
 
 			// Add the chip for placement along this line
 			chipsOnBoard = append(chipsOnBoard, models.ChipForPlacing{
-				Position:     square.Position,
+				Position:     square.Coordinate,
 				Chip:         square.ChipPlaceOn,
 				SelectedChip: components.Chip{}, // Empty chip placeholder
 			})

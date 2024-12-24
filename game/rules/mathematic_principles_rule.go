@@ -1,43 +1,46 @@
 package rules
 
 import (
+	"A-MATH/err"
 	"A-MATH/game/components"
 	"A-MATH/game/constants"
 )
 
-func ValidateMathameticPrinciple(chipSet []components.Chip) {
+func ValidateMathameticPrinciple(chipSet []components.Chip) error {
 
 	if !HaveEqualsInEquation(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if !IsChipsLenghtReasonably(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if IsOperationPlaceOnUnusualLocation(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if AreOperationNextToEachOther(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if AreTwoDigitNumbersStackedWithTheOtherNumber(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if !AreOneDigitNumbersReasonablyStacked(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if IsZeroAtTheBeginWithNumberFormed(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
 
 	if HasDivideByZero(chipSet) {
-		return // add error
+		return err.New(int(constants.BadRequest), string(constants.InvalidEquationFormed))
 	}
+
+	return nil
 }
 
 // Need atlease 1 Equal Chip in the equations
@@ -132,7 +135,6 @@ func AreOneDigitNumbersReasonablyStacked(chips []components.Chip) bool {
 func IsZeroAtTheBeginWithNumberFormed(chips []components.Chip) bool {
 
 	for i := 0; i < len(chips)-1; i++ {
-		previousChip := chips[i-1]
 		currentChip := chips[i]
 		nextChip := chips[i+1]
 
@@ -142,6 +144,7 @@ func IsZeroAtTheBeginWithNumberFormed(chips []components.Chip) bool {
 				return true
 			}
 
+			previousChip := chips[i-1]
 			if previousChip.ChipType != string(constants.OneDigitNumberType) {
 				return true
 			}

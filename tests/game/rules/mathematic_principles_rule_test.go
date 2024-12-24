@@ -370,7 +370,7 @@ func TestAreTwoDigitNumbersStackedWithTheOtherNumber(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "Correct 2-digit numbers stacking equation [1]",
+			name: "Correct 2-digit numbers stacking equation[1]",
 			chipSet: []components.Chip{
 				components.NewChip("12"),
 				components.NewChip("="),
@@ -382,7 +382,7 @@ func TestAreTwoDigitNumbersStackedWithTheOtherNumber(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "Incorrect 2-digit numbers stacking equation [1]",
+			name: "Incorrect 2-digit numbers stacking equation[1]",
 			chipSet: []components.Chip{
 				components.NewChip("2"),
 				components.NewChip("12"),
@@ -394,7 +394,7 @@ func TestAreTwoDigitNumbersStackedWithTheOtherNumber(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "Incorrect 2-digit numbers stacking equation [2]",
+			name: "Incorrect 2-digit numbers stacking equation[2]",
 			chipSet: []components.Chip{
 				components.NewChip("4"),
 				components.NewChip("5"),
@@ -426,7 +426,7 @@ func TestAreOneDigitNumbersReasonablyStacked(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "Correct 1-digit numbers stacking reasonably [1]",
+			name: "Correct 1-digit numbers stacking reasonably[1]",
 			chipSet: []components.Chip{
 				components.NewChip("12"),
 				components.NewChip("="),
@@ -436,7 +436,7 @@ func TestAreOneDigitNumbersReasonablyStacked(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "Correct 1-digit numbers stacking reasonably [2]",
+			name: "Correct 1-digit numbers stacking reasonably[2]",
 			chipSet: []components.Chip{
 				components.NewChip("12"),
 				components.NewChip("*"),
@@ -449,7 +449,7 @@ func TestAreOneDigitNumbersReasonablyStacked(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "Incorrect 1-digit numbers stacking reasonably [1]",
+			name: "Incorrect 1-digit numbers stacking reasonably[1]",
 			chipSet: []components.Chip{
 				components.NewChip("5"),
 				components.NewChip("3"),
@@ -485,7 +485,7 @@ func TestIsZeroAtTheBeginWithNumberFormed(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "Correct no 0 at the beginning of formed number [1]",
+			name: "Correct no 0 at the beginning of formed number[1]",
 			chipSet: []components.Chip{
 				components.NewChip("20"),
 				components.NewChip("="),
@@ -494,32 +494,83 @@ func TestIsZeroAtTheBeginWithNumberFormed(t *testing.T) {
 			},
 			expected: false,
 		},
-		// {
-		// 	name: "Incorrect 0 at the beginning of formed number [1]",
-		// 	chipSet: []components.Chip{
-		// 		components.NewChip("0"),
-		// 		components.NewChip("5"),
-		// 		components.NewChip("+"),
-		// 		components.NewChip("8"),
-		// 		components.NewChip("="),
-		// 		components.NewChip("1"),
-		// 		components.NewChip("3"),
-		// 	},
-		// 	expected: true,
-		// },
-		// {
-		// 	name: "Incorrect 0 at the beginning of formed number [2]",
-		// 	chipSet: []components.Chip{
-		// 		components.NewChip("9"),
-		// 		components.NewChip("*"),
-		// 		components.NewChip("4"),
-		// 		components.NewChip("="),
-		// 		components.NewChip("0"),
-		// 		components.NewChip("3"),
-		// 		components.NewChip("6"),
-		// 	},
-		// 	expected: true,
-		// },
+		{
+			name: "Correct no 0 at the beginning of formed number[2]",
+			chipSet: []components.Chip{
+				components.NewChip("20"),
+				components.NewChip("*"),
+				components.NewChip("5"),
+				components.NewChip("="),
+				components.NewChip("1"),
+				components.NewChip("0"),
+				components.NewChip("0"),
+			},
+			expected: false,
+		},
+		{
+			name: "Correct no 0 at the beginning of formed number[3]",
+			chipSet: []components.Chip{
+				components.NewChip("0"),
+				components.NewChip("*"),
+				components.NewChip("5"),
+				components.NewChip("="),
+				components.NewChip("0"),
+				components.NewChip("+"),
+				components.NewChip("0"),
+			},
+			expected: false,
+		},
+		{
+			name: "Incorrect 0 at the beginning of formed number[1]",
+			chipSet: []components.Chip{
+				components.NewChip("0"),
+				components.NewChip("5"),
+				components.NewChip("+"),
+				components.NewChip("8"),
+				components.NewChip("="),
+				components.NewChip("1"),
+				components.NewChip("3"),
+			},
+			expected: true,
+		},
+		{
+			name: "Incorrect 0 at the beginning of formed number[2]",
+			chipSet: []components.Chip{
+				components.NewChip("9"),
+				components.NewChip("*"),
+				components.NewChip("4"),
+				components.NewChip("="),
+				components.NewChip("0"),
+				components.NewChip("3"),
+				components.NewChip("6"),
+			},
+			expected: true,
+		},
+		{
+			name: "Incorrect 0 at the beginning of formed number[3]",
+			chipSet: []components.Chip{
+				components.NewChip("0"),
+				components.NewChip("0"),
+				components.NewChip("6"),
+				components.NewChip("="),
+				components.NewChip("3"),
+				components.NewChip("+"),
+				components.NewChip("3"),
+			},
+			expected: true,
+		},
+		{
+			name: "Incorrect 0 at the beginning of formed number[4]",
+			chipSet: []components.Chip{
+				components.NewChip("0"),
+				components.NewChip("0"),
+				components.NewChip("+"),
+				components.NewChip("4"),
+				components.NewChip("="),
+				components.NewChip("4"),
+			},
+			expected: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -541,7 +592,7 @@ func TestHasDivideByZero(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "Correct equation (no divide by 0) [1]",
+			name: "Correct equation (no divide by 0)[1]",
 			chipSet: []components.Chip{
 				components.NewChip("4"),
 				components.NewChip("="),
@@ -555,7 +606,7 @@ func TestHasDivideByZero(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "Correct equation (no divide by 0) [1]",
+			name: "Correct equation (no divide by 0)[1]",
 			chipSet: []components.Chip{
 				components.NewChip("0"),
 				components.NewChip("*"),
@@ -569,7 +620,7 @@ func TestHasDivideByZero(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "Incorrect divide by 0 [1]",
+			name: "Incorrect equation (have divide by 0)[1]",
 			chipSet: []components.Chip{
 				components.NewChip("12"),
 				components.NewChip("/"),
@@ -582,7 +633,7 @@ func TestHasDivideByZero(t *testing.T) {
 			expected: true,
 		},
 		{
-			name: "Incorrect divide by 0 [2]",
+			name: "Incorrect equation (have divide by 0)[2]",
 			chipSet: []components.Chip{
 				components.NewChip("8"),
 				components.NewChip("="),

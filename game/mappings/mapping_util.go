@@ -104,7 +104,7 @@ func directionsMapping(
 		square := board.GetSquare(position)
 
 		chipsOnBoard = append(chipsOnBoard, models.ChipForPlacing{
-			Position:     square.Position,
+			Position:     square.Coordinate,
 			Chip:         square.ChipPlaceOn,
 			SelectedChip: components.Chip{}, // Empty chip as placeholder
 		})
