@@ -34,16 +34,13 @@ func TestNewChip(t *testing.T) {
 		{"Chip: Eighteen", string(constants.Eighteen), 4, string(constants.TwoDigitNumberType)},
 		{"Chip: Nineteen", string(constants.Nineteen), 7, string(constants.TwoDigitNumberType)},
 		{"Chip: Twenty", string(constants.Twenty), 5, string(constants.TwoDigitNumberType)},
-
 		{"Chip: Addition", string(constants.Addition), 2, string(constants.OperatorType)},
 		{"Chip: Subtraction", string(constants.Subtraction), 2, string(constants.OperatorType)},
 		{"Chip: Multiply", string(constants.Multiply), 2, string(constants.OperatorType)},
 		{"Chip: Division", string(constants.Division), 2, string(constants.OperatorType)},
 		{"Chip: Add_sub", string(constants.Add_sub), 1, string(constants.AlterOperatorType)},
 		{"Chip: Multi_divide", string(constants.Multi_divide), 1, string(constants.AlterOperatorType)},
-
 		{"Chip: Equal", string(constants.Equal), 1, string(constants.EqualType)},
-
 		{"Chip: Blank", string(constants.Blank), 0, string(constants.BlankType)},
 	}
 

@@ -4,14 +4,14 @@ import (
 	"A-MATH/err"
 	"A-MATH/game/components"
 	"A-MATH/game/constants"
+	"fmt"
 )
 
 func ValidateChipPlacement(board components.Board, coordinates [][2]int) (bool, bool, error) {
-	if len(coordinates) == 0 {
-		return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
-	}
+	fmt.Println("validated")
 
 	if board.IsEmpty() {
+		fmt.Println("board empty")
 		if len(coordinates) < 3 {
 			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
@@ -20,7 +20,9 @@ func ValidateChipPlacement(board components.Board, coordinates [][2]int) (bool, 
 			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
 	} else {
+		fmt.Println("board not empty")
 		if IsChipsPlacedOnOccupiedSquare(board, coordinates) {
+
 			return false, false, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
 		}
 

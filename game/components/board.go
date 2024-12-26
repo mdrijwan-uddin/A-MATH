@@ -18,9 +18,7 @@ func NewBoard() Board {
 	var boardsSquare [constants.BoardRange][constants.BoardRange]Square
 
 	xAxisSet := []string{
-		string(constants.A), string(constants.B), string(constants.C), string(constants.D), string(constants.E),
-		string(constants.F), string(constants.G), string(constants.H), string(constants.I), string(constants.J),
-		string(constants.K), string(constants.L), string(constants.M), string(constants.N), string(constants.O),
+		"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
 	}
 
 	yAxisSet := []string{
@@ -59,19 +57,22 @@ func (b *Board) Add(coordinate [2]int, c Chip) {
 	}
 }
 
-func (b *Board) Remove(coordinate [2]int) {
+func (b *Board) Remove(coordinate [2]int) Chip {
 	c := Chip{}
+	var selectedChip Chip
 	selectedSquare := b.GetSquare(coordinate)
 	if !selectedSquare.ChipPlaceOn.IsEmpty() {
+		selectedChip = selectedSquare.ChipPlaceOn
 		selectedSquare.ChipPlaceOn = c
 	}
+	return selectedChip
 }
 
 // has no chip place on board
 func (b *Board) IsEmpty() bool {
 	for y := 0; y < constants.BoardRange; y++ {
 		for x := 0; x < constants.BoardRange; x++ {
-			coordinate := [2]int{x, y}
+			coordinate := [2]int{x + 1, y + 1}
 			if !b.GetSquare(coordinate).ChipPlaceOn.IsEmpty() {
 				return false
 			}
@@ -111,11 +112,12 @@ func (b Board) String() string {
 	// Build the board rows
 	for y := 0; y < constants.BoardRange; y++ {
 		for x := 0; x < constants.BoardRange; x++ {
+			targetedSquare := b.GetSquare([2]int{x + 1, y + 1})
 
-			if b.squares[y][x].HasChipPlacedOn() {
-				writeSquare(b.squares[y][x].ChipPlaceOn.Value)
-			} else if b.squares[y][x].SquareType != string(constants.NormalSquare) {
-				writeSquare(string(b.squares[y][x].SquareType[:1]))
+			if targetedSquare.HasChipPlacedOn() {
+				writeSquare(targetedSquare.ChipPlaceOn.Value)
+			} else if targetedSquare.SquareType != string(constants.NormalSquare) {
+				writeSquare(string(targetedSquare.SquareType[:1]))
 			} else {
 				writeSquare("  ")
 			}

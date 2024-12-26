@@ -6,23 +6,6 @@ type squareTypes string
 type directions string
 
 const (
-	// to remove
-	A values = "A"
-	B values = "B"
-	C values = "C"
-	D values = "D"
-	E values = "E"
-	F values = "F"
-	G values = "G"
-	H values = "H"
-	I values = "I"
-	J values = "J"
-	K values = "K"
-	L values = "L"
-	M values = "M"
-	N values = "N"
-	O values = "O"
-
 	Zero         values = "0"
 	One          values = "1"
 	Two          values = "2"
@@ -69,6 +52,7 @@ const (
 
 	MaxChipInRack = 8
 	BoardRange    = 15
+	MaxChipInBag  = 100
 
 	Left  directions = "left"
 	Right directions = "right"

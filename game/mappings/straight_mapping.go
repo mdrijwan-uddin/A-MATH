@@ -126,13 +126,13 @@ func crossMappingSeperateChipForPlacing(
 		var delta [2]int
 		// Check for valid vertical connection between chips
 		if isVertical && connector[j].BottomConnected && connector[j+1].TopConnected {
-			placeChipsRange = chipForPlacing[j+1].Position[1] - chipForPlacing[j].Position[1] - 1
+			placeChipsRange = chipForPlacing[j+1].Coordinate[1] - chipForPlacing[j].Coordinate[1] - 1
 			delta = [2]int{0, 1}
 		}
 
 		// Check for valid horizontal connection between chips
 		if !isVertical && connector[j].RightConnected && connector[j+1].LeftConnected {
-			placeChipsRange = chipForPlacing[j+1].Position[0] - chipForPlacing[j].Position[0] - 1
+			placeChipsRange = chipForPlacing[j+1].Coordinate[0] - chipForPlacing[j].Coordinate[0] - 1
 			delta = [2]int{1, 0}
 		}
 
@@ -149,7 +149,7 @@ func crossMappingSeperateChipForPlacing(
 		var chipsOnBoard []models.ChipForPlacing
 
 		for i := 0; i < placeChipsRange; i++ {
-			currentPosition := chipForPlacing[j].Position
+			currentPosition := chipForPlacing[j].Coordinate
 			needPosition := [2]int{
 				currentPosition[0] + (1+i)*delta[0],
 				currentPosition[1] + (1+i)*delta[1],
@@ -160,7 +160,7 @@ func crossMappingSeperateChipForPlacing(
 
 			// Add the chip for placement along this line
 			chipsOnBoard = append(chipsOnBoard, models.ChipForPlacing{
-				Position:     square.Coordinate,
+				Coordinate:   square.Coordinate,
 				Chip:         square.ChipPlaceOn,
 				SelectedChip: components.Chip{}, // Empty chip placeholder
 			})

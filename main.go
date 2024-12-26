@@ -2,12 +2,10 @@ package main
 
 import (
 	"A-MATH/game/actions"
-	"A-MATH/game/calculations"
 	"A-MATH/game/components"
 	"A-MATH/game/mappings"
 	"A-MATH/game/models"
 	"A-MATH/game/players"
-	"A-MATH/game/rules"
 	"fmt"
 )
 
@@ -138,7 +136,7 @@ func main() {
 	chips = append(chips, models.NewChipForPlacing([2]int{14, 14}, components.NewChip("8")))
 
 	for _, ch := range chips {
-		ng.Board.Add(ch.Position, ch.Chip)
+		ng.Board.Add(ch.Coordinate, ch.Chip)
 		ng.Bag.DecreaseChip(ch.Chip)
 	}
 	fmt.Println(ng)
@@ -167,27 +165,32 @@ func main() {
 	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 11}, components.NewChip("17")))
 	// chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{11, 13}, components.NewChip("1")))
 
-	var coordinates [][2]int
-	for _, chips := range chipForPlacing {
-		coordinates = append(coordinates, chips.Position)
+	// var coordinates [][2]int
+	// for _, chips := range chipForPlacing {
+	// 	coordinates = append(coordinates, chips.Position)
+	// }
+
+	// isVertical, _ := rules.IsChipPlaceOnVerticalOrHorizontal(coordinates)
+	// isStraightLine, _ := rules.IsChipPlacingOnStraightLineOrSeparated(*ng.Board, coordinates, isVertical)
+
+	// connector := mappings.CrossConnector(*ng.Board, coordinates, isVertical)
+
+	// mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical, isStraightLine)
+
+	mapping, e := mappings.Management(*ng.Board, chipForPlacing)
+	if e != nil {
+		fmt.Println(e)
 	}
-
-	isVertical, _ := rules.IsChipPlaceOnVerticalOrHorizontal(coordinates)
-	isStraightLine, _ := rules.IsChipPlacingOnStraightLineOrSeparated(*ng.Board, coordinates, isVertical)
-
-	connector := mappings.CrossConnector(*ng.Board, coordinates, isVertical)
-
-	mapping := mappings.StraightMapping(*ng.Board, chipForPlacing, connector, isVertical, isStraightLine)
 
 	fmt.Println("---------------------------------------------------------")
 	fmt.Println(mapping)
 	fmt.Println("---------------------------------------------------------")
 
-	result, err := calculations.Management(mapping)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(result)
+	// result, err := calculations.Management(mapping)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(result)
 
 	// calculations.ChipCalculationSeperation(mapping[0])
 

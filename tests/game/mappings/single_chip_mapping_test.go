@@ -16,6 +16,7 @@ func TestOneDirectionMapping(t *testing.T) {
 		value                  string
 		expectedIsPlaceOnBoard [][]bool
 		expectedValue          [][]string
+		expectedSquareType     [][]string
 	}{
 		{
 			name:                   "(1D) Right Connected Mapping",
@@ -24,6 +25,7 @@ func TestOneDirectionMapping(t *testing.T) {
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseFirst14(),
 			expectedValue:          mockResultValueAppendFirst1D(),
+			expectedSquareType:     mockSquareTypeSingleDirectionConnected1(),
 		},
 		{
 			name:                   "(1D) Bottom Connected Mapping",
@@ -32,6 +34,7 @@ func TestOneDirectionMapping(t *testing.T) {
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseFirst14(),
 			expectedValue:          mockResultValueAppendFirst1D(),
+			expectedSquareType:     mockSquareTypeSingleDirectionConnected1(),
 		},
 		{
 			name:                   "(1D) Left Connected Mapping",
@@ -40,6 +43,7 @@ func TestOneDirectionMapping(t *testing.T) {
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseLast14(),
 			expectedValue:          mockResultValueAppendLast1D(),
+			expectedSquareType:     mockSquareTypeSingleDirectionConnected2(),
 		},
 		{
 			name:                   "(1D) Top Connected Mapping",
@@ -48,6 +52,7 @@ func TestOneDirectionMapping(t *testing.T) {
 			value:                  string(constants.Subtraction),
 			expectedIsPlaceOnBoard: mockIsPlaceOnBoardFalseLast14(),
 			expectedValue:          mockResultValueAppendLast1D(),
+			expectedSquareType:     mockSquareTypeSingleDirectionConnected2(),
 		},
 		{
 			name:     "(2D) Top-Right Connected Mapping",
@@ -75,6 +80,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Multiply),
 					string(constants.One),
 				},
+			},
+			expectedSquareType: [][]string{
+				mockSquareTypeDoubleDirectionConnected1(),
+				mockSquareTypeDoubleDirectionConnected1(),
 			},
 		},
 		{
@@ -104,6 +113,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Two),
 				},
 			},
+			expectedSquareType: [][]string{
+				mockSquareTypeDoubleDirectionConnected2(),
+				mockSquareTypeDoubleDirectionConnected1(),
+			},
 		},
 		{
 			name:     "(2D) Top-Left Connected Mapping",
@@ -131,6 +144,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Equal),
 					string(constants.Six),
 				},
+			},
+			expectedSquareType: [][]string{
+				mockSquareTypeDoubleDirectionConnected2(),
+				mockSquareTypeDoubleDirectionConnected1(),
 			},
 		},
 		{
@@ -160,6 +177,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Equal),
 				},
 			},
+			expectedSquareType: [][]string{
+				mockSquareTypeDoubleDirectionConnected2(),
+				mockSquareTypeDoubleDirectionConnected2(),
+			},
 		},
 		{
 			name:     "(2D) Left-Right Horizontal Mapping",
@@ -180,6 +201,19 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Ten),
 					string(constants.Equal),
 					string(constants.Twenty),
+				},
+			},
+			expectedSquareType: [][]string{
+				{
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.YellowSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.OrangeSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
 				},
 			},
 		},
@@ -204,6 +238,21 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Equal),
 					string(constants.Two),
 					string(constants.Zero),
+				},
+			},
+			expectedSquareType: [][]string{
+				{
+					string(constants.NormalSquare),
+					string(constants.BlueSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.BlueSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.BlueSquare),
+					string(constants.NormalSquare),
 				},
 			},
 		},
@@ -239,6 +288,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Zero),
 				},
 			},
+			expectedSquareType: [][]string{
+				mockSquareTypeTripleDirectionConnectedMain(),
+				mockSquareTypeTripleDirectionConnectedMiddle1(),
+			},
 		},
 		{
 			name:     "(3D) Left-Right Horizontal & Bottom Connected Mapping",
@@ -271,6 +324,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Four),
 					string(constants.Division),
 				},
+			},
+			expectedSquareType: [][]string{
+				mockSquareTypeTripleDirectionConnectedMain(),
+				mockSquareTypeTripleDirectionConnectedMiddle1(),
 			},
 		},
 		{
@@ -305,6 +362,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Nineteen),
 				},
 			},
+			expectedSquareType: [][]string{
+				mockSquareTypeTripleDirectionConnectedMain(),
+				mockSquareTypeTripleDirectionConnectedMiddle2(),
+			},
 		},
 		{
 			name:     "(3D) Left-Right Horizontal & Top Connected Mapping",
@@ -338,6 +399,10 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Nineteen),
 				},
 			},
+			expectedSquareType: [][]string{
+				mockSquareTypeTripleDirectionConnectedMain(),
+				mockSquareTypeTripleDirectionConnectedMiddle2(),
+			},
 		},
 		{
 			name:     "(4D) Left-Right Horizontal & Top-Bottom Vertical Connected Mapping",
@@ -368,6 +433,26 @@ func TestOneDirectionMapping(t *testing.T) {
 					string(constants.Two),
 				},
 			},
+			expectedSquareType: [][]string{
+				{
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.OrangeSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.CenterSquare),
+				},
+				{
+					string(constants.BlueSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.BlueSquare),
+				},
+			},
 		},
 	}
 
@@ -380,23 +465,9 @@ func TestOneDirectionMapping(t *testing.T) {
 			connector := mappings.SingleChipConnector(tt.board, tt.position)
 			results := mappings.SingleChipMapping(tt.board, chipForPlacing, connector)
 
-			testSingleChipMapChecking(t, results, tt.expectedIsPlaceOnBoard, tt.expectedValue)
+			testStraightMapChecking(t, results, tt.expectedIsPlaceOnBoard, tt.expectedValue, tt.expectedSquareType)
 
 		})
-	}
-}
-
-func testSingleChipMapChecking(t *testing.T, singleChipMapping [][]models.ChipForCalculating, expectedIsPlaceOnBoard [][]bool, expectedValue [][]string) {
-	for j, resultSet := range singleChipMapping {
-		for i, result := range resultSet {
-			if result.IsPlacedOnBoard != expectedIsPlaceOnBoard[j][i] {
-				t.Errorf("SingleChipMapping().IsPlacedOnBoard result[%d] = result:%v; expected %v", i, result.IsPlacedOnBoard, expectedIsPlaceOnBoard[j][i])
-			}
-
-			if result.ChipForCalculating.Value != expectedValue[j][i] {
-				t.Errorf("SingleChipMapping().Value result[%d] = result:%v; expected %v", i, result.ChipForCalculating.Value, expectedValue[j][i])
-			}
-		}
 	}
 }
 
@@ -432,7 +503,7 @@ func mockSingleDirectionChipMapping() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{8, 14}, components.NewChip("3")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -477,7 +548,7 @@ func mockTwoDirectionChipMapping1() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{10, 11}, components.NewChip("2")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -523,7 +594,7 @@ func mockTwoDirectionChipMapping2() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{11, 10}, components.NewChip("0")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -596,7 +667,7 @@ func mockThreeDirectionChipMapping() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{11, 12}, components.NewChip("6")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -642,7 +713,7 @@ func mockFourDirectionChipMapping() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{5, 11}, components.NewChip("2")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -718,5 +789,109 @@ func mockResultValueAppendLast1D() [][]string {
 			string(constants.Three),
 			string(constants.Subtraction),
 		},
+	}
+}
+
+func mockSquareTypeSingleDirectionConnected1() [][]string {
+	return [][]string{
+		{
+			string(constants.RedSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.OrangeSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.CenterSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.OrangeSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+		},
+	}
+}
+
+func mockSquareTypeSingleDirectionConnected2() [][]string {
+	return [][]string{
+		{
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.OrangeSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.CenterSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.OrangeSquare),
+			string(constants.NormalSquare),
+			string(constants.NormalSquare),
+			string(constants.RedSquare),
+		},
+	}
+}
+
+func mockSquareTypeDoubleDirectionConnected1() []string {
+	return []string{
+		string(constants.BlueSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+	}
+}
+
+func mockSquareTypeDoubleDirectionConnected2() []string {
+	return []string{
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.BlueSquare),
+	}
+}
+
+func mockSquareTypeTripleDirectionConnectedMain() []string {
+	return []string{
+		string(constants.YellowSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.OrangeSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.YellowSquare),
+	}
+}
+
+func mockSquareTypeTripleDirectionConnectedMiddle1() []string {
+	return []string{
+		string(constants.OrangeSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.CenterSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+	}
+}
+
+func mockSquareTypeTripleDirectionConnectedMiddle2() []string {
+	return []string{
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.CenterSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.NormalSquare),
+		string(constants.OrangeSquare),
 	}
 }

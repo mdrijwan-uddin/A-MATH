@@ -194,7 +194,7 @@ func TestIsChipsPlacedOnOccupiedSquare(t *testing.T) {
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{8, 15}, components.NewChip("3")))
 
 	for _, ch := range chipForPlacing {
-		boardForTest.Add(ch.Position, ch.Chip)
+		boardForTest.Add(ch.Coordinate, ch.Chip)
 	}
 
 	tests := []struct {
@@ -307,7 +307,7 @@ func TestIsChipPlaceingOnStraightLineOrSeperated(t *testing.T) {
 	chipForPlacing = append(chipForPlacing, models.NewChipForPlacing([2]int{14, 14}, components.NewChip("15")))
 
 	for _, ch := range chipForPlacing {
-		boardForTest.Add(ch.Position, ch.Chip)
+		boardForTest.Add(ch.Coordinate, ch.Chip)
 	}
 
 	tests := []struct {

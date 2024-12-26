@@ -650,15 +650,15 @@ func testStraightMapChecking(
 	for j, resultSet := range mapping {
 		for i, result := range resultSet {
 			if result.IsPlacedOnBoard != expectedIsPlaceOnBoard[j][i] {
-				t.Errorf("SingleChipMapping().IsPlacedOnBoard result[%d] = result:%v; expected %v", i, result.IsPlacedOnBoard, expectedIsPlaceOnBoard[j][i])
+				t.Errorf("SingleChipMapping().IsPlacedOnBoard result[%d, %d] = result:%v; expected %v", j, i, result.IsPlacedOnBoard, expectedIsPlaceOnBoard[j][i])
 			}
 
 			if result.ChipForCalculating.Value != expectedValue[j][i] {
-				t.Errorf("SingleChipMapping().Value result[%d] = result:%v; expected %v", i, result.ChipForCalculating.Value, expectedValue[j][i])
+				t.Errorf("SingleChipMapping().Value result[%d, %d] = result:%v; expected %v", j, i, result.ChipForCalculating.Value, expectedValue[j][i])
 			}
 
 			if result.SquareType != expectedSquareType[j][i] {
-				t.Errorf("SingleChipMapping().SquareType result[%d] = result:%v; expected %v", i, result.SquareType, expectedSquareType[j][i])
+				t.Errorf("SingleChipMapping().SquareType result[%d, %d] = result:%v; expected %v", j, i, result.SquareType, expectedSquareType[j][i])
 			}
 		}
 	}
@@ -691,7 +691,7 @@ func mockStraightChipMapping() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{8, 10}, components.NewChip("5")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -732,7 +732,7 @@ func mockCrossChipMapping1() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{11, 3}, components.NewChip("2")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }
@@ -801,7 +801,7 @@ func mockCrossChipMapping2() components.Board {
 	chips = append(chips, models.NewChipForPlacing([2]int{14, 14}, components.NewChip("8")))
 
 	for _, ch := range chips {
-		board.Add(ch.Position, ch.Chip)
+		board.Add(ch.Coordinate, ch.Chip)
 	}
 	return board
 }

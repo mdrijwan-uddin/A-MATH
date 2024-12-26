@@ -6,13 +6,19 @@ import (
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
 	"A-MATH/game/rules"
+	"fmt"
 )
 
 func Management(board components.Board, chips []models.ChipForPlacing) ([][]models.ChipForCalculating, error) {
+	// If no connector is returned, invalid placement
+	if len(chips) == 0 {
+		return nil, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
+	}
+
 	// Gather coordinates
 	var coords [][2]int
 	for _, chip := range chips {
-		coords = append(coords, chip.Position)
+		coords = append(coords, chip.Coordinate)
 	}
 
 	// Validate placement
@@ -20,6 +26,9 @@ func Management(board components.Board, chips []models.ChipForPlacing) ([][]mode
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(isVertical)
+	fmt.Println(isStraightLine)
 
 	// Determine connector
 	var connector []models.ChipConnector
@@ -33,11 +42,7 @@ func Management(board components.Board, chips []models.ChipForPlacing) ([][]mode
 	}
 
 	// Handle mapping
-	mappedChips, err := chipMappingHandler(board, chips, connector, isVertical, isStraightLine)
-	if err != nil {
-		return nil, err
-	}
-
+	mappedChips := chipMappingHandler(board, chips, connector, isVertical, isStraightLine)
 	return mappedChips, nil
 }
 
@@ -48,22 +53,17 @@ func chipMappingHandler(
 	connector []models.ChipConnector,
 	isVertical bool,
 	isStraightLine bool,
-) ([][]models.ChipForCalculating, error) {
+) [][]models.ChipForCalculating {
 
 	// If board is empty, do first-turn mapping
 	if board.IsEmpty() {
-		return FirstTurnMapping(board, chips), nil
-	}
-
-	// If no connector is returned, invalid placement
-	if len(chips) == 0 {
-		return nil, err.New(int(constants.BadRequest), string(constants.InvalidChipPlacement))
+		return FirstTurnMapping(board, chips)
 	}
 
 	// Single chip or multiple chips
 	if len(chips) == 1 {
-		return SingleChipMapping(board, chips, connector), nil
+		return SingleChipMapping(board, chips, connector)
 	}
 
-	return StraightMapping(board, chips, connector, isVertical, isStraightLine), nil
+	return StraightMapping(board, chips, connector, isVertical, isStraightLine)
 }

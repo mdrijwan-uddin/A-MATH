@@ -11,7 +11,7 @@ func (g *Game) Submit(player *inGamePlayers, c []models.ChipForPlacing) {
 	}
 
 	for _, chip := range c {
-		g.Board.Add(chip.Position, chip.Chip)
+		g.Board.Add(chip.Coordinate, chip.Chip)
 		player.Racks.Remove(chip.Chip)
 	}
 
