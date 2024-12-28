@@ -552,42 +552,6 @@ func TestCrossMapping(t *testing.T) {
 		{
 			name:        "(Cross) Multiple Vertical Cross Mapping",
 			board:       mockCrossChipMapping2(),
-			coordinates: [][2]int{{1, 5}, {3, 5}, {5, 5}, {7, 5}},
-			values: []string{
-				string(constants.Five),
-				string(constants.Three),
-				string(constants.Twelve),
-				string(constants.Three),
-			},
-			expectedIsPlaceOnBoard: [][]bool{
-				{false, true, false, true, false, true, false},
-			},
-			expectedValue: [][]string{
-				{
-					string(constants.Five),
-					string(constants.Multiply),
-					string(constants.Three),
-					string(constants.Equal),
-					string(constants.Twelve),
-					string(constants.Addition),
-					string(constants.Three),
-				},
-			},
-			expectedSquareType: [][]string{
-				{
-					string(constants.NormalSquare),
-					string(constants.NormalSquare),
-					string(constants.NormalSquare),
-					string(constants.NormalSquare),
-					string(constants.BlueSquare),
-					string(constants.NormalSquare),
-					string(constants.NormalSquare),
-				},
-			},
-		},
-		{
-			name:        "(Cross) Multiple Horizontal Cross Mapping",
-			board:       mockCrossChipMapping2(),
 			coordinates: [][2]int{{11, 7}, {11, 9}, {11, 10}, {11, 11}, {11, 13}},
 			values: []string{
 				string(constants.Nine),
@@ -624,17 +588,49 @@ func TestCrossMapping(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:        "(Cross) Multiple Horizontal Cross Mapping",
+			board:       mockCrossChipMapping2(),
+			coordinates: [][2]int{{1, 5}, {3, 5}, {5, 5}, {7, 5}},
+			values: []string{
+				string(constants.Five),
+				string(constants.Three),
+				string(constants.Twelve),
+				string(constants.Three),
+			},
+			expectedIsPlaceOnBoard: [][]bool{
+				{false, true, false, true, false, true, false},
+			},
+			expectedValue: [][]string{
+				{
+					string(constants.Five),
+					string(constants.Multiply),
+					string(constants.Three),
+					string(constants.Equal),
+					string(constants.Twelve),
+					string(constants.Addition),
+					string(constants.Three),
+				},
+			},
+			expectedSquareType: [][]string{
+				{
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+					string(constants.BlueSquare),
+					string(constants.NormalSquare),
+					string(constants.NormalSquare),
+				},
+			},
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
 			chipForPlacing := mapChipForPlacing(tt.coordinates, tt.values)
-			isVertical, _ := rules.IsChipPlaceOnVerticalOrHorizontal(tt.coordinates)
-			isStraightLine, _ := rules.IsChipPlacingOnStraightLineOrSeparated(tt.board, tt.coordinates, isVertical)
-			connector := mappings.CrossConnector(tt.board, tt.coordinates, isVertical)
-			results := mappings.StraightMapping(tt.board, chipForPlacing, connector, isVertical, isStraightLine)
 
+			results, _ := mappings.Management(tt.board, chipForPlacing)
 			testStraightMapChecking(t, results, tt.expectedIsPlaceOnBoard, tt.expectedValue, tt.expectedSquareType)
 		})
 	}

@@ -34,7 +34,6 @@ func (c ChipForPlacing) String() string {
 		sb.WriteString(c.SelectedChip.String())
 		sb.WriteString("}")
 	}
-
 	sb.WriteString("\n")
 	return sb.String()
 }

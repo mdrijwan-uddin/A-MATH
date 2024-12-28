@@ -61,7 +61,7 @@ func TestFirstTurnMapping(t *testing.T) {
 
 	t.Run(tests.name, func(t *testing.T) {
 
-		results := mappings.FirstTurnMapping(tests.board, tests.chipForPlacing)
+		results, _ := mappings.Management(tests.board, tests.chipForPlacing)
 
 		if len(results) != 1 {
 			t.Errorf("FirstTurnMapping() = len(results):%d; expected %d", len(results), 1)

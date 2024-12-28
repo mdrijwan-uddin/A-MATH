@@ -5,10 +5,10 @@ import (
 	"A-MATH/game/models"
 )
 
-func SingleChipConnector(board components.Board, coordinates [2]int) []models.ChipConnector {
+func SingleChipConnector(board components.Board, coordinate [2]int) []models.ChipConnector {
 	var connectors []models.ChipConnector
 
-	singleConnector := models.NewChipConnector(coordinates)
+	singleConnector := models.NewChipConnector(coordinate)
 	singleConnector.CheckAllDirectionConnector(board)
 
 	connectors = append(connectors, singleConnector)
