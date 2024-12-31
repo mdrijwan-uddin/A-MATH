@@ -6,9 +6,10 @@ type messages string
 const (
 	BadRequest code = 400
 
-	InvalidInputForChip  messages = "Invalid input for chip value"
-	InvalidInputForBoard messages = "Invalid input for board position"
-
+	InvalidInputForChip   messages = "Invalid input for chip value"
+	InvalidInputForBoard  messages = "Invalid input for board position"
 	InvalidChipPlacement  messages = "Invalid chips placing"
 	InvalidEquationFormed messages = "Invalid equations forming"
+
+	IndexOutOfRange messages = "index out of range"
 )

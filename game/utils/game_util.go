@@ -4,7 +4,6 @@ import (
 	"A-MATH/err"
 	"A-MATH/game/constants"
 
-	"fmt"
 	"slices"
 	"strconv"
 )
@@ -52,7 +51,6 @@ func ValidateSquarePosition(pos string) ([2]int, error) {
 
 func ValidateChip(values string) error {
 	if !slices.Contains(ChipSet, values) {
-		fmt.Println(ChipSet)
 		return err.New(int(constants.BadRequest), string(constants.InvalidInputForChip))
 	} else {
 		return nil
@@ -62,7 +60,7 @@ func ValidateChip(values string) error {
 // need to fix an error
 func RemoveSlideElement[T any](slice []T, index int) ([]T, error) {
 	if index < 0 || index >= len(slice) {
-		return slice, fmt.Errorf("index out of range")
+		return slice, err.New(int(constants.BadRequest), string(constants.IndexOutOfRange))
 	}
 	// Remove the element at the specified index
 	return append(slice[:index], slice[index+1:]...), nil

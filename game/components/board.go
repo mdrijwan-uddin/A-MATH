@@ -3,9 +3,10 @@ package components
 import (
 	"A-MATH/game/constants"
 	"A-MATH/game/utils"
-	"github.com/fatih/color"
+	"fmt" // no Println in code
 	"strings"
-	"fmt"
+
+	"github.com/fatih/color"
 )
 
 type Board struct {
