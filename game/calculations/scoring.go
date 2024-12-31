@@ -21,33 +21,20 @@ func Score(chipsForCalculation []models.ChipForCalculating) int {
 }
 
 func identifySquareType(c models.ChipForCalculating) (int, int) {
-	var score int
-	var times int
-	var delta int
-
 	if c.IsPlacedOnBoard {
-		delta = 1
-	} else {
-		delta = 0
+		return c.Chip.Score, 1
 	}
 
 	switch c.SquareType {
 	case string(constants.RedSquare):
-		score = c.Chip.Score
-		times = (3 - (delta * 2))
+		return c.Chip.Score, 3
 	case string(constants.YellowSquare):
-		score = c.Chip.Score
-		times = (2 - delta)
+		return c.Chip.Score, 2
 	case string(constants.BlueSquare), string(constants.CenterSquare):
-		score = c.Chip.Score * (3 - (delta * 2))
-		times = 1
+		return c.Chip.Score * 3, 1
 	case string(constants.OrangeSquare):
-		score = c.Chip.Score * (2 - delta)
-		times = 1
+		return c.Chip.Score * 2, 1
 	default:
-		score = c.Chip.Score
-		times = 1
+		return c.Chip.Score, 1
 	}
-
-	return score, times
 }
