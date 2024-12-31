@@ -5,7 +5,6 @@ import (
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
 	"A-MATH/game/utils"
-	"fmt"
 	"strconv"
 )
 
@@ -17,10 +16,6 @@ type numberForCalculation struct {
 func ProcessCalculating(chipsForCalculation []models.ChipForCalculating) bool {
 	chipSets := equationSeperation(chipsForCalculation)
 	allNumbers, allOperators := parseChipSets(chipSets)
-
-	// Debug output
-	fmt.Println("Parsed Numbers:", allNumbers)
-	fmt.Println("Parsed Operators:", allOperators)
 
 	for i := 0; i < len(allOperators); i++ {
 		// Process multiplication and division first
@@ -38,17 +33,8 @@ func ProcessCalculating(chipsForCalculation []models.ChipForCalculating) bool {
 			})
 	}
 
-	// Debug output
-	fmt.Println("Parsed Numbers:", allNumbers)
-	fmt.Println("Parsed Operators:", allOperators)
-
-	// Process the compare groups of chips
-	result := processComparition(allNumbers)
-
-	// Debug output
-	fmt.Println("Result:", result)
-
-	return result
+	// Process the compare groups of chips and return
+	return processComparition(allNumbers)
 }
 
 func equationSeperation(chipsForCalculation []models.ChipForCalculating) [][]components.Chip {
@@ -59,11 +45,11 @@ func equationSeperation(chipsForCalculation []models.ChipForCalculating) [][]com
 	)
 
 	for i, chips := range chipsForCalculation {
-		currentChip := chips.ChipForCalculating.Value
+		currentChip := chips.Chip.Value
 
 		if currentChip == string(constants.Equal) {
 			for j := index; j < i; j++ {
-				currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
+				currentCalGroup = append(currentCalGroup, chipsForCalculation[j].Chip)
 			}
 			valueForCalSet = append(valueForCalSet, currentCalGroup)
 			index = i + 1
@@ -72,7 +58,7 @@ func equationSeperation(chipsForCalculation []models.ChipForCalculating) [][]com
 	}
 
 	for j := index; j < len(chipsForCalculation); j++ {
-		currentCalGroup = append(currentCalGroup, chipsForCalculation[j].ChipForCalculating)
+		currentCalGroup = append(currentCalGroup, chipsForCalculation[j].Chip)
 	}
 	valueForCalSet = append(valueForCalSet, currentCalGroup)
 
@@ -96,18 +82,21 @@ func parseSingleChipSet(chipSet []components.Chip) ([]numberForCalculation, []st
 	var numbersForCurrentSet []numberForCalculation
 	var operatorsForCurrentSet []string
 	currentNumber := 0
-	isNegative := false
 
-	for i, chip := range chipSet {
-		if i == 0 && chip.Value == string(constants.Subtraction) {
-			isNegative = true
-		}
-
-		currentNumber = processChip(chip, currentNumber, &isNegative, &numbersForCurrentSet, &operatorsForCurrentSet)
+	for _, chip := range chipSet {
+		currentNumber = processChip(
+			chip,
+			currentNumber,
+			&numbersForCurrentSet,
+			&operatorsForCurrentSet,
+		)
 	}
 
 	// Add the last number in the current set
-	numbersForCurrentSet = append(numbersForCurrentSet, numberForCalculation{currentNumber, Fraction{}})
+	numbersForCurrentSet = append(
+		numbersForCurrentSet,
+		numberForCalculation{currentNumber, Fraction{}},
+	)
 
 	return numbersForCurrentSet, operatorsForCurrentSet
 }
@@ -115,7 +104,6 @@ func parseSingleChipSet(chipSet []components.Chip) ([]numberForCalculation, []st
 func processChip(
 	chip components.Chip,
 	currentNumber int,
-	isNegative *bool,
 	numbersForCurrentSet *[]numberForCalculation,
 	operatorsForCurrentSet *[]string,
 ) int {
@@ -129,11 +117,10 @@ func processChip(
 		currentNumber, _ = strconv.Atoi(chip.Value)
 
 	case string(constants.OperatorType):
-		if *isNegative {
-			currentNumber *= -1
-			*isNegative = false
-		}
-		*numbersForCurrentSet = append(*numbersForCurrentSet, numberForCalculation{currentNumber, Fraction{}})
+		*numbersForCurrentSet = append(
+			*numbersForCurrentSet,
+			numberForCalculation{currentNumber, Fraction{}},
+		)
 		*operatorsForCurrentSet = append(*operatorsForCurrentSet, chip.Value)
 		currentNumber = 0
 	}
@@ -141,7 +128,11 @@ func processChip(
 	return currentNumber
 }
 
-func processOperators(numbers []numberForCalculation, operators []string, targetOperators []string) ([]numberForCalculation, []string) {
+func processOperators(
+	numbers []numberForCalculation,
+	operators []string,
+	targetOperators []string,
+) ([]numberForCalculation, []string) {
 	j := 0
 	for j < len(operators) {
 
@@ -176,7 +167,11 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func mathematicOperating(firstNum numberForCalculation, sign string, secondNum numberForCalculation) numberForCalculation {
+func mathematicOperating(
+	firstNum numberForCalculation,
+	sign string,
+	secondNum numberForCalculation,
+) numberForCalculation {
 
 	switch sign {
 	case string(constants.Addition):

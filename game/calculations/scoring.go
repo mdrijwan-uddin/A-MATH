@@ -3,6 +3,7 @@ package calculations
 import (
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
+	"fmt"
 )
 
 func Score(chipsForCalculation []models.ChipForCalculating) int {
@@ -11,11 +12,12 @@ func Score(chipsForCalculation []models.ChipForCalculating) int {
 
 	for _, chips := range chipsForCalculation {
 		score, times := identifySquareType(chips)
+		fmt.Println(times)
 		currentScore += score
 		multiplier *= times
 	}
 
-	return currentScore
+	return currentScore * multiplier
 }
 
 func identifySquareType(c models.ChipForCalculating) (int, int) {
@@ -31,19 +33,19 @@ func identifySquareType(c models.ChipForCalculating) (int, int) {
 
 	switch c.SquareType {
 	case string(constants.RedSquare):
-		score = c.ChipForCalculating.Score
-		times = 3
+		score = c.Chip.Score
+		times = (3 - (delta * 2))
 	case string(constants.YellowSquare):
-		score = c.ChipForCalculating.Score
-		times = 2
+		score = c.Chip.Score
+		times = (2 - delta)
 	case string(constants.BlueSquare), string(constants.CenterSquare):
-		score = c.ChipForCalculating.Score * (3 - (delta * 2))
+		score = c.Chip.Score * (3 - (delta * 2))
 		times = 1
 	case string(constants.OrangeSquare):
-		score = c.ChipForCalculating.Score * (2 - delta)
+		score = c.Chip.Score * (2 - delta)
 		times = 1
 	default:
-		score = c.ChipForCalculating.Score
+		score = c.Chip.Score
 		times = 1
 	}
 

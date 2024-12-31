@@ -23,9 +23,9 @@ func straightLineMapping(
 
 		// Create a new ChipForCalculating and add it to the set
 		*chipForCalculatingSet = append(*chipForCalculatingSet, models.ChipForCalculating{
-			SquareType:         board.GetSquare(chips.Coordinate).SquareType,
-			ChipForCalculating: chip,
-			IsPlacedOnBoard:    isPlacedOnBoard,
+			SquareType:      board.GetSquare(chips.Coordinate).SquareType,
+			Chip:            chip,
+			IsPlacedOnBoard: isPlacedOnBoard,
 		})
 	}
 }

@@ -3,11 +3,9 @@ package components
 import (
 	"A-MATH/game/constants"
 	"A-MATH/game/utils"
-	"fmt"
-
-	"strings"
-
 	"github.com/fatih/color"
+	"strings"
+	"fmt"
 )
 
 type Board struct {

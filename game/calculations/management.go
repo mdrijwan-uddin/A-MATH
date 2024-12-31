@@ -15,7 +15,7 @@ func Management(chipsForCalculationSet [][]models.ChipForCalculating) (int, erro
 
 		var chipSet []components.Chip
 		for _, chips := range chipsForCalculation {
-			chipSet = append(chipSet, components.NewChip(chips.ChipForCalculating.Value))
+			chipSet = append(chipSet, components.NewChip(chips.Chip.Value))
 		}
 
 		amathError := rules.ValidateMathameticPrinciple(chipSet)

@@ -649,8 +649,8 @@ func testStraightMapChecking(
 				t.Errorf("SingleChipMapping().IsPlacedOnBoard result[%d, %d] = result:%v; expected %v", j, i, result.IsPlacedOnBoard, expectedIsPlaceOnBoard[j][i])
 			}
 
-			if result.ChipForCalculating.Value != expectedValue[j][i] {
-				t.Errorf("SingleChipMapping().Value result[%d, %d] = result:%v; expected %v", j, i, result.ChipForCalculating.Value, expectedValue[j][i])
+			if result.Chip.Value != expectedValue[j][i] {
+				t.Errorf("SingleChipMapping().Value result[%d, %d] = result:%v; expected %v", j, i, result.Chip.Value, expectedValue[j][i])
 			}
 
 			if result.SquareType != expectedSquareType[j][i] {

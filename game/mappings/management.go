@@ -6,7 +6,6 @@ import (
 	"A-MATH/game/constants"
 	"A-MATH/game/models"
 	"A-MATH/game/rules"
-	"fmt"
 )
 
 func Management(board components.Board, chips []models.ChipForPlacing) ([][]models.ChipForCalculating, error) {
@@ -26,9 +25,6 @@ func Management(board components.Board, chips []models.ChipForPlacing) ([][]mode
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(isVertical)
-	fmt.Println(isStraightLine)
 
 	// Determine connector
 	var connector []models.ChipConnector

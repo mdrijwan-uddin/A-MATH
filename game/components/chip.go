@@ -2,7 +2,6 @@ package components
 
 import (
 	"A-MATH/game/constants"
-
 	"strconv"
 	"strings"
 )
